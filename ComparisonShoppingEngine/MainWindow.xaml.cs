@@ -23,7 +23,6 @@ namespace ComparisonShoppingEngine
         public MainWindow()
         {
             InitializeComponent();
-            // Mitašiūno vaikai
         }
     }
 }
