@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComparisonShoppingEngine", "ComparisonShoppingEngine\ComparisonShoppingEngine.csproj", "{BA150A18-84C7-48A5-9366-0E7AAFDDFA61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSE.BL", "CSE.BL\CSE.BL.csproj", "{F1C31933-C332-447A-B7C1-337A7D580C94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSE.BL", "CSE.BL\CSE.BL.csproj", "{F1C31933-C332-447A-B7C1-337A7D580C94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModels", "ViewModels\ViewModels.csproj", "{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F1C31933-C332-447A-B7C1-337A7D580C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1C31933-C332-447A-B7C1-337A7D580C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1C31933-C332-447A-B7C1-337A7D580C94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
