@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
-namespace ComparisonShoppingEngine
+namespace ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
@@ -22,12 +22,17 @@ namespace ComparisonShoppingEngine
         public MainViewModel()
         {
             ChangeViewCommand = new RelayCommand(ChangeViewModel, canExecute => true);
+            selectedViewModel = new HomeViewModel();
         }
         public ICommand ChangeViewCommand { get; set; }
 
         private void ChangeViewModel(object parameter)
         {
-            //TODO: Change the viewmodel based on the parameter
+
+            if(parameter.ToString() == "CheckScanning")
+            {
+                SelectedViewModel = new CheckScanningViewModel();
+            }
 
             return;
         }
