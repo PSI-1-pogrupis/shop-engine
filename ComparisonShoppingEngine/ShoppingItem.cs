@@ -56,5 +56,12 @@ namespace ComparisonShoppingEngine
             }
         }
 
+        //constructor for the ShoppingItem class
+        public ShoppingItem (string name, double amount, UnitTypes unit)
+        {
+            this.name = name;
+            this.amount = amount;
+            this.unit = unit;
+        }
     }
 }
