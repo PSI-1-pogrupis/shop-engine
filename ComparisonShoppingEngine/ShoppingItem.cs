@@ -5,7 +5,7 @@ using System.Text;
 namespace ComparisonShoppingEngine
 {
     /*ShoppingItem object holds data to describe 
-     the name, amount, and measurement unit type*/
+     * the name, amount, and measurement unit type*/
     class ShoppingItem
     {
         private string name; //name of the item
