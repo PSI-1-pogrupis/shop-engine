@@ -25,6 +25,8 @@ namespace ComparisonShoppingEngine
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainViewModel();
         }
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)
