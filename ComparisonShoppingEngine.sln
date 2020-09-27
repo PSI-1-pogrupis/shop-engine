@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSE.BLTest", "CSE.BLTest\CS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModels", "ViewModels\ViewModels.csproj", "{893F4FF7-E132-4B3B-BE4C-5A07C91974AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Views", "Views\Views.csproj", "{B4B0A023-560A-46ED-AA35-4EDC78740292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Views", "Views\Views.csproj", "{B4B0A023-560A-46ED-AA35-4EDC78740292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

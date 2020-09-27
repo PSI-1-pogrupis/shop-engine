@@ -20,6 +20,17 @@
 
         <ContentControl Content="{Binding SelectedViewModel}" Grid.Column="1" Grid.Row="1"/>
 
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70*"/>
+                <ColumnDefinition Width="30*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="80*"/>
+            </Grid.RowDefinitions>
+            <ContentControl Content="{Binding DataContext.StatusPanel, ElementName=root}" Grid.Column="1"/>
+        </Grid>
         
         <!--Left panel grid-->
         <Grid Grid.Row="1">
@@ -111,7 +122,7 @@
                 <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
                     <materialDesign:PackIcon Kind="Notifications"/>
                 </Button>
-                <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
+                <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False" Command="{Binding DataContext.ChangeStatusPanelCommand, ElementName=root}">
                     <materialDesign:PackIcon Kind="User"/>
                 </Button>
                 <Button x:Name="ButtonLogout" Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonLogout_Click" Focusable="False">
