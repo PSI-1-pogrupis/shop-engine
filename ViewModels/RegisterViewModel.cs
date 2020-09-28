@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSE.BL;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -62,52 +63,30 @@ namespace ViewModels
 
         private void Register(object parameter)
         {
-            //TODO: Proper error handling
-
-            ErrorMessage = "";
-
-            if (!ValidateEmail(EmailAddress))
-            {
-                ErrorMessage = "Enter a valid address.";
-                ClearEntry();
-                return;
-            }
-
-            if (!ValidatePassword(Password))
-            {
-                ErrorMessage = "Enter a valid password.";
-                ClearEntry();
-                return;
-            }
+            UserValidator validator = new UserValidator();
+            string message = "";
 
             if (!Password.Equals(ConfirmPassword))
             {
-                ErrorMessage = "Passwords don't match";
+                message = "Passwords do not match.\n";
                 ClearEntry();
-                return;
             }
 
-            ErrorMessage = "Successfully registered an account.";
-        }
+            if (validator.ValidateEmail(EmailAddress, ref message) & validator.ValidatePassword(Password, ref message))
+            {
+                //TODO: Register the user into the database
+                message = "Successfully registered an account.";
+            }
+            else
+            {
+                ClearEntry();
+            }
 
-        //TODO: Move this somewhere else since they are used across multiple classes
-        private bool ValidateEmail(string email)
-        {
-            return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-        }
-
-        private bool ValidatePassword(string password)
-        {
-            Regex hasNumber = new Regex(@"[0-9]+");
-            Regex hasUpperChar = new Regex(@"[A-Z]+");
-            Regex hasMinimum8Chars = new Regex(@".{8,}");
-
-            return (hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password));
+            ErrorMessage = message;
         }
 
         private void ClearEntry()
         {
-            EmailAddress = "";
             Password = "";
             ConfirmPassword = "";
         }

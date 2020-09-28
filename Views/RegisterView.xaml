@@ -31,9 +31,7 @@
             <TextBox Text="{Binding Password}" FontSize="28" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
             <TextBox Text="{Binding ConfirmPassword}" FontSize="28" Grid.Row="2" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
 
-            <Viewbox Grid.Row="3" Grid.Column="2" StretchDirection="DownOnly">
-                <Label Content="{Binding ErrorMessage}" Foreground="Red" FontSize="24" HorizontalContentAlignment="Center"/>
-            </Viewbox>
+            <TextBlock Grid.Row="3" Grid.Column="2"  Text="{Binding ErrorMessage}" Margin="10" Foreground="Red" FontSize="20" TextWrapping="WrapWithOverflow"/>
 
             <Button Content="Register" Grid.Row="3" Grid.Column="1" Command="{Binding RegisterCommand}" IsDefault="True"/>
         </Grid>

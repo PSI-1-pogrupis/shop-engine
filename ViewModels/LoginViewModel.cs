@@ -56,12 +56,6 @@ namespace ViewModels
 
             ErrorMessage = "";
 
-            if (!ValidateEmail(EmailAddress))
-            {
-                ErrorMessage = "Invalid email address entered.";
-                return;
-            }
-
             if(EmailAddress.Equals("admin@gmail.com") && Password.Equals("password"))
             {
                 //TODO: Connect to sql to validate the user and load information
@@ -70,14 +64,11 @@ namespace ViewModels
             }
             else
             {
+                Password = "";
                 ErrorMessage = "User not found.";
                 return;
             }
         }
 
-        private bool ValidateEmail(string email)
-        {
-            return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-        }
     }
 }
