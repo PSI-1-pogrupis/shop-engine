@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ComparisonShoppingEngine
+namespace CSE.BL.ShoppingList
 {
     /*This class creates and holds a list of ShoppingItem objects and 
      * each object holds its own data and applicable methods.*/
+    [Serializable]
     class ShoppingListManager
     {
         private List<ShoppingItem> shoppingList;
