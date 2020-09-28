@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ComparisonShoppingEngine
+namespace CSE.BL.ShoppingList
 {
     /*Enum that holds different measurement unit types*/
     enum UnitTypes

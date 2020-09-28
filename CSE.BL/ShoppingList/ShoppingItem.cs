@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ComparisonShoppingEngine
+namespace CSE.BL.ShoppingList
 {
     /*ShoppingItem object holds data to describe 
      * the name, amount, and measurement unit type*/
+
+    [Serializable]
     class ShoppingItem
     {
         private string name; //name of the item
