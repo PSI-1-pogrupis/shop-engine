@@ -45,13 +45,28 @@ namespace ViewModels
             StatusPanel = null;
 
             //TODO: replace this ugly code
-            if(parameter.ToString() == "CheckScanning")
+            if (parameter.ToString() == "Home")
+            {
+                SelectedViewModel = new HomeViewModel();
+            } else if (parameter.ToString() == "CheckScanning")
             {
                 SelectedViewModel = new CheckScanningViewModel();
-            }else if(parameter.ToString() == "Login")
+            } else if (parameter.ToString() == "NewShoppingList")
+            {
+                SelectedViewModel = new NewShoppingListViewModel();
+            } else if (parameter.ToString() == "BillingStatement")
+            {
+                SelectedViewModel = new BillingStatementViewModel();
+            } else if (parameter.ToString() == "ShoppingHistory")
+            {
+                SelectedViewModel = new ShoppingHistoryViewModel();
+            }else if (parameter.ToString() == "Settings")
+            {
+                SelectedViewModel = new SettingsViewModel();
+            } else if (parameter.ToString() == "Login")
             {
                 SelectedViewModel = new LoginViewModel();
-            }else if(parameter.ToString() == "Register")
+            } else if (parameter.ToString() == "Register")
             {
                 SelectedViewModel = new RegisterViewModel();
             }

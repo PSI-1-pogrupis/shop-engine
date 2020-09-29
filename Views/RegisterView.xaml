@@ -7,7 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#FF313638">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="1"/>
+            </Grid.Effect>
+            <Label Content="Register" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Background="#FF313638">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="30*"/>
@@ -23,19 +33,19 @@
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
 
-            <Label Content="Email address:" FontSize="28" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
-            <Label Content="Password:" FontSize="28" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
-            <Label Content="Confirm password:" FontSize="28" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
+            <Label Content="Email address:" FontSize="28" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="#DDFFFFFF"/>
+            <Label Content="Password:" FontSize="28" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="#DDFFFFFF"/>
+            <Label Content="Confirm password:" FontSize="28" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="#DDFFFFFF"/>
 
-            <TextBox Text="{Binding EmailAddress}" FontSize="28" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
-            <TextBox Text="{Binding Password}" FontSize="28" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
-            <TextBox Text="{Binding ConfirmPassword}" FontSize="28" Grid.Row="2" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
+            <TextBox Text="{Binding EmailAddress}" FontSize="28" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap" Foreground="White"/>
+            <TextBox Text="{Binding Password}" FontSize="28" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap" Foreground="White"/>
+            <TextBox Text="{Binding ConfirmPassword}" FontSize="28" Grid.Row="2" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap" Foreground="White"/>
 
             <Viewbox Grid.Row="3" Grid.Column="2" StretchDirection="DownOnly">
                 <Label Content="{Binding ErrorMessage}" Foreground="Red" FontSize="24" HorizontalContentAlignment="Center"/>
             </Viewbox>
 
-            <Button Content="Register" Grid.Row="3" Grid.Column="1" Command="{Binding RegisterCommand}" IsDefault="True"/>
+            <Button Content="Register" Grid.Row="3" Grid.Column="1" Command="{Binding RegisterCommand}" IsDefault="True" BorderBrush="{x:Null}" Background="#FF665957"/>
         </Grid>
     </Grid>
 </UserControl>
