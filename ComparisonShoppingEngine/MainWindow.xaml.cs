@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModels;
 
 namespace ComparisonShoppingEngine
 {
@@ -24,6 +25,8 @@ namespace ComparisonShoppingEngine
     {
         public MainWindow()
         {
+            DataContext = new MainViewModel();
+
             InitializeComponent();
         }
 
@@ -47,7 +50,7 @@ namespace ComparisonShoppingEngine
             if (Key.Enter == e.Key && !SearchText.Equals(""))
             {
                 // Display text in content grid
-                txt.Text = "Paieška atlikta!"+"\nGauti duomenys: "+SearchText.Text;
+                //txt.Text = "Paieška atlikta!"+"\nGauti duomenys: "+SearchText.Text;
                 SearchText.Text = "Search...";
             }
         }
