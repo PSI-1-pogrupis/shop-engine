@@ -4,9 +4,198 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComparisonShoppingEngine"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" Height="600" Width="1024" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+<!--Window Grid-->
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Content grid-->
+        <Grid x:Name="ContentHeader" Grid.Column="1" Grid.Row="2" Background="#FF413A39">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--Updates information grid-->
+            <Grid x:Name="UpdatesGrid" Background="#FF38302F" Panel.ZIndex="1">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="1"/>
+                </Grid.Effect>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="50*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Label Content="What's new?" HorizontalAlignment="Center" FontSize="24" Background="{x:Null}" Grid.RowSpan="2">
+                        <Label.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF0814A"/>
+                                <GradientStop Color="#FFF0814A" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Label.Foreground>
+                    </Label>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="Application initialization, UI design preview, OCR implementation, shopping list creation and more..." HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Background="{x:Null}" Foreground="#FFF06543" FontWeight="Normal" TextWrapping="Wrap"/>
+                </Grid>
+            </Grid>
+            <!--Content-->
+            <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                <Grid x:Name="ContentGrid" Grid.Row="1" Background="#FF413A39">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="50*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Cells-->
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <Grid Margin="10">
+                            <Border x:Name="RoundedBorder" CornerRadius="15" Background="#FFF09D51">
+                                <TextBlock x:Name="txt" Margin="0,10,0,10" Text="Content for current Grid" HorizontalAlignment="Center" FontSize="24" Background="{x:Null}" Foreground="#DDFFFFFF" TextWrapping="Wrap"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid Margin="10">
+                            <Border CornerRadius="15" Background="#FFF09D51">
+                                <Grid>
+                                    <ListView Name="ProductListView" Grid.Row="1" ItemsSource="{Binding Path=TempProduct}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Product Name" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="Price" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid Margin="10">
+                            <Border CornerRadius="15" Background="#FFF09D51">
+                                <TextBlock Margin="0,10,0,10" Text="Content for current Grid" HorizontalAlignment="Center" FontSize="24" Background="{x:Null}" Foreground="#DDFFFFFF" TextWrapping="Wrap"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid Margin="10">
+                            <Border CornerRadius="15" Background="#FFF09D51">
+                                <TextBlock Margin="0,10,0,10" Text="Content for current Grid" HorizontalAlignment="Center" FontSize="24" Background="{x:Null}" Foreground="#DDFFFFFF" TextWrapping="Wrap"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <!--Left panel grid-->
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF61423B" Offset="1"/>
+                    <GradientStop Color="#FF914E3E" Offset="0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="425*"/>
+                <RowDefinition Height="29*"/>
+            </Grid.RowDefinitions>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="5" Color="Black" RenderingBias="Quality" ShadowDepth="1"/>
+            </Grid.Effect>
+            <!--Logo-->
+            <Grid Background="#FFC15A41">
+                <TextBlock Text="SHOPPING COMPARISON ENGINE" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" LineStackingStrategy="MaxHeight" TextWrapping="WrapWithOverflow" FontSize="23" FontWeight="Bold" Foreground="White" FontFamily="Candara Light"/>
+            </Grid>
+            <!--Left panel selections-->
+            <StackPanel Grid.Row="1" Grid.RowSpan="2">
+                <Grid Width="180" Height="32" Background="#FFF0814A" Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="80*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <materialDesign:PackIcon Margin="17,0,0,0" Kind="Search" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid x:Name="SearchGrid" Grid.Column="1" Margin="6,0,5,6">
+                            <materialDesign:Card Background="{x:Null}">
+                                <TextBox x:Name="SearchText" Padding="0,1,0,0" FontSize="16" FontFamily="Candara Light" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" PreviewKeyDown="SearchTest_PreviewKeyDown">Search...</TextBox>
+                            </materialDesign:Card>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                    <Grid Width="160">
+                        <materialDesign:PackIcon Kind="Scan" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock HorizontalAlignment="Center" Text="CHECK SCANNING" FontSize="14" FontFamily="Candara Light"/>
+                    </Grid>
+                </Button>
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" MouseDown="NewShoppingList_MouseDown">
+                    <Grid Width="160">
+                        <materialDesign:PackIcon Kind="Subtasks" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock HorizontalAlignment="Center" Text="NEW SHOPPING LIST" FontSize="14" FontFamily="Candara Light"/>
+                    </Grid>
+                </Button>
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                    <Grid Width="160">
+                        <materialDesign:PackIcon Kind="Payment" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock HorizontalAlignment="Center" Text="BILLING STATEMENT" FontSize="14" FontFamily="Candara Light"/>
+                    </Grid>
+                </Button>
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                    <Grid Width="160">
+                        <materialDesign:PackIcon Kind="History" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock HorizontalAlignment="Center" Text="SHOPPING HISTORY" FontSize="14" FontFamily="Candara Light"/>
+                    </Grid>
+                </Button>
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                    <Grid Width="160">
+                        <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock HorizontalAlignment="Center" Text="SETTINGS" FontSize="14" FontFamily="Candara Light"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+            <!--Left panel footer-->
+            <Grid Grid.Row="2" Background="#FF5B3E38">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="1" Color="Black" Direction="90"/>
+                </Grid.Effect>
+                <Grid>
+                    <Label Content="Need any help?" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="{x:Null}" Panel.ZIndex="1" Foreground="#FF746D6C" Cursor="Hand" BorderBrush="{x:Null}" MouseDown="Help_MouseDown">
+                        <Label.Effect>
+                            <DropShadowEffect Direction="90" ShadowDepth="1" BlurRadius="1" Opacity="0.5" RenderingBias="Quality"/>
+                        </Label.Effect>
+                    </Label>
+                </Grid>
+            </Grid>
+        </Grid>
+        <!--Header grid-->
+        <Grid x:Name="HeaderGrid" Grid.ColumnSpan="2" Background="#FF313638" MouseDown="HeaderGrid_MouseDown">
+            <!--Notification/Account/Log Out buttons-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
+                    <materialDesign:PackIcon Kind="Notifications"/>
+                </Button>
+                <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
+                    <materialDesign:PackIcon Kind="User"/>
+                </Button>
+                <Button x:Name="ButtonLogout" Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonLogout_Click" Focusable="False">
+                    <materialDesign:PackIcon Kind="Power"/>
+                </Button>
+            </StackPanel>
+        </Grid>
 
     </Grid>
 </Window>
