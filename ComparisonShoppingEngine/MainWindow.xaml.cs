@@ -50,8 +50,6 @@ namespace ComparisonShoppingEngine
             if (Key.Enter == e.Key && !SearchText.Equals(""))
             {
                 // Display text in content grid
-                //txt.Text = "Paieška atlikta!"+"\nGauti duomenys: "+SearchText.Text;
-                SearchText.Text = "Search...";
             }
         }
 
