@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ComparisonShoppingEngine"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Height="600" Width="1024" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
-<!--Window Grid-->
+    <!--Window Grid-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
             <ContentControl Content="{Binding DataContext.StatusPanel, ElementName=root}" Grid.Column="1"/>
         </Grid>
-        
+
         <!--Left panel grid-->
         <Grid Grid.Row="1">
             <Grid.Background>
@@ -50,7 +50,9 @@
             </Grid.Effect>
             <!--Logo-->
             <Grid Background="#FFC15A41">
-                <TextBlock Text="SHOPPING COMPARISON ENGINE" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" LineStackingStrategy="MaxHeight" TextWrapping="WrapWithOverflow" FontSize="23" FontWeight="Bold" Foreground="White" FontFamily="Candara Light"/>
+                <Button Height="100" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="Home" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                    <TextBlock Text="SHOPPING COMPARISON ENGINE" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" LineStackingStrategy="MaxHeight" TextWrapping="WrapWithOverflow" FontSize="23" FontWeight="Bold" Foreground="White" FontFamily="Candara Light"/>
+                </Button>
             </Grid>
             <!--Left panel selections-->
             <StackPanel Grid.Row="1" Grid.RowSpan="2">
@@ -76,25 +78,25 @@
                         <TextBlock HorizontalAlignment="Center" Text="CHECK SCANNING" FontSize="14" FontFamily="Candara Light"/>
                     </Grid>
                 </Button>
-                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" MouseDown="NewShoppingList_MouseDown">
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="NewShoppingList">
                     <Grid Width="160">
                         <materialDesign:PackIcon Kind="Subtasks" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                         <TextBlock HorizontalAlignment="Center" Text="NEW SHOPPING LIST" FontSize="14" FontFamily="Candara Light"/>
                     </Grid>
                 </Button>
-                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="BillingStatement">
                     <Grid Width="160">
                         <materialDesign:PackIcon Kind="Payment" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                         <TextBlock HorizontalAlignment="Center" Text="BILLING STATEMENT" FontSize="14" FontFamily="Candara Light"/>
                     </Grid>
                 </Button>
-                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="ShoppingHistory">
                     <Grid Width="160">
                         <materialDesign:PackIcon Kind="History" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                         <TextBlock HorizontalAlignment="Center" Text="SHOPPING HISTORY" FontSize="14" FontFamily="Candara Light"/>
                     </Grid>
                 </Button>
-                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False">
+                <Button Margin="10" Background="#FFF0814A" BorderBrush="#FFC15A41" Focusable="False" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="Settings">
                     <Grid Width="160">
                         <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                         <TextBlock HorizontalAlignment="Center" Text="SETTINGS" FontSize="14" FontFamily="Candara Light"/>
@@ -117,8 +119,12 @@
         </Grid>
         <!--Header grid-->
         <Grid x:Name="HeaderGrid" Grid.ColumnSpan="2" Background="#FF313638" MouseDown="HeaderGrid_MouseDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="303*"/>
+                <ColumnDefinition Width="721*"/>
+            </Grid.ColumnDefinitions>
             <!--Notification/Account/Log Out buttons-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="636,0,0,0" Grid.Column="1">
                 <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
                     <materialDesign:PackIcon Kind="Notifications"/>
                 </Button>

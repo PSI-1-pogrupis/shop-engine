@@ -7,7 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#FF313638">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="1"/>
+            </Grid.Effect>
+            <Label Content="Login" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Background="#FF313638">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="30*"/>
@@ -21,16 +31,16 @@
                 <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
              
-            <Label Content="Email address:" FontSize="30" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Label Content="Password:" FontSize="30" Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBox Text="{Binding EmailAddress}" FontSize="30" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
-            <TextBox Text="{Binding Password}" Grid.Row="2" FontSize="30" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
+            <Label Content="Email address:" FontSize="30" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#DDFFFFFF"/>
+            <Label Content="Password:" FontSize="30" Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#DDFFFFFF"/>
+            <TextBox Text="{Binding EmailAddress}" FontSize="30" Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" TextWrapping="Wrap" Foreground="White"/>
+            <TextBox Text="{Binding Password}" Grid.Row="2" FontSize="30" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="White"/>
 
             <Viewbox Grid.Row="3" Grid.Column="2" StretchDirection="DownOnly">
                 <Label Content="{Binding ErrorMessage}" Foreground="Red" FontSize="24" HorizontalContentAlignment="Center"/>
             </Viewbox>
             
-            <Button Content="Login" Grid.Row="3" Grid.Column="1" Command="{Binding LoginCommand}" IsDefault="True"/>
+            <Button Content="Login" Grid.Row="3" Grid.Column="1" Command="{Binding LoginCommand}" IsDefault="True" BorderBrush="{x:Null}" Background="#FF665957"/>
         </Grid>
        
         
