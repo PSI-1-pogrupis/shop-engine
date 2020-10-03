@@ -44,31 +44,35 @@ namespace ViewModels
         {
             StatusPanel = null;
 
-            //TODO: replace this ugly code
-            if (parameter.ToString() == "Home")
+            switch (parameter.ToString())
             {
-                SelectedViewModel = new HomeViewModel();
-            } else if (parameter.ToString() == "CheckScanning")
-            {
-                SelectedViewModel = new CheckScanningViewModel();
-            } else if (parameter.ToString() == "NewShoppingList")
-            {
-                SelectedViewModel = new NewShoppingListViewModel();
-            } else if (parameter.ToString() == "BillingStatement")
-            {
-                SelectedViewModel = new BillingStatementViewModel();
-            } else if (parameter.ToString() == "ShoppingHistory")
-            {
-                SelectedViewModel = new ShoppingHistoryViewModel();
-            }else if (parameter.ToString() == "Settings")
-            {
-                SelectedViewModel = new SettingsViewModel();
-            } else if (parameter.ToString() == "Login")
-            {
-                SelectedViewModel = new LoginViewModel();
-            } else if (parameter.ToString() == "Register")
-            {
-                SelectedViewModel = new RegisterViewModel();
+                case "Home":
+                    SelectedViewModel = new HomeViewModel();
+                    break;
+                case "CheckScanning":
+                    SelectedViewModel = new CheckScanningViewModel();
+                    break;
+                case "NewShoppingList":
+                    SelectedViewModel = new NewShoppingListViewModel();
+                    break;
+                case "BillingStatement":
+                    SelectedViewModel = new BillingStatementViewModel();
+                    break;
+                case "ShoppingHistory":
+                    SelectedViewModel = new ShoppingHistoryViewModel();
+                    break;
+                case "Settings":
+                    SelectedViewModel = new SettingsViewModel();
+                    break;
+                case "Login":
+                    SelectedViewModel = new LoginViewModel();
+                    break;
+                case "Register":
+                    SelectedViewModel = new RegisterViewModel();
+                    break;
+                default:
+                    SelectedViewModel = new HomeViewModel();
+                    break;
             }
 
             return;
