@@ -63,18 +63,18 @@ namespace ViewModels
             if (result != null)
             {
                 BrowseText = dlg.FileName;
+
+                LabelContent = "Reading...";
+
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    ReadedText = imgReader.ReadImage(dlg.FileName);
+                    LabelContent = "";
+                }).Start();
             }
 
-            LabelContent = "Reading...";
-
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                ReadedText = imgReader.ReadImage(dlg.FileName);
-                LabelContent = "";
-            }).Start();
-
-          
+           
 
 
         }

@@ -8,9 +8,15 @@ namespace CSE.BL
     {
         public string ReadImage(string imgName)
         {
-            //TODO: HANDLE EXCEPTION
-            Pix img = Pix.LoadFromFile(imgName);       // image must be copied to output dir (on image properties -> copy to output dir = true)
-                                                       // ofc for phone app other solution will be found
+            Pix img;
+            try
+            {
+                img = Pix.LoadFromFile(imgName);
+            }
+            catch (System.IO.IOException)
+            {
+                return "";
+            }
             TesseractEngine engine = new TesseractEngine("./tessdata", "lit", EngineMode.Default);
             Page page = engine.Process(img, PageSegMode.Auto);
             string text = page.GetText();
