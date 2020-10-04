@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ViewModels
 {
@@ -70,15 +71,26 @@ namespace ViewModels
                 Products.Add(new ShoppingItem("Item " + i.ToString(), 1, UnitTypes.kg));
             }
 
-            SearchList(null);
-            SearchText = "Search...";
+            productList = Products;
         }
 
         private void AddItem(object parameter)
         {
             if (parameter is ShoppingItem selectedItem)
             {
-                ShoppingList.Add(selectedItem);
+                foreach(ShoppingItem item in ShoppingList)
+                {
+                    if (item.Name.Equals(selectedItem.Name))
+                    {
+                        ShoppingList.Remove(item);
+                        item.Amount += 1;
+                        ShoppingList.Add(item);
+
+                        return;
+                    }
+                }
+
+                ShoppingList.Add(new ShoppingItem(selectedItem));
             }
         }
 
@@ -87,18 +99,25 @@ namespace ViewModels
             if (parameter is ShoppingItem selectedItem)
             {
                 ShoppingList.Remove(selectedItem);
+
+                if (selectedItem.Amount - 1 > 0)
+                {
+                    selectedItem.Amount -= 1;
+                    ShoppingList.Add(selectedItem);
+                }
             }
         }
 
         private void SearchList(object parameter)
         {
+            
             string text = SearchText;
 
             var selected = from i in Products
                            where i.Name.Contains(text)
                            select i;
 
-            ProductList = selected.ToList();
+            ProductList = selected.ToList(); 
         }
     }
 }

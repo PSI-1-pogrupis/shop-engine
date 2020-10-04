@@ -66,6 +66,13 @@ namespace CSE.BL.ShoppingList
             this.unit = unit;
         }
 
+        public ShoppingItem(ShoppingItem item)
+        {
+            name = item.name;
+            amount = item.amount;
+            unit = item.unit;
+        }
+
         public override string ToString()
         {
             return name;

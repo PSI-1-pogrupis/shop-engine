@@ -35,7 +35,7 @@
                     <DockPanel VerticalAlignment="Center" Margin="10,5,10,5">
                         <Label Content="Search Product:" FontSize="20" Foreground="White"/>
                         <TextBox x:Name="searchField" Width="480" Text="{Binding SearchText}" Margin="10,0,10,0" FontSize="20" Foreground="AntiqueWhite"/>
-                        <Button Content="Search" Command="{Binding SearchCommand}" Background="#FF665957" BorderBrush="{x:Null}" />
+                        <Button Content="Search" IsDefault="True" Command="{Binding SearchCommand}" Background="#FF665957" BorderBrush="{x:Null}" />
                     </DockPanel>
                 </Border>
             </Grid>
@@ -44,11 +44,41 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="-90"/>
                     </Border.Effect>
-                    <DataGrid ItemsSource="{Binding ProductList}" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" Foreground="White" CanUserSortColumns="False">
+                    <DataGrid EnableColumnVirtualization="False" EnableRowVirtualization="False" ItemsSource="{Binding ProductList}" Focusable="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" CanUserSortColumns="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="Background" Value="Black"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" Foreground="White"/>
-                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" Foreground="White"/>
-                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="*" Foreground="White"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*"/>
+                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="*"/>
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -65,7 +95,37 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="-90"/>
                     </Border.Effect>
-                    <DataGrid ItemsSource="{Binding ShoppingList}" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" Foreground="White" CanUserSortColumns="False">
+                    <DataGrid EnableColumnVirtualization="False" EnableRowVirtualization="False" ItemsSource="{Binding ShoppingList}" Focusable="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" CanUserSortColumns="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="Background" Value="Black"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" Foreground="White"/>
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" Foreground="White"/>
