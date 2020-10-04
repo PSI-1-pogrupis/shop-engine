@@ -1,33 +1,104 @@
 ﻿using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
+using System.Linq;
 
 namespace ViewModels
 {
     public class NewShoppingListViewModel : BaseViewModel
     {
-        private readonly List<ShoppingItem> productList;
-        private readonly List<ShoppingItem> shoppingList;
+        private string searchText = "";
 
-        public List<ShoppingItem> ShoppingList
+        private readonly List<ShoppingItem> Products;
+
+        private ObservableCollection<ShoppingItem> shoppingList;
+        private List<ShoppingItem> productList;
+
+        public ObservableCollection<ShoppingItem> ShoppingList
         {
             get { return shoppingList; }
+            set
+            {
+                shoppingList = value;
+                OnPropertyChanged(nameof(ShoppingList));
+            }
         }
 
         public List<ShoppingItem> ProductList
         {
             get { return productList; }
+            set
+            {
+                productList = value;
+                OnPropertyChanged(nameof(ProductList));
+            }
         }
+
+        public string SearchText
+        {
+            get { return searchText; }
+
+            set
+            {
+                searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+            }
+        }
+
+        public ICommand AddItemCommand { get; private set; }
+
+        public ICommand RemoveItemCommand { get; private set; }
+
+        public ICommand SearchCommand { get; private set; }
 
         public NewShoppingListViewModel()
         {
-            productList = new List<ShoppingItem>();
+            AddItemCommand = new RelayCommand(AddItem, canExecute => true);
+            RemoveItemCommand = new RelayCommand(RemoveItem, canExecute => true);
+            SearchCommand = new RelayCommand(SearchList, canExecute => true);
+
+            ProductList = new List<ShoppingItem>();
+            ShoppingList = new ObservableCollection<ShoppingItem>();
+
+            Products = new List<ShoppingItem>();
 
             for (int i = 0; i < 20; i++)
             {
-                productList.Add(new ShoppingItem("Item " + i.ToString(), 1, UnitTypes.kg));
+                Products.Add(new ShoppingItem("Item " + i.ToString(), 1, UnitTypes.kg));
             }
+
+            SearchList(null);
+            SearchText = "Search...";
+        }
+
+        private void AddItem(object parameter)
+        {
+            if (parameter is ShoppingItem selectedItem)
+            {
+                ShoppingList.Add(selectedItem);
+            }
+        }
+
+        private void RemoveItem(object parameter)
+        {
+            if (parameter is ShoppingItem selectedItem)
+            {
+                ShoppingList.Remove(selectedItem);
+            }
+        }
+
+        private void SearchList(object parameter)
+        {
+            string text = SearchText;
+
+            var selected = from i in Products
+                           where i.Name.Contains(text)
+                           select i;
+
+            ProductList = selected.ToList();
         }
     }
 }
