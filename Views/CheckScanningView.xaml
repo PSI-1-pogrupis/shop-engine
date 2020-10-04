@@ -34,24 +34,32 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Background="#FF313638" >
                             <Border CornerRadius="3" Background="AntiqueWhite" Margin="10,10,10,5" Panel.ZIndex="1">
-                                <Label Content="OCR Check Preview" FontSize="36" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding ReadedText}" TextWrapping="Wrap" IsReadOnly="True"/>
                             </Border>
                         </Grid>
                         <Grid Grid.Row="1" Background="#FF413A39">
                             <Grid.Effect>
                                 <DropShadowEffect Direction="90" BlurRadius="10" ShadowDepth="2"/>
                             </Grid.Effect>
-
+                            <!--
                             <Button Content="Scan" Width="120" Background="#FF665957" BorderBrush="{x:Null}">
                                 <Button.Effect>
                                     <DropShadowEffect/>
                                 </Button.Effect>
                             </Button>
+                            -->
+                            <Button Command="{Binding BrowseCommand}" Content="Browse..." Width="100" Background="#FF665957" BorderBrush="{x:Null}" HorizontalAlignment="Left">
+                                <Button.Effect>
+                                    <DropShadowEffect/>
+                                </Button.Effect>
+                            </Button>
+                            <TextBox HorizontalAlignment="Left" Margin="105,0,0,0" Text="{Binding BrowseText}" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" Width="275"/>
                         </Grid>
+                        <Label Content="{Binding LabelContent}" FontSize="36" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
             </Grid>
-            
+
             <Grid Grid.Column="1" Margin="5">
                 <Border CornerRadius="3" Background="#FF313638" Margin="5">
                     <Border.Effect>
@@ -76,7 +84,7 @@
                             <ListView ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                 <ListView.View>
                                     <GridView>
-                                        
+
                                     </GridView>
                                 </ListView.View>
                             </ListView>
