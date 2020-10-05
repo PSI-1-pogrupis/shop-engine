@@ -16,16 +16,16 @@ namespace Views
     /// <summary>
     /// Interaction logic for DukView.xaml
     /// </summary>
-    public partial class DukView : UserControl
+    public partial class FaqView : UserControl
     {
-        public DukView()
+        public FaqView()
         {
             InitializeComponent();
         }
 
         private void Button_EmailUs_Click(object sender, RoutedEventArgs e)
         {
-            dukScrollViewer.ScrollToEnd();
+            faqScrollViewer.ScrollToEnd();
         }
     }
 }

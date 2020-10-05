@@ -71,7 +71,7 @@ namespace ViewModels
                     SelectedViewModel = new RegisterViewModel();
                     break;
                 case "Duk":
-                    SelectedViewModel = new DukViewModel();
+                    SelectedViewModel = new FaqViewModel();
                     break;
                 default:
                     SelectedViewModel = new HomeViewModel();

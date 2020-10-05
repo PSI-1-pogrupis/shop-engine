@@ -37,8 +37,8 @@
                     <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
                         <views:RegisterView/>
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:DukViewModel}">
-                        <views:DukView/>
+                    <DataTemplate DataType="{x:Type viewModels:FaqViewModel}">
+                        <views:FaqView/>
                     </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary>

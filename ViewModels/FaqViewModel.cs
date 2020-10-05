@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace ViewModels
 {
-    public class DukViewModel : BaseViewModel
+    public class FaqViewModel : BaseViewModel
     {
         private string name = "";
         private string emailAddress = "";
@@ -56,7 +56,7 @@ namespace ViewModels
             }
         }
 
-        public DukViewModel()
+        public FaqViewModel()
         {
             SendCommand = new RelayCommand(Send, canExecute => true);
         }
