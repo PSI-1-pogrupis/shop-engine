@@ -37,6 +37,9 @@
                     <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
                         <views:RegisterView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:FaqViewModel}">
+                        <views:FaqView/>
+                    </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewModels:UserLoggedOutViewModel}">

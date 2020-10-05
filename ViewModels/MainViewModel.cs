@@ -9,12 +9,12 @@ namespace ViewModels
     {
         private BaseViewModel selectedViewModel;
         private BaseViewModel statusPanel;
-        
+
         public BaseViewModel SelectedViewModel
         {
             get { return selectedViewModel; }
-            set 
-            { 
+            set
+            {
                 selectedViewModel = value;
                 OnPropertyChanged(nameof(SelectedViewModel));
             }
@@ -54,6 +54,7 @@ namespace ViewModels
                 "Settings" => new SettingsViewModel(),
                 "Login" => new LoginViewModel(),
                 "Register" => new RegisterViewModel(),
+                "Faq" => new FaqViewModel(),
                 _ => new HomeViewModel(),
             };
             return;
