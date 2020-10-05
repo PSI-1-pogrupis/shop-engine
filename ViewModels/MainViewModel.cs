@@ -9,12 +9,12 @@ namespace ViewModels
     {
         private BaseViewModel selectedViewModel;
         private BaseViewModel statusPanel;
-        
+
         public BaseViewModel SelectedViewModel
         {
             get { return selectedViewModel; }
-            set 
-            { 
+            set
+            {
                 selectedViewModel = value;
                 OnPropertyChanged(nameof(SelectedViewModel));
             }
@@ -46,35 +46,17 @@ namespace ViewModels
 
             SelectedViewModel = (parameter.ToString()) switch
             {
-                case "Home":
-                    SelectedViewModel = new HomeViewModel();
-                    break;
-                case "CheckScanning":
-                    SelectedViewModel = new CheckScanningViewModel();
-                    break;
-                case "NewShoppingList":
-                    SelectedViewModel = new NewShoppingListViewModel();
-                    break;
-                case "BillingStatement":
-                    SelectedViewModel = new BillingStatementViewModel();
-                    break;
-                case "ShoppingHistory":
-                    SelectedViewModel = new ShoppingHistoryViewModel();
-                    break;
-                case "Settings":
-                    SelectedViewModel = new SettingsViewModel();
-                    break;
-                case "Login":
-                    SelectedViewModel = new LoginViewModel();
-                    break;
-                case "Register":
-                    SelectedViewModel = new RegisterViewModel();
-                    break;
-                default:
-                    SelectedViewModel = new HomeViewModel();
-                    break;
-            }
-
+                "Home" => new HomeViewModel(),
+                "CheckScanning" => new CheckScanningViewModel(),
+                "NewShoppingList" => new NewShoppingListViewModel(),
+                "BillingStatement" => new BillingStatementViewModel(),
+                "ShoppingHistory" => new ShoppingHistoryViewModel(),
+                "Settings" => new SettingsViewModel(),
+                "Login" => new LoginViewModel(),
+                "Register" => new RegisterViewModel(),
+                "Faq" => new FaqViewModel(),
+                _ => new HomeViewModel(),
+            };
             return;
         }
 

@@ -109,7 +109,7 @@
                     <DropShadowEffect BlurRadius="5" ShadowDepth="1" Color="Black" Direction="90"/>
                 </Grid.Effect>
                 <Grid>
-                    <Button Content="Need any help?" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="Duk" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF746D6C"/>
+                    <Button Content="Need any help?" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="Faq" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF746D6C"/>
                 </Grid>
             </Grid>
         </Grid>
