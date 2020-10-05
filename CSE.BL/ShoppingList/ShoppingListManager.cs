@@ -7,7 +7,7 @@ namespace CSE.BL.ShoppingList
     /*This class creates and holds a list of ShoppingItem objects and 
      * each object holds its own data and applicable methods.*/
     [Serializable]
-    class ShoppingListManager
+    public class ShoppingListManager
     {
         private List<ShoppingItem> shoppingList;
 
@@ -25,6 +25,9 @@ namespace CSE.BL.ShoppingList
 
             return shoppingList[index];
         }
+
+        //method that returns an item list
+        public List<ShoppingItem> GetItemList() { return shoppingList; }
 
         //method that adds given item to the list and returns value 'true' if the input was correct
         public bool AddItem(ShoppingItem item)

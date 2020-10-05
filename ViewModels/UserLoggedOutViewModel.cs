@@ -7,7 +7,7 @@ namespace ViewModels
 {
     public class UserLoggedOutViewModel : BaseViewModel
     {
-        private MainViewModel mainVM;
+        private readonly MainViewModel mainVM;
 
         public UserLoggedOutViewModel(MainViewModel vm)
         {

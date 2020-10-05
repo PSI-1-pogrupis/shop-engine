@@ -44,7 +44,7 @@ namespace ViewModels
         {
             StatusPanel = null;
 
-            switch (parameter.ToString())
+            SelectedViewModel = (parameter.ToString()) switch
             {
                 case "Home":
                     SelectedViewModel = new HomeViewModel();
@@ -69,9 +69,6 @@ namespace ViewModels
                     break;
                 case "Register":
                     SelectedViewModel = new RegisterViewModel();
-                    break;
-                case "Duk":
-                    SelectedViewModel = new FaqViewModel();
                     break;
                 default:
                     SelectedViewModel = new HomeViewModel();
