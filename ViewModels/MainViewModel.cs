@@ -70,6 +70,9 @@ namespace ViewModels
                 case "Register":
                     SelectedViewModel = new RegisterViewModel();
                     break;
+                case "Duk":
+                    SelectedViewModel = new DukViewModel();
+                    break;
                 default:
                     SelectedViewModel = new HomeViewModel();
                     break;

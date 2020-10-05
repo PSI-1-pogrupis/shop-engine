@@ -109,11 +109,7 @@
                     <DropShadowEffect BlurRadius="5" ShadowDepth="1" Color="Black" Direction="90"/>
                 </Grid.Effect>
                 <Grid>
-                    <Label Content="Need any help?" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="{x:Null}" Panel.ZIndex="1" Foreground="#FF746D6C" Cursor="Hand" BorderBrush="{x:Null}" MouseDown="Help_MouseDown">
-                        <Label.Effect>
-                            <DropShadowEffect Direction="90" ShadowDepth="1" BlurRadius="1" Opacity="0.5" RenderingBias="Quality"/>
-                        </Label.Effect>
-                    </Label>
+                    <Button Content="Need any help?" Command="{Binding DataContext.ChangeViewCommand, ElementName=root}" CommandParameter="Duk" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF746D6C"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -128,9 +124,11 @@
                 <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False">
                     <materialDesign:PackIcon Kind="Notifications"/>
                 </Button>
+                <Rectangle Fill="Black" Height="15" Width="1"/>
                 <Button Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Focusable="False" Command="{Binding DataContext.ChangeStatusPanelCommand, ElementName=root}">
                     <materialDesign:PackIcon Kind="User"/>
                 </Button>
+                <Rectangle Fill="Black" Height="15" Width="1"/>
                 <Button x:Name="ButtonLogout" Width="25" Height="25" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonLogout_Click" Focusable="False">
                     <materialDesign:PackIcon Kind="Power"/>
                 </Button>
