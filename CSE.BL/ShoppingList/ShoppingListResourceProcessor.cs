@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSE.BL.ShoppingList
 {
-    static class ShoppingListResourceProcessor
+    public static class ShoppingListResourceProcessor
     {
         public static void SaveList(ShoppingListManager shoppingList)
         {

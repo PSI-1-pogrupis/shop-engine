@@ -5,7 +5,7 @@ using System.Text;
 namespace CSE.BL.ShoppingList
 {
     /*Enum that holds different measurement unit types*/
-    enum UnitTypes
+    public enum UnitTypes
     {
         kg,
         g,
