@@ -43,6 +43,13 @@
                         <views:UserLoggedOutView/>
                     </DataTemplate>
                 </ResourceDictionary>
+                <ResourceDictionary>
+                    <Style>
+                        <Style.Resources>
+                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+                        </Style.Resources>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
