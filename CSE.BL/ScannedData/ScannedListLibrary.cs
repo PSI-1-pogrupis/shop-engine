@@ -5,7 +5,7 @@ using System.Text;
 namespace CSE.BL.ScannedData
 {
     [Serializable]
-    class ScannedListLibrary
+    public class ScannedListLibrary
     {
         private List<ScannedListManager> allLists;
 

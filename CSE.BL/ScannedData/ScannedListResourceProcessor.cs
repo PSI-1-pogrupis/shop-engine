@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSE.BL.ScannedData
 {
-    static class ScannedListResourceProcessor
+    public static class ScannedListResourceProcessor
     {
         private static string filePath = "shoppingHistory.bin";
 

@@ -5,7 +5,7 @@ using System.Text;
 namespace CSE.BL.ScannedData
 {
     [Serializable]
-    class ScannedItem
+    public class ScannedItem
     {
         private string name;
         private float price;
