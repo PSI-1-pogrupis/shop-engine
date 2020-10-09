@@ -13,9 +13,15 @@ namespace CSE.BL
             foreach(ShopTypes shop in (ShopTypes[])Enum.GetValues(typeof(ShopTypes)))
             {
                 // I'm assuming the shop title should be in the first 5 lines of the check
-                for(int i = 0; i < 4; i++)
+                try
                 {
-                    if (tLines[i].ContainsIgnCase(shop.ToString())) return shop;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (tLines[i].ContainsIgnCase(shop.ToString())) return shop;
+                    }
+                }catch(IndexOutOfRangeException e)
+                {
+                    return ShopTypes.UNKNOWN;
                 }
             }
             return ShopTypes.UNKNOWN;
