@@ -41,19 +41,12 @@
                             <Grid.Effect>
                                 <DropShadowEffect Direction="90" BlurRadius="10" ShadowDepth="2"/>
                             </Grid.Effect>
-                            <!--
-                            <Button Content="Scan" Width="120" Background="#FF665957" BorderBrush="{x:Null}">
-                                <Button.Effect>
-                                    <DropShadowEffect/>
-                                </Button.Effect>
-                            </Button>
-                            -->
                             <Button Command="{Binding BrowseCommand}" Content="Browse..." Width="100" Background="#FF665957" BorderBrush="{x:Null}" HorizontalAlignment="Left">
                                 <Button.Effect>
                                     <DropShadowEffect/>
                                 </Button.Effect>
                             </Button>
-                            <TextBox HorizontalAlignment="Left" Margin="105,0,0,0" Text="{Binding BrowseText}" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" Width="275"/>
+                            <TextBox HorizontalAlignment="Left" Margin="105,0,0,0" Text="{Binding BrowseText}" IsReadOnly="True" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" Width="275"/>
                         </Grid>
                         <Label Content="{Binding LabelContent}" FontSize="36" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -77,14 +70,16 @@
                                     <DropShadowEffect Direction="-90" BlurRadius="3" ShadowDepth="2"/>
                                 </Border.Effect>
                                 <Label Content="Retrieved List" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                               
                             </Border>
+                            <TextBox HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" IsReadOnly="True" Foreground="Wheat" Text="{Binding ShopText}"></TextBox>
                         </Grid>
                         <Grid Grid.Row="1" Margin="5" Background="#FF313638">
-                            <Label Content="List" Foreground="White" FontSize="24"/>
+                            <Label Content="{Binding ListLabelContent}" FontSize="36" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <ListView ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                 <ListView.View>
                                     <GridView>
-
+                
                                     </GridView>
                                 </ListView.View>
                             </ListView>

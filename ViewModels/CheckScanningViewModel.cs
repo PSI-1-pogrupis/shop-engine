@@ -12,6 +12,7 @@ namespace ViewModels
     public class CheckScanningViewModel : BaseViewModel
     {
         private ImageReader imgReader;
+        private ItemsScanner itemsScanner;
         private string browseText = "";
         public string BrowseText
         {
@@ -32,6 +33,16 @@ namespace ViewModels
                 OnPropertyChanged("ReadedText");
             }
         }
+        private string shopText = "";
+        public string ShopText
+        {
+            get { return shopText; }
+            set
+            {
+                shopText = value;
+                OnPropertyChanged("ShopText");
+            }
+        }
         private string labelContent;
         public string LabelContent
         {
@@ -42,6 +53,16 @@ namespace ViewModels
                 OnPropertyChanged("LabelContent");
             }
         }
+        private string listLabelContent;
+        public string ListLabelContent
+        {
+            get { return listLabelContent; }
+            set
+            {
+                listLabelContent = value;
+                OnPropertyChanged("ListLabelContent");
+            }
+        }
 
 
         public ICommand BrowseCommand { get; set; }
@@ -50,6 +71,7 @@ namespace ViewModels
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
             imgReader = new ImageReader();
+            itemsScanner = new ItemsScanner();
         }
 
         private void Browse_Click(object obj)
@@ -60,23 +82,46 @@ namespace ViewModels
 
             Nullable<bool> result = dlg.ShowDialog();
 
-            if (result != null)
+            if (result != null && !String.IsNullOrEmpty(dlg.FileName))
             {
                 BrowseText = dlg.FileName;
 
                 LabelContent = "Reading...";
+                ListLabelContent = "Reading...";
 
-                new Thread(() =>
-                {
-                    Thread.CurrentThread.IsBackground = true;
-                    ReadedText = imgReader.ReadImage(dlg.FileName);
-                    LabelContent = "";
-                }).Start();
+                Thread scanThread = new Thread(() => ScanThread(dlg));
+                scanThread.Start();
             }
+        }
 
-           
-
-
+        private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
+        {
+            Thread.CurrentThread.IsBackground = true;
+            ReadedText = imgReader.ReadImage(dlg.FileName);
+            LabelContent = "";
+            ShopTypes shop = itemsScanner.GetShop(ReadedText);
+            switch (shop)
+            {
+                case ShopTypes.IKI:
+                    ShopText = ShopTypes.IKI.ToString();
+                    break;
+                case ShopTypes.MAXIMA:
+                    ShopText = ShopTypes.MAXIMA.ToString();
+                    break;
+                case ShopTypes.LIDL:
+                    ShopText = ShopTypes.LIDL.ToString();
+                    break;
+                case ShopTypes.NORFA:
+                    ShopText = ShopTypes.NORFA.ToString();
+                    break;
+                case ShopTypes.RIMI:
+                    ShopText = ShopTypes.RIMI.ToString();
+                    break;
+                case ShopTypes.UNKNOWN:
+                    ShopText = ShopTypes.UNKNOWN.ToString();
+                    break;
+            }
+            ListLabelContent = "";
         }
     }
 }
