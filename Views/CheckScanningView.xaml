@@ -75,14 +75,15 @@
                             <TextBox HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" IsReadOnly="True" Foreground="Wheat" Text="{Binding ShopText}"></TextBox>
                         </Grid>
                         <Grid Grid.Row="1" Margin="5" Background="#FF313638">
-                            <Label Content="List" Foreground="White" FontSize="24"/>
+                            <Label Content="{Binding ListLabelContent}" FontSize="36" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding ReadedText}" TextWrapping="Wrap" IsReadOnly="True" Foreground="White"/>
                             <ListView ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                 <ListView.View>
+                                    
                                     <GridView>
-                
                                     </GridView>
                                 </ListView.View>
-                            </ListView>-->
+                            </ListView>
                         </Grid>
                         <Grid Grid.Row="2" Background="#FF413A39">
                             <Grid.Effect>
