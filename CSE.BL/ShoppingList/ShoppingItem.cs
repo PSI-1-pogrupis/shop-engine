@@ -8,7 +8,7 @@ namespace CSE.BL.ShoppingList
      * the name, amount, and measurement unit type*/
 
     [Serializable]
-    class ShoppingItem
+    public class ShoppingItem
     {
         private string name; //name of the item
         private double amount; //amount of the item 
@@ -64,6 +64,18 @@ namespace CSE.BL.ShoppingList
             this.name = name;
             this.amount = amount;
             this.unit = unit;
+        }
+
+        public ShoppingItem(ShoppingItem item)
+        {
+            name = item.name;
+            amount = item.amount;
+            unit = item.unit;
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 }

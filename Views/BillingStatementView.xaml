@@ -31,41 +31,44 @@
                         <ColumnDefinition Width="50*"/>
                         <ColumnDefinition Width="50*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0" Margin="0,0,5,0">
+                    <!--Top side-->
+                    <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20*"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
-                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF272322">
+                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
                             <Label Content="Year Spendings Pattern" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
+                        <Grid Grid.Row="1" Background="Orange">
+                            
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Row="0" Grid.Column="1" Margin="5,0,0,0">
+                    <!--Bottom left side-->
+                    <Grid Grid.Row="1" Margin="0,5,5,0" Background="#FF1F1B1B">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20*"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
-                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF272322">
-                            <Label Content="Monthly Spendings Pattern" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="0" Margin="0,5,5,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20*"/>
-                            <RowDefinition Height="80*"/>
-                        </Grid.RowDefinitions>
-                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF272322">
+                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
                             <Label Content="Average Shopping Spendings" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
+                        <Grid Grid.Row="1" Background="Orange">
+                            
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1" Margin="5,5,0,0">
+                    <!--Bottom right side-->
+                    <Grid Grid.Row="1" Grid.Column="1" Margin="5,5,0,0" Background="#FF1F1B1B">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20*"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
-                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF272322">
+                        <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
                             <Label Content="Year Spendings Graph" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
+                        <Grid Grid.Row="1" Background="Orange">
+
+                        </Grid>
                     </Grid>
                 </Grid>
             </Border>

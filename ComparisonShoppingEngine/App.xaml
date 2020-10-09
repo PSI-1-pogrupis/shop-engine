@@ -37,11 +37,21 @@
                     <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
                         <views:RegisterView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:FaqViewModel}">
+                        <views:FaqView/>
+                    </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewModels:UserLoggedOutViewModel}">
                         <views:UserLoggedOutView/>
                     </DataTemplate>
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <Style>
+                        <Style.Resources>
+                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+                        </Style.Resources>
+                    </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

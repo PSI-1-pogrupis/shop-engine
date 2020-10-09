@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace CSE.BL.ShoppingList
+namespace CSE.BL
 {
     class BinaryFileManager
     {
