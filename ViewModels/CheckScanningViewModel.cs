@@ -1,11 +1,9 @@
 ﻿using CSE.BL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace ViewModels
 {
@@ -43,16 +41,6 @@ namespace ViewModels
                 OnPropertyChanged("ShopText");
             }
         }
-        private string labelContent;
-        public string LabelContent
-        {
-            get { return labelContent; }
-            set
-            {
-                labelContent = value;
-                OnPropertyChanged("LabelContent");
-            }
-        }
         private string listLabelContent;
         public string ListLabelContent
         {
@@ -61,6 +49,20 @@ namespace ViewModels
             {
                 listLabelContent = value;
                 OnPropertyChanged("ListLabelContent");
+            }
+        }
+        private BitmapImage imageSrc = new BitmapImage();
+        public BitmapImage ImageSrc
+        {
+            get {
+                return imageSrc;
+            }
+            set
+            {
+               
+
+                imageSrc = value;
+                OnPropertyChanged("ImageSrc");
             }
         }
 
@@ -77,16 +79,22 @@ namespace ViewModels
         private void Browse_Click(object obj)
         {
             ReadedText = "";
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
+            BrowseText = "";
+            ShopText = "";
+            ImageSrc = null;
+         
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;"
+            };
 
             Nullable<bool> result = dlg.ShowDialog();
 
             if (result != null && !String.IsNullOrEmpty(dlg.FileName))
             {
                 BrowseText = dlg.FileName;
+                ImageSrc = new BitmapImage(new Uri(dlg.FileName));
 
-                LabelContent = "Reading...";
                 ListLabelContent = "Reading...";
 
                 Thread scanThread = new Thread(() => ScanThread(dlg));
@@ -98,7 +106,6 @@ namespace ViewModels
         {
             Thread.CurrentThread.IsBackground = true;
             ReadedText = imgReader.ReadImage(dlg.FileName);
-            LabelContent = "";
             ShopTypes shop = itemsScanner.GetShop(ReadedText);
             switch (shop)
             {

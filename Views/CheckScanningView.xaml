@@ -33,8 +33,8 @@
                             <RowDefinition Height="15*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Background="#FF313638" >
-                            <Border CornerRadius="3" Background="AntiqueWhite" Margin="10,10,10,5" Panel.ZIndex="1">
-                                <TextBox TextWrapping="Wrap" IsReadOnly="True"/>
+                            <Border CornerRadius="3" Background="#FF413A39" Margin="10,10,10,5" Panel.ZIndex="1">
+                                <Image Source="{Binding ImageSrc}"/>
                             </Border>
                         </Grid>
                         <Grid Grid.Row="1" Background="#FF413A39">
@@ -48,7 +48,6 @@
                             </Button>
                             <TextBox HorizontalAlignment="Left" Margin="105,0,0,0" Text="{Binding BrowseText}" IsReadOnly="True" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" Width="275"/>
                         </Grid>
-                        <Label Content="{Binding LabelContent}" FontSize="36" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
             </Grid>
