@@ -9,8 +9,8 @@ namespace ViewModels
 {
     public class CheckScanningViewModel : BaseViewModel
     {
-        private ImageReader imgReader;
-        private ItemsScanner itemsScanner;
+        private readonly ImageReader imgReader;
+        private readonly ItemsScanner itemsScanner;
         private string browseText = "";
         public string BrowseText
         {
@@ -54,13 +54,9 @@ namespace ViewModels
         private BitmapSource imageSrc = new BitmapImage();
         public BitmapSource ImageSrc
         {
-            get {
-                return imageSrc;
-            }
+            get { return imageSrc; }
             set
             {
-               
-
                 imageSrc = value;
                 OnPropertyChanged("ImageSrc");
             }
