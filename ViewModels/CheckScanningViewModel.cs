@@ -51,8 +51,8 @@ namespace ViewModels
                 OnPropertyChanged("ListLabelContent");
             }
         }
-        private BitmapImage imageSrc = new BitmapImage();
-        public BitmapImage ImageSrc
+        private BitmapSource imageSrc = new BitmapImage();
+        public BitmapSource ImageSrc
         {
             get {
                 return imageSrc;

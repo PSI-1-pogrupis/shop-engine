@@ -33,7 +33,7 @@
                             <RowDefinition Height="15*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Background="#FF313638" >
-                            <Border CornerRadius="3" Background="#FF413A39" Margin="10,10,10,5" Panel.ZIndex="1">
+                            <Border CornerRadius="3" Background="#FF313638" Margin="10,10,10,5" Panel.ZIndex="1">
                                 <Image Source="{Binding ImageSrc}"/>
                             </Border>
                         </Grid>
