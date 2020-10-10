@@ -19,7 +19,7 @@ namespace CSE.BL
                     {
                         if (tLines[i].ContainsIgnCase(shop.ToString())) return shop;
                     }
-                }catch(IndexOutOfRangeException e)
+                }catch(IndexOutOfRangeException)
                 {
                     return ShopTypes.UNKNOWN;
                 }

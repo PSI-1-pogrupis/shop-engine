@@ -1,6 +1,7 @@
 ﻿using System;
 using Tesseract;
 using System.Drawing;
+using System.IO;
 
 namespace CSE.BL
 {
@@ -8,12 +9,20 @@ namespace CSE.BL
     {
         public string ReadImage(string imgName)
         {
+            Bitmap bmp = (Bitmap)Bitmap.FromFile(imgName);
+            ImageProcessor imageProcessor = new ImageProcessor();
+            bmp = imageProcessor.ProcessImage(bmp);
+
+
+            bmp.Save("temp.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+
             Pix img;
             try
             {
-                img = Pix.LoadFromFile(imgName);
+                img = Pix.LoadFromFile("temp.jpg");
+                File.Delete("temp.jpg");
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 return "";
             }
@@ -21,7 +30,10 @@ namespace CSE.BL
             Page page = engine.Process(img, PageSegMode.Auto);
             string text = page.GetText();
 
+
+
             return text;
         }
+
     }
 }
