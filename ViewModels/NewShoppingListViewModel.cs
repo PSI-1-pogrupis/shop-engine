@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
+using CSE.BL;
 
 namespace ViewModels
 {
@@ -21,6 +22,9 @@ namespace ViewModels
         private bool isPopupVisible = false;
         private ShoppingItem selectedItem;
         private int selectedAmount = 1;
+
+        private bool editMode = false;
+        private MainViewModel mainVM;
 
         public ObservableCollection<ShoppingItem> ShoppingList
         {
@@ -84,21 +88,28 @@ namespace ViewModels
             }
         }
 
+        public ICommand SaveShoppingListCommand { get; private set; }
         public ICommand ClosePopupCommand { get; private set; }
         public ICommand AddItemPopupCommand { get; private set; }
         public ICommand AddItemCommand { get; private set; }
         public ICommand RemoveItemCommand { get; private set; }
         public ICommand SearchCommand { get; private set; }
-        public NewShoppingListViewModel()
+        public NewShoppingListViewModel(MainViewModel _mainVM, bool _editMode)
         {
+            mainVM = _mainVM;
+            editMode = _editMode;
+
             AddItemCommand = new RelayCommand(AddItem, canExecute => true);
             RemoveItemCommand = new RelayCommand(RemoveItem, canExecute => true);
             SearchCommand = new RelayCommand(SearchList, canExecute => true);
             AddItemPopupCommand = new RelayCommand(AddPopup, canExecute => true);
             ClosePopupCommand = new RelayCommand(ClosePopup, canExecute => true);
+            SaveShoppingListCommand = new RelayCommand(SaveShoppingList, canExecute => CanSaveShoppingList());
 
             ProductList = new List<ShoppingItem>();
-            ShoppingList = new ObservableCollection<ShoppingItem>();
+
+            if (editMode) ShoppingList = new ObservableCollection<ShoppingItem>(mainVM.selectedShoppingList.GetItemList());
+            else ShoppingList = new ObservableCollection<ShoppingItem>();
 
             Products = new List<ShoppingItem>();
 
@@ -168,5 +179,29 @@ namespace ViewModels
             IsPopupVisible = false;
         }
         
+        private bool CanSaveShoppingList()
+        {
+            if (ShoppingList.Count == 0) return false;
+
+            return true;
+        }
+
+        private void SaveShoppingList(object parameter)
+        {
+            ShoppingListManager listManager = new ShoppingListManager();
+            
+            foreach(ShoppingItem item in shoppingList)
+            {
+                listManager.AddItem(item);
+            }
+
+            if(editMode) mainVM.loadedShoppingLists.Remove(mainVM.selectedShoppingList);
+            
+            mainVM.loadedShoppingLists.Insert(0, listManager);
+
+            ShoppingListResourceProcessor.SaveLists(mainVM.loadedShoppingLists);
+
+            mainVM.ChangeViewCommand.Execute("Home");
+        }
     }
 }

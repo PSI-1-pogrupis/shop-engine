@@ -8,14 +8,14 @@ namespace CSE.BL.ShoppingList
     {
         private static string filePath = "shoppingList.bin";
 
-        public static void SaveList(ShoppingListManager shoppingList)
+        public static void SaveLists(List<ShoppingListManager> shoppingList)
         {
-            BinaryFileManager.WriteToBinaryFile<ShoppingListManager>(filePath, shoppingList);
+            BinaryFileManager.WriteToBinaryFile(filePath, shoppingList);
         }
 
-        public static ShoppingListManager LoadList()
+        public static List<ShoppingListManager> LoadLists()
         {
-            return BinaryFileManager.ReadFromBinaryFile<ShoppingListManager>(filePath);
+            return BinaryFileManager.ReadFromBinaryFile<List<ShoppingListManager>>(filePath);
         }
     }
 }

@@ -47,9 +47,9 @@
                     </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary>
-                    <Style>
+                    <Style x:Key="booleanConverter">
                         <Style.Resources>
-                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
                         </Style.Resources>
                     </Style>
                 </ResourceDictionary>
