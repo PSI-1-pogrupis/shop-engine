@@ -17,6 +17,7 @@ namespace CSE.BL
             //img.Grayscale();
             img.ReduceNoise();
             img.Deskew(new Percentage(80));
+            //img.Threshold(new Percentage(85));
             img.Negate();
 
             return img;
