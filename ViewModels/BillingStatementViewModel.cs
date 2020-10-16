@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
+using CSE.BL;
 
 namespace ViewModels
 {
@@ -12,34 +13,33 @@ namespace ViewModels
     {
         public SeriesCollection SeriesCollection1 { get; set; }
         public SeriesCollection SeriesCollection2 { get; set; }
-        public string[] Labels1 { get; set; }
-        public string[] Labels2 { get; set; }
+        public List<string> LatestMonths { get; set; }
+        public List<string> AllMonths { get; set; }
         public string AverageSpendings { get; set; }
         public string MonthDifference { get; set; }
 
         public BillingStatementViewModel()
         {
+            LatestMonths = MonthGenerator.GetListOfLatestMonths();
+            AllMonths = MonthGenerator.GetListOfAllMonths();
 
             SeriesCollection1 = new SeriesCollection
                 {
                     new ColumnSeries
                     {
                         Title = "Month Spendings",
-                        Values = new ChartValues<double>{18.78, 23.16},
+                        Values = new ChartValues<double>{18.78, 23.16},                        
                         Fill = Brushes.Brown,
                         DataLabels = true
                     }
                 };
-
-            Labels1 = new[] {"September", "October"};
-            Labels2 = new[] { "August", "September", "October" };
 
             SeriesCollection2 = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "Year Spendings",
-                    Values = new ChartValues<double>{ 317, 273, 368 },
+                    Values = new ChartValues<double>{ 317, 273, 368,  318, 274, 369, 319, 275, 370, 320, 276, 371},
                     Stroke = Brushes.Brown,
                     Fill = Brushes.Transparent,
                     StrokeThickness = 7,

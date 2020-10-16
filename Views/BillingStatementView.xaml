@@ -44,7 +44,11 @@
                         <Grid Grid.Row="1" Background="#FFF09D51">
                             <lvc:CartesianChart Series="{Binding SeriesCollection2}">
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Title="Months" Labels="{Binding Labels2}" Foreground="Black" FontSize="14"></lvc:Axis>
+                                    <lvc:Axis Title="Months" Labels="{Binding AllMonths}" Foreground="Black" FontSize="14">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="1" />
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis Title="Total money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
@@ -78,7 +82,7 @@
                         <Grid Grid.Row="1" Background="#FFF09D51">
                             <lvc:CartesianChart Name ="CartesianChart" Series="{Binding SeriesCollection1}">
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Title="Months" Labels="{Binding Labels1}" Foreground="Black" FontSize="14"></lvc:Axis>
+                                    <lvc:Axis Title="Months" Labels="{Binding LatestMonths}" Foreground="Black" FontSize="14"></lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis Title="Money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
