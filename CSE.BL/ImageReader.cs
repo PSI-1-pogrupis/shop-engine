@@ -14,13 +14,13 @@ namespace CSE.BL
             var img = new MagickImage(imgName);
             ImageProcessor imageProcessor = new ImageProcessor();
             img = imageProcessor.ProcessImage(img);
-            img.Write("temp1.jpg");
+            img.Write("temp1.png");
 
 
             Pix pixImg;
             try
             {
-                pixImg = Pix.LoadFromFile("temp1.jpg");
+                pixImg = Pix.LoadFromFile("temp1.png");
                 //File.Delete("temp1.jpg");
             }
             catch (IOException)

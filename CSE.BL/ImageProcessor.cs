@@ -1,6 +1,8 @@
-﻿using ImageMagick;
+﻿using FredsImageMagickScripts;
+using ImageMagick;
 using System;
 using System.Drawing;
+
 
 namespace CSE.BL
 {
@@ -10,17 +12,11 @@ namespace CSE.BL
 
         public MagickImage ProcessImage(MagickImage img)
         {
-            img.Contrast();
-            //img.Density = new Density(200f);
-            img.Resize((int)(img.Width * resizeCoef), (int)(img.Height * resizeCoef));
-            img.Sharpen();
-            //img.Grayscale();
-            img.ReduceNoise();
+            TextCleanerScript cleaner = new TextCleanerScript();
             img.Deskew(new Percentage(80));
-            //img.Threshold(new Percentage(85));
-            img.Negate();
+            MagickImage img1 = cleaner.Execute(img);
 
-            return img;
+            return img1;
         }
 
 
