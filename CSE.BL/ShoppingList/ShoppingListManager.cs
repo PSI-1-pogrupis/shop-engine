@@ -148,6 +148,8 @@ namespace CSE.BL.ShoppingList
 
             foreach(ShoppingItem item in ShoppingList)
             {
+                if (item.SelectedShopName.Equals("ANY")) continue;
+
                 if (!UniqueShops.Contains(item.SelectedShop.Item1)) UniqueShops.Add(item.SelectedShop.Item1);
             }
         }
