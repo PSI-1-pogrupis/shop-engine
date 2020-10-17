@@ -10,7 +10,7 @@ namespace ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private List<ShoppingListManager> shoppingLists;
-        private MainViewModel mainVM;
+        private readonly MainViewModel mainVM;
 
         public List<ShoppingListManager> ShoppingLists
         {
@@ -47,17 +47,21 @@ namespace ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine("No lists found.");
+                Console.WriteLine("File not found." + e.ToString());
             }
             
-
             mainVM.loadedShoppingLists = loadedLists;
             ShoppingLists = loadedLists;
         }
 
         private void ViewShoppingList(object parameter)
         {
+            if (parameter is ShoppingListManager manager)
+            {
+                mainVM.selectedShoppingList = manager;
 
+                mainVM.ChangeViewCommand.Execute("ViewShoppingList");
+            }
         }
 
         private void EditShoppingList(object parameter)

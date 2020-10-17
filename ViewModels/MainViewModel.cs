@@ -54,6 +54,7 @@ namespace ViewModels
                 "CheckScanning" => new CheckScanningViewModel(),
                 "NewShoppingList" => new NewShoppingListViewModel(this, false),
                 "EditShoppingList" => new NewShoppingListViewModel(this, true),
+                "ItemSelection" => new ItemSelectionViewModel(this),
                 "BillingStatement" => new BillingStatementViewModel(),
                 "ShoppingHistory" => new ShoppingHistoryViewModel(),
                 "Settings" => new SettingsViewModel(),

@@ -15,7 +15,15 @@ namespace CSE.BL.ShoppingList
 
         public static List<ShoppingListManager> LoadLists()
         {
-            return BinaryFileManager.ReadFromBinaryFile<List<ShoppingListManager>>(filePath);
+            try
+            {
+                return BinaryFileManager.ReadFromBinaryFile<List<ShoppingListManager>>(filePath);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

@@ -13,6 +13,18 @@ namespace CSE.BL.ShoppingList
         private string name; //name of the item
         private double amount; //amount of the item 
         private UnitTypes unit; //the unit of measurement for this item
+        public (string, double) SelectedShop; // selected shop
+        public List<(string, double)> ShopPrices { get; set; } //list of shops and prices this item is available in
+
+        public string SelectedShopName
+        {
+            get { return SelectedShop.Item1; }
+        }
+
+        public double Price
+        {
+            get { return Amount * SelectedShop.Item2; }
+        }
 
         // get/set the name of the item
         public string Name 
@@ -23,8 +35,7 @@ namespace CSE.BL.ShoppingList
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                    name = value;
+                if (!string.IsNullOrEmpty(value)) name = value;
             }
         }
 
@@ -53,25 +64,26 @@ namespace CSE.BL.ShoppingList
             }
             set
             {
-                if (Enum.IsDefined(typeof(UnitTypes), value))
-                    unit = value;
+                if (Enum.IsDefined(typeof(UnitTypes), value)) unit = value;
             }
         }
 
         //constructor for the ShoppingItem class
         public ShoppingItem (string name, double amount, UnitTypes unit)
         {
+            ShopPrices = new List<(string, double)>();
+
+            ShopPrices.Add(("ANY", 0));
+            ShopPrices.Add(("MAXIMA", 10.31));
+            ShopPrices.Add(("IKI", 10.37));
+            ShopPrices.Add(("LIDL", 9.59));
+
             this.name = name;
             this.amount = amount;
             this.unit = unit;
         }
 
-        public ShoppingItem(ShoppingItem item)
-        {
-            name = item.name;
-            amount = item.amount;
-            unit = item.unit;
-        }
+        public ShoppingItem(ShoppingItem item) : this(item.name, item.amount, item.unit) { }
 
         public override string ToString()
         {
