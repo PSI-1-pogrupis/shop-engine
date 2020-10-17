@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Views"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="#FF313638">
@@ -40,8 +41,15 @@
                         <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
                             <Label Content="Year Spendings Pattern" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
-                        <Grid Grid.Row="1" Background="Orange">
-                            
+                        <Grid Grid.Row="1" Background="#FFF09D51">
+                            <lvc:CartesianChart Series="{Binding SeriesCollection2}">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Months" Labels="{Binding Labels2}" Foreground="Black" FontSize="14"></lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Total money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
                         </Grid>
                     </Grid>
                     <!--Bottom left side-->
@@ -53,8 +61,9 @@
                         <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
                             <Label Content="Average Shopping Spendings" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
-                        <Grid Grid.Row="1" Background="Orange">
-                            
+                        <Grid Grid.Row="1" Background="#FFF09D51">
+                            <Label Content="{Binding AverageSpendings}" FontSize="32" Foreground="ForestGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
                         </Grid>
                     </Grid>
                     <!--Bottom right side-->
@@ -64,10 +73,18 @@
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
                         <Border CornerRadius="10,10,0,0" Grid.Row="0" Background="#FF313638">
-                            <Label Content="Year Spendings Graph" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
+                            <Label Content="Average Monthly Spendings" Foreground="White" FontSize="22" HorizontalAlignment="Center"/>
                         </Border>
-                        <Grid Grid.Row="1" Background="Orange">
-
+                        <Grid Grid.Row="1" Background="#FFF09D51">
+                            <lvc:CartesianChart Name ="CartesianChart" Series="{Binding SeriesCollection1}">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Months" Labels="{Binding Labels1}" Foreground="Black" FontSize="14"></lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                            <Label Content="{Binding MonthDifference}"  VerticalAlignment="Top" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
                         </Grid>
                     </Grid>
                 </Grid>
