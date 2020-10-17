@@ -8,14 +8,13 @@ namespace CSE.BL
 {
     public class ImageReader
     {
-        public string ReadImage(string imgName)
+        public string ReadImage(string imgPath)
         {
 
-            var img = new MagickImage(imgName);
+            var img = new MagickImage(imgPath);
             ImageProcessor imageProcessor = new ImageProcessor();
             img = imageProcessor.ProcessImage(img);
             img.Write("temp1.png");
-
 
             Pix pixImg;
             try
@@ -27,10 +26,10 @@ namespace CSE.BL
             {
                 return "";
             }
-            TesseractEngine engine = new TesseractEngine("./tessdata", "lit", EngineMode.Default);
+            TesseractEngine engine = new TesseractEngine("./OCR/tessdata", "lit", EngineMode.Default);
             Page page = engine.Process(pixImg, PageSegMode.Auto);
             string text = page.GetText();
-
+            File.WriteAllText("results.txt", text);
 
 
             return text;
