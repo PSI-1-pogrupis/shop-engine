@@ -10,10 +10,6 @@ namespace CSE.BL
     {
         public string ReadImage(string imgName)
         {
-            /*Bitmap bmp = (Bitmap)Bitmap.FromFile(imgName);
-            ImageProcessor imageProcessor = new ImageProcessor();
-            bmp = imageProcessor.ProcessImage(bmp);
-            bmp.Save("temp.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);*/
 
             var img = new MagickImage(imgName);
             ImageProcessor imageProcessor = new ImageProcessor();
@@ -25,7 +21,6 @@ namespace CSE.BL
             try
             {
                 pixImg = Pix.LoadFromFile("temp1.jpg");
-                File.Delete("temp.jpg");
                 //File.Delete("temp1.jpg");
             }
             catch (IOException)
