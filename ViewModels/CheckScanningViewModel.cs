@@ -121,7 +121,7 @@ namespace ViewModels
                     ShopText = ShopTypes.RIMI.ToString();
                     break;
                 case ShopTypes.UNKNOWN:
-                    ShopText = ShopTypes.UNKNOWN.ToString();
+                    ShopText = "";
                     break;
             }
             ListLabelContent = "";

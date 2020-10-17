@@ -27,8 +27,10 @@ namespace CSE.BL
                 return "";
             }
             TesseractEngine engine = new TesseractEngine("./OCR/tessdata", "lit", EngineMode.Default);
-            Page page = engine.Process(pixImg, PageSegMode.Auto);
+            Page page = engine.Process(pixImg, PageSegMode.SparseText);
             string text = page.GetText();
+
+            // temp for debugging purposes
             File.WriteAllText("results.txt", text);
 
 
