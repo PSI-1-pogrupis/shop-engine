@@ -8,15 +8,17 @@ namespace CSE.BL
 {
     internal class ImageProcessor
     {
-        private const float resizeCoef = 1.5f;
-
         public MagickImage ProcessImage(MagickImage img)
         {
+            img.Resize((int)(1.5f * img.Width), (int)(1.5f * img.Height));
+            img.Density = new Density(300f);
             TextCleanerScript cleaner = new TextCleanerScript();
             img.Deskew(new Percentage(80));
-            MagickImage img1 = cleaner.Execute(img);
+            
+            img = cleaner.Execute(img);
+            
 
-            return img1;
+            return img;
         }
 
 

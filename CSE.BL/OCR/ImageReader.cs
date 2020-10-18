@@ -27,7 +27,8 @@ namespace CSE.BL
                 return "";
             }
             TesseractEngine engine = new TesseractEngine("./OCR/tessdata", "lit", EngineMode.Default);
-            Page page = engine.Process(pixImg, PageSegMode.SparseText);
+            Page page = engine.Process(pixImg, PageSegMode.SingleBlock);    // this one is perfect if the image is cropped
+            //Page page = engine.Process(pixImg, PageSegMode.Auto);
             string text = page.GetText();
 
             // temp for debugging purposes
