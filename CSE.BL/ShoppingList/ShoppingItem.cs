@@ -1,5 +1,5 @@
-﻿using CSE.BL.Interfaces;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CSE.BL.ShoppingList
 {
@@ -8,6 +8,7 @@ namespace CSE.BL.ShoppingList
     [Serializable]
     public class ShoppingItem
     {
+        public Dictionary<string, double> dictionary;//dictionary for saving same item prices over different shops
         private int? id;//item id
         private ShopTypes shop; //item shop place
         private string name; //name of the item
@@ -107,6 +108,7 @@ namespace CSE.BL.ShoppingList
         //constructor for the ShoppingItem class
         public ShoppingItem(int? id, ShopTypes shop, string name, double amount, UnitTypes unit, double price)
         {
+            dictionary.Add(shop.ToString(), price);
             this.id = id;
             this.shop = shop;
             this.name = name;
@@ -126,6 +128,7 @@ namespace CSE.BL.ShoppingList
                 unit = item.unit;
                 price = item.price;
             }
+            dictionary.Add(shop.ToString(), price);
         }
 
         public override string ToString()
