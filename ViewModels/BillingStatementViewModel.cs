@@ -21,8 +21,7 @@ namespace ViewModels
         public string MonthDifference { get; set; }        
 
         public BillingStatementViewModel()
-        {
-
+        { 
             TemporaryData tempData = new TemporaryData(); //called so that billing data library would be filled with temporary (just for display purpose) data       
  
             LatestMonths = MonthGenerator.GetListOfLatestMonths();

@@ -10,9 +10,9 @@ namespace CSE.BL.BillingData
         public TemporaryData()
         {
             //this way the same values are not added to the library every time the window is opened and NumberOfShoppings isn't increased
+            MonthSpendingLibrary.NumberOfShoppings = 0;
             for (int i = 1; i < 13; i++)
             {
-                MonthSpendingLibrary.NumberOfShoppings = 0;
                 MonthSpendingLibrary.YearSpending[i].ClearLog();
             }                
 
