@@ -1,5 +1,7 @@
 ﻿using CSE.BL.Interfaces;
+using CSE.BL.ShoppingList;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CSE.BL.Database
 {
@@ -10,9 +12,9 @@ namespace CSE.BL.Database
     {
         private readonly IShoppingItemGateway gateway;
         private readonly IShoppingItemFactory factory;
-        private List<IShoppingItem> cache;
+        private List<ShoppingItem> cache;
         // Load shopping items list into cache
-        public List<IShoppingItem> Cache
+        public List<ShoppingItem> Cache
         {
             get
             {
@@ -20,7 +22,7 @@ namespace CSE.BL.Database
                 {
                     var data = gateway.Load();
 
-                    cache = new List<IShoppingItem>();
+                    cache = new List<ShoppingItem>();
 
                     foreach (var record in data)
                     {
@@ -37,11 +39,11 @@ namespace CSE.BL.Database
         public ShoppingItemRepository(IShoppingItemGateway gateway = null, IShoppingItemFactory factory = null)
         {
             // Default file path to local file if database gateway is not set
-            this.gateway = gateway ?? new ShoppingItemGateway("C:\\Users\\sandr\\source\\repos\\DataSave\\ShoppingItemsList.bin");
+            this.gateway = gateway ?? new ShoppingItemGateway(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName).FullName + "\\CSE.BL\\LocalData\\ShoppingItemsList.bin");
             this.factory = factory ?? new ShoppingItemFactory();
         }
         // Insert Shopping Item into database
-        public void Insert(IShoppingItem shoppingItem)
+        public void Insert(ShoppingItem shoppingItem)
         {
             if (shoppingItem.Id == null)
             {
@@ -57,21 +59,21 @@ namespace CSE.BL.Database
             }
         }
         // Retrieve searched Shopping Item
-        public IShoppingItem Find(int id)
+        public ShoppingItem Find(int id)
         {
             if (cache == null)
                 return gateway.Find(id, Cache);
             return gateway.Find(id, cache);
         }
         // Retrieve all Shopping Items
-        public List<IShoppingItem> GetAll()
+        public List<ShoppingItem> GetAll()
         {
             if (cache == null)
                 return Cache;
             return cache;
         }
         // Remove specific Shopping Item
-        public void Remove(IShoppingItem shoppingItem)
+        public void Remove(ShoppingItem shoppingItem)
         {
             if (cache == null && shoppingItem != null)
             {
@@ -83,7 +85,7 @@ namespace CSE.BL.Database
             }
         }
         // Update specific Shopping Item
-        public void Update(IShoppingItem shoppingItem)
+        public void Update(ShoppingItem shoppingItem)
         {
             if (cache == null)
                 gateway.Update(Cache, shoppingItem);

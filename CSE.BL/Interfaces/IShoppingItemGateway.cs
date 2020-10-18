@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using CSE.BL.ShoppingList;
+using System.Collections.Generic;
 
 namespace CSE.BL.Interfaces
 {
     public interface IShoppingItemGateway
     {
         int Id { get; set; }
-        List<IShoppingItem> Load();
-        IShoppingItem Find(int id, List<IShoppingItem> list);
-        void Insert(IShoppingItem shoppingItem, List<IShoppingItem> list);
-        void Update(List<IShoppingItem> cache, IShoppingItem item);
-        void Remove(int? id, List<IShoppingItem> cache);
-        void SaveChanges(List<IShoppingItem> cache);
+        List<ShoppingItem> Load();
+        ShoppingItem Find(int id, List<ShoppingItem> list);
+        void Insert(ShoppingItem shoppingItem, List<ShoppingItem> list);
+        void Update(List<ShoppingItem> cache, ShoppingItem item);
+        void Remove(int? id, List<ShoppingItem> cache);
+        void SaveChanges(List<ShoppingItem> cache);
         void SetConnection(object dataPath);
     }
 }

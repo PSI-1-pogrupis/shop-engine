@@ -1,4 +1,5 @@
 ﻿using CSE.BL.Interfaces;
+using CSE.BL.ShoppingList;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,27 +27,27 @@ namespace CSE.BL.Database
             }
         }
 
-        public IShoppingItem Find(int id, List<IShoppingItem> list)
+        public ShoppingItem Find(int id, List<ShoppingItem> list)
         {
             return list.Find(b => b.Id.Equals(id));
         }
 
-        public void Insert(IShoppingItem shoppingItem, List<IShoppingItem> list)
+        public void Insert(ShoppingItem shoppingItem, List<ShoppingItem> list)
         {
             SetId(shoppingItem);
             list.Add(shoppingItem);
             BinaryFileManager.WriteToBinaryFile(filePath, list);
         }
 
-        public List<IShoppingItem> Load()
+        public List<ShoppingItem> Load()
         {
-            List<IShoppingItem> readList = BinaryFileManager.ReadFromBinaryFile<IShoppingItem>(filePath);
+            List<ShoppingItem> readList = BinaryFileManager.ReadFromBinaryFile<ShoppingItem>(filePath);
             return readList;
         }
 
-        public void Remove(int? id, List<IShoppingItem> cache)
+        public void Remove(int? id, List<ShoppingItem> cache)
         {
-            foreach (var item in from IShoppingItem item in cache
+            foreach (var item in from ShoppingItem item in cache
                                  where item.Id == id
                                  select item)
             {
@@ -55,9 +56,9 @@ namespace CSE.BL.Database
             }
         }
 
-        public void Update(List<IShoppingItem> cache, IShoppingItem shoppingItem)
+        public void Update(List<ShoppingItem> cache, ShoppingItem shoppingItem)
         {
-            foreach (var item in from IShoppingItem item in cache
+            foreach (var item in from ShoppingItem item in cache
                                  where item.Id == shoppingItem.Id
                                  select item)
             {
@@ -70,7 +71,7 @@ namespace CSE.BL.Database
             }
         }
 
-        public void SaveChanges(List<IShoppingItem> cache)
+        public void SaveChanges(List<ShoppingItem> cache)
         {
             BinaryFileManager.WriteToBinaryFile(filePath, cache);
         }
@@ -80,7 +81,7 @@ namespace CSE.BL.Database
             this.filePath = (string)dataPath;
         }
 
-        private void SetId(IShoppingItem shoppingItem)
+        private void SetId(ShoppingItem shoppingItem)
         {
             if (shoppingItem.Id < id)
             {

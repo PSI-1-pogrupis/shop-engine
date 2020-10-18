@@ -9,25 +9,25 @@ namespace CSE.BL.Database
     public class ShoppingItemFactory : IShoppingItemFactory
     {
         // Create new ready-to-use object
-        public IShoppingItem CreateInstance(IShoppingItem data)
+        public ShoppingItem CreateInstance(ShoppingItem data)
         {
             if (data == null)
                 return null;
 
-            IShoppingItem instance = new ShoppingItem(data);
+            ShoppingItem instance = new ShoppingItem(data);
 
             return instance;
         }
         // Create new ready-to-use object using values
-        public IShoppingItem CreateInstance(int id, ShopTypes shopType, string name, double amount, UnitTypes unit, double price)
+        public ShoppingItem CreateInstance(int id, ShopTypes shopType, string name, double amount, UnitTypes unit, double price)
         {
-            IShoppingItem instance = new ShoppingItem(id, shopType, name, amount, unit, price);
+            ShoppingItem instance = new ShoppingItem(id, shopType, name, amount, unit, price);
 
             return instance;
         }
 
         // Update passed object
-        public void UpdateInstance(IShoppingItem data, IShoppingItem instance)
+        public void UpdateInstance(ShoppingItem data, ShoppingItem instance)
         {
             instance.Id = data.Id;
             instance.Name = data.Name;
