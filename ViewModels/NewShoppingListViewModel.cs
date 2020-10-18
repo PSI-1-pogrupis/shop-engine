@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
+using CSE.BL;
 
 namespace ViewModels
 {
@@ -108,7 +109,6 @@ namespace ViewModels
             {
                 Products = repo.GetAll();
             }
-
             productList = Products;
         }
 

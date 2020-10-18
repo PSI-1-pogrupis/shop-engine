@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace CSE.BL.Database
 {
-    public class ShoppingItemGateway : IShoppingItemGateway
+    public class BinaryShoppingItemGateway : IShoppingItemGateway
     {
         private string filePath;
         protected int id = 0;
 
-        public ShoppingItemGateway(string filePath)
+        public BinaryShoppingItemGateway(string filePath)
         {
             this.filePath = filePath;
         }
@@ -83,7 +83,7 @@ namespace CSE.BL.Database
 
         private void SetId(ShoppingItem shoppingItem)
         {
-            if (shoppingItem.Id < id)
+            if (shoppingItem.Id == null)
             {
                 shoppingItem.Id = ++id;
             }

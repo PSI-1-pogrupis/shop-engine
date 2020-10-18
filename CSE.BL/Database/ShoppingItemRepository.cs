@@ -1,7 +1,6 @@
 ﻿using CSE.BL.Interfaces;
 using CSE.BL.ShoppingList;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CSE.BL.Database
 {
@@ -39,16 +38,12 @@ namespace CSE.BL.Database
         public ShoppingItemRepository(IShoppingItemGateway gateway = null, IShoppingItemFactory factory = null)
         {
             // Default file path to local file if database gateway is not set
-            this.gateway = gateway ?? new ShoppingItemGateway(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName).FullName + "\\CSE.BL\\LocalData\\ShoppingItemsList.bin");
-            this.factory = factory ?? new ShoppingItemFactory();
+            this.gateway = gateway ?? new BinaryShoppingItemGateway(System.AppDomain.CurrentDomain.BaseDirectory + "\\ShoppingItemsList.bin");
+            this.factory = factory ?? new BinaryShoppingItemFactory();
         }
         // Insert Shopping Item into database
         public void Insert(ShoppingItem shoppingItem)
         {
-            if (shoppingItem.Id == null)
-            {
-                shoppingItem.Id = ++gateway.Id;
-            }
             if (cache == null)
             {
                 gateway.Insert(shoppingItem, Cache);

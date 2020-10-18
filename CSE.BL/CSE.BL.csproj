@@ -15,8 +15,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="LocalData\" />
-  </ItemGroup>
-
 </Project>
