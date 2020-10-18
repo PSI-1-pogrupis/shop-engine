@@ -39,7 +39,7 @@ namespace CSE.BL.Database
         {
             // Default file path to local file if database gateway is not set
             this.gateway = gateway ?? new BinaryShoppingItemGateway(System.AppDomain.CurrentDomain.BaseDirectory + "\\ShoppingItemsList.bin");
-            this.factory = factory ?? new BinaryShoppingItemFactory();
+            this.factory = factory ?? new ShoppingItemFactory();
         }
         // Insert Shopping Item into database
         public void Insert(ShoppingItem shoppingItem)

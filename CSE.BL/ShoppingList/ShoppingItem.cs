@@ -6,7 +6,7 @@ namespace CSE.BL.ShoppingList
     /*ShoppingItem object holds data to describe 
      * id, shopType name, measurement unit type, amount and price.*/
     [Serializable]
-    public class ShoppingItem : IShoppingItem
+    public class ShoppingItem
     {
         private int? id;//item id
         private ShopTypes shop; //item shop place
@@ -113,19 +113,6 @@ namespace CSE.BL.ShoppingList
             this.amount = amount;
             this.unit = unit;
             this.price = price;
-        }
-
-        public ShoppingItem(IShoppingItem item)
-        {
-            if (item != null)
-            {
-                id = item.Id;
-                shop = item.Shop;
-                name = item.Name;
-                amount = item.Amount;
-                unit = item.Unit;
-                price = item.Price;
-            }
         }
 
         public ShoppingItem(ShoppingItem item)

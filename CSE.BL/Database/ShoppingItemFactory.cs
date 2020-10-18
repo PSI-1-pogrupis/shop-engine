@@ -6,7 +6,7 @@ namespace CSE.BL.Database
     /* Defines a way of creating and updating object.
      * Factory knows how to take all the nformation
      * needed to build an object and return ready-to-use object.*/
-    public class BinaryShoppingItemFactory : IShoppingItemFactory
+    public class ShoppingItemFactory : IShoppingItemFactory
     {
         // Create new ready-to-use object
         public ShoppingItem CreateInstance(ShoppingItem data)
