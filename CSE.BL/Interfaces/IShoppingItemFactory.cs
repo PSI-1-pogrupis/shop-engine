@@ -2,7 +2,7 @@
 
 namespace CSE.BL.Interfaces
 {
-    public interface IShoppingFactory
+    public interface IShoppingItemFactory
     {
         IShoppingItem CreateInstance(IShoppingItem data);
         IShoppingItem CreateInstance(int id, ShopTypes shopType, string name, double amount, UnitTypes unit, double price);

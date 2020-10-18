@@ -1,13 +1,10 @@
 ﻿using CSE.BL.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CSE.BL.ShoppingList
 {
     /*ShoppingItem object holds data to describe 
-     * the name, amount, and measurement unit type*/
-
+     * id, shopType name, measurement unit type, amount and price.*/
     [Serializable]
     public class ShoppingItem : IShoppingItem
     {
