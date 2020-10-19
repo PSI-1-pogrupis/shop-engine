@@ -185,6 +185,8 @@ namespace ViewModels
 
             foreach((string, double) shop in SelectedItem.ShopPrices)
             {
+                if (shop.Item1.Equals("ANY")) continue;
+
                 if(shop.Item1 != SelectedShop.Item1)
                 {
                     ItemComparison comp = new ItemComparison { Shop = shop.Item1, PriceDifference = Math.Round((shop.Item2 - SelectedShop.Item2) * selectedAmount, 2).ToString() };

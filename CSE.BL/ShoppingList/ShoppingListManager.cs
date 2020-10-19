@@ -154,5 +154,18 @@ namespace CSE.BL.ShoppingList
             }
         }
 
+        public void UpdateInformation()
+        {
+            EstimatedPrice = 0;
+
+            foreach(ShoppingItem item in ShoppingList)
+            {
+                if (item.SelectedShop.Item1.Equals("ANY")) continue;
+
+                EstimatedPrice += item.SelectedShop.Item2 * item.Amount;
+            }
+
+            FindUniqueShops();
+        }
     }
 }

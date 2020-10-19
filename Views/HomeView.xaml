@@ -134,12 +134,9 @@
                                                                 <ColumnDefinition Width="20*"/>
                                                                 <ColumnDefinition Width="10*"/>
                                                                 <ColumnDefinition Width="20*"/>
-                                                                <ColumnDefinition Width="10*"/>
-                                                                <ColumnDefinition Width="30*"/>
-                                                                <ColumnDefinition Width="10*"/>
                                                             </Grid.ColumnDefinitions>
                                                             <Button Grid.Column="0" Content="Open" FontSize="12" Command="{Binding DataContext.EditShoppingListCommand, ElementName=root}" CommandParameter="{Binding}"/>
-                                                            <Button Grid.Column="4" BorderBrush="Red" Background="Red" Content="Delete" FontSize="12" Command="{Binding DataContext.DeleteShoppingListCommand, ElementName=root}" CommandParameter="{Binding}"/>
+                                                            <Button Grid.Column="2" BorderBrush="Red" Background="Red" Content="Delete" FontSize="12" Command="{Binding DataContext.DeleteShoppingListCommand, ElementName=root}" CommandParameter="{Binding}"/>
                                                         </Grid>
                                                     </Expander>
                                                 </DataTemplate>
