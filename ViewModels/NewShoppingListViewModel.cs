@@ -172,16 +172,11 @@ namespace ViewModels
             mainVM.ChangeViewCommand.Execute("ItemSelection");
         }
 
-        private void RemoveItem(object parameter)
-        {
-            if (parameter is ShoppingItem item)
+            using (IShoppingItemRepository repo = new ShoppingItemRepository())
             {
-                ObservableShoppingList.Remove(item);
-                manager.RemoveItem(item);
-                UpdateOverview();
+                Products = repo.GetAll();
             }
-
-            GetAvailableShops();
+            productList = Products;
         }
 
         private bool CanSaveShoppingList()

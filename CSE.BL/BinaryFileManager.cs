@@ -1,33 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CSE.BL
 {
     public class BinaryFileManager
     {
-        /* Writes the given object instance to a binary file.
-         * Parameter "append" - if value = false, the file will be overwritten if it already exists. If true the contents will be appended to the file.*/
-
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        /* Writes the given object instance to a binary file.*/
+        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite)
         {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            try
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
+                using (Stream stream = File.Open(filePath, FileMode.Create))
+                {
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    binaryFormatter.Serialize(stream, objectToWrite);
+                }
+            } catch (DirectoryNotFoundException)
+            {
+                // Exception for not finding specified file directory
+            } catch (Exception)
+            {
+                // Other exceptions
             }
         }
-
-        /* Reads an object instance from a binary file and returns it.*/
-        public static T ReadFromBinaryFile<T>(string filePath)
+        /* Reads an object list instance from a binary file and returns it.
+         * If file does not exist, return empty list.*/
+        public static List<T> ReadFromBinaryFile<T>(string filePath)
         {
-            if (!File.Exists(filePath)) throw new FileNotFoundException();
-
-            using (Stream stream = File.Open(filePath, FileMode.Open))
+            try
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
+                if (new FileInfo(filePath).Length != 0)
+                {
+                    using (Stream stream = File.Open(filePath, FileMode.Open))
+                    {
+                        var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                        return (List<T>)binaryFormatter.Deserialize(stream);
+                    }
+                }
+                else
+                {
+                    return new List<T>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<T>();
+            }
+        }
+        /* Reads an object instance from a binary file and returns it.
+         * If file does not exist, return default T type object.*/
+        public static T ReadObjectFromBinaryFile<T>(string filePath)
+        {
+            try
+            {
+                if (new FileInfo(filePath).Length != 0)
+                {
+                    using (Stream stream = File.Open(filePath, FileMode.Open))
+                    {
+                        var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                        return (T)binaryFormatter.Deserialize(stream);
+                    }
+                }
+                else
+                {
+                    return default;
+                }
+            }
+            catch (Exception)
+            {
+                return default;
             }
         }
     }

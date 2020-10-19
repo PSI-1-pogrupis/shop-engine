@@ -15,7 +15,7 @@ namespace CSE.BL.ScannedData
 
         public static ScannedListLibrary LoadList()
         {
-            return BinaryFileManager.ReadFromBinaryFile<ScannedListLibrary>(filePath);
+            return BinaryFileManager.ReadObjectFromBinaryFile<ScannedListLibrary>(filePath);
         }
     }
 }
