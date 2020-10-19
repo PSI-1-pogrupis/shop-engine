@@ -7,6 +7,9 @@ using System.Windows.Input;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
+using CSE.BL.Interfaces;
+using CSE.BL.Database;
+using CSE.BL;
 
 namespace ViewModels
 {
@@ -102,11 +105,10 @@ namespace ViewModels
 
             Products = new List<ShoppingItem>();
 
-            for (int i = 0; i < 20; i++)
+            using (IShoppingItemRepository repo = new ShoppingItemRepository())
             {
-                Products.Add(new ShoppingItem("Item " + i.ToString(), 1, UnitTypes.kg));
+                Products = repo.GetAll();
             }
-
             productList = Products;
         }
 

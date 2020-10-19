@@ -1,21 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CSE.BL.ShoppingList
 {
     /*ShoppingItem object holds data to describe 
-     * the name, amount, and measurement unit type*/
-
+     * id, shopType name, measurement unit type, amount and price.*/
     [Serializable]
     public class ShoppingItem
     {
+        public Dictionary<string, double> dictionary;//dictionary for saving same item prices over different shops
+        private int? id;//item id
+        private ShopTypes shop; //item shop place
         private string name; //name of the item
-        private double amount; //amount of the item 
         private UnitTypes unit; //the unit of measurement for this item
+        private double amount; //amount of the item 
+        private double price; //price of the item
+
+        public int? Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+            }
+        }
+
+        // get/set index of shop
+        public ShopTypes Shop
+        {
+            get
+            {
+                return shop;
+            }
+            set
+            {
+                shop = value;
+            }
+        }
 
         // get/set the name of the item
-        public string Name 
+        public string Name
         {
             get
             {
@@ -58,19 +85,50 @@ namespace CSE.BL.ShoppingList
             }
         }
 
-        //constructor for the ShoppingItem class
-        public ShoppingItem (string name, double amount, UnitTypes unit)
+        // get/set the price of the item
+        public double Price
         {
+            get
+            {
+                return price;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    price = value;
+                }
+            }
+        }
+
+        public ShoppingItem()
+        {
+        }
+
+        //constructor for the ShoppingItem class
+        public ShoppingItem(int? id, ShopTypes shop, string name, double amount, UnitTypes unit, double price)
+        {
+            dictionary.Add(shop.ToString(), price);
+            this.id = id;
+            this.shop = shop;
             this.name = name;
             this.amount = amount;
             this.unit = unit;
+            this.price = price;
         }
 
         public ShoppingItem(ShoppingItem item)
         {
-            name = item.name;
-            amount = item.amount;
-            unit = item.unit;
+            if (item != null)
+            {
+                id = item.id;
+                shop = item.shop;
+                name = item.name;
+                amount = item.amount;
+                unit = item.unit;
+                price = item.price;
+            }
+            dictionary.Add(shop.ToString(), price);
         }
 
         public override string ToString()
