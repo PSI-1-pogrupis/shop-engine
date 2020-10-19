@@ -11,14 +11,14 @@ namespace CSE.BL.ShoppingList
     public class ShoppingListManager
     {
         private string name;
-        public List<string> UniqueShops { get; set; }
+        public List<ShopTypes> UniqueShops { get; set; }
         public double EstimatedPrice { get; private set; }
 
         //constructor for ShoppingListManager class
         public ShoppingListManager()
         {
             ShoppingList = new List<ShoppingItem>();
-            UniqueShops = new List<string>();
+            UniqueShops = new List<ShopTypes>();
         }
 
         public ShoppingListManager(IEnumerable<ShoppingItem> collection) : base()
@@ -144,13 +144,13 @@ namespace CSE.BL.ShoppingList
 
         private void FindUniqueShops()
         {
-            UniqueShops = new List<string>();
+            UniqueShops = new List<ShopTypes>();
 
             foreach(ShoppingItem item in ShoppingList)
             {
-                if (item.SelectedShopName.Equals("ANY")) continue;
+                if (item.SelectedShopName == ShopTypes.UNKNOWN) continue;
 
-                if (!UniqueShops.Contains(item.SelectedShop.Item1)) UniqueShops.Add(item.SelectedShop.Item1);
+                if (!UniqueShops.Contains(item.SelectedShop.Key)) UniqueShops.Add(item.SelectedShop.Key);
             }
         }
 
@@ -160,9 +160,9 @@ namespace CSE.BL.ShoppingList
 
             foreach(ShoppingItem item in ShoppingList)
             {
-                if (item.SelectedShop.Item1.Equals("ANY")) continue;
+                if (item.SelectedShop.Key.Equals("ANY")) continue;
 
-                EstimatedPrice += item.SelectedShop.Item2 * item.Amount;
+                EstimatedPrice += item.SelectedShop.Value * item.Amount;
             }
 
             FindUniqueShops();

@@ -49,7 +49,9 @@ namespace ViewModels
             {
                 Console.WriteLine("File not found." + e.ToString());
             }
-            
+
+            if (loadedLists == null) loadedLists = new List<ShoppingListManager>();
+
             mainVM.loadedShoppingLists = loadedLists;
             ShoppingLists = loadedLists;
         }

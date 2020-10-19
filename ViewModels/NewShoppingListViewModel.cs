@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using CSE.BL;
+using CSE.BL.Interfaces;
+using CSE.BL.Database;
 
 namespace ViewModels
 {
@@ -17,9 +19,9 @@ namespace ViewModels
 
         private ShoppingListManager optimizedList;
         private ObservableCollection<ShoppingItem> shoppingList;
-        private List<string> listShops;
-        private List<string> selectedShops;
-        private List<string> availableShops;
+        private List<ShopTypes> listShops;
+        private List<ShopTypes> selectedShops;
+        private List<ShopTypes> availableShops;
 
         private string selectedName = "";
         private double estimatedPrice = 0;
@@ -34,6 +36,7 @@ namespace ViewModels
             {
                 optimizedList = value;
                 OnPropertyChanged(nameof(OptimizedList));
+                OnPropertyChanged(nameof(OptimizedListEstimatedPrice));
             }
         }
 
@@ -58,7 +61,7 @@ namespace ViewModels
             }
         }
 
-        public List<string> ListShops
+        public List<ShopTypes> ListShops
         {
             get { return listShops; }
             set
@@ -68,7 +71,7 @@ namespace ViewModels
             }
         }
 
-        public List<string> AvailableShops
+        public List<ShopTypes> AvailableShops
         {
             get { return availableShops; }
             set
@@ -85,8 +88,17 @@ namespace ViewModels
             get { return estimatedPrice; }
             set
             {
-                estimatedPrice = value;
+                estimatedPrice = Math.Round(value, 2);
                 OnPropertyChanged(nameof(EstimatedPrice));
+            }
+        }
+
+        public double OptimizedListEstimatedPrice
+        {
+            get {
+                if (optimizedList != null)
+                    return Math.Round(optimizedList.EstimatedPrice, 2);
+                else return 0;
             }
         }
 
@@ -95,7 +107,7 @@ namespace ViewModels
             get { return optimizedListPriceDifference; }
             set
             {
-                optimizedListPriceDifference = value;
+                optimizedListPriceDifference = Math.Round(value, 2);
                 OnPropertyChanged(nameof(OptimizedListPriceDifference));
             }
         }
@@ -158,7 +170,7 @@ namespace ViewModels
                 SelectedName = "New Shopping List";
             }
 
-            selectedShops = new List<string>();
+            selectedShops = new List<ShopTypes>();
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
             UpdateOverview();
             GetAvailableShops();
@@ -172,11 +184,16 @@ namespace ViewModels
             mainVM.ChangeViewCommand.Execute("ItemSelection");
         }
 
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+        private void RemoveItem(object parameter)
+        {
+            if (parameter is ShoppingItem item)
             {
-                Products = repo.GetAll();
+                ObservableShoppingList.Remove(item);
+                manager.RemoveItem(item);
+                UpdateOverview();
             }
-            productList = Products;
+
+            GetAvailableShops();
         }
 
         private bool CanSaveShoppingList()
@@ -188,7 +205,7 @@ namespace ViewModels
 
         private void SaveShoppingList(object parameter)
         {
-            if (editMode) mainVM.loadedShoppingLists.Remove(mainVM.selectedShoppingList);
+            if (editMode && mainVM.loadedShoppingLists.Contains(mainVM.selectedShoppingList)) mainVM.loadedShoppingLists.Remove(mainVM.selectedShoppingList);
 
             mainVM.loadedShoppingLists.Insert(0, manager);
             mainVM.selectedShoppingList = manager;
@@ -201,20 +218,20 @@ namespace ViewModels
         private void UpdateOverview()
         {
             ListShops = manager.UniqueShops;
-            EstimatedPrice = Math.Round(manager.EstimatedPrice, 2);
+            EstimatedPrice = manager.EstimatedPrice;
         }
 
         private void GetAvailableShops()
         {
-            List<string> shops = new List<string>();
+            List<ShopTypes> shops = new List<ShopTypes>();
 
             foreach(ShoppingItem item in manager.ShoppingList)
             {
-                foreach((string, double) shop in item.ShopPrices)
+                foreach(KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
                 {
-                    if (shop.Item1.Equals("ANY") || shops.Contains(shop.Item1)) continue;
+                    if (shop.Key == ShopTypes.UNKNOWN || shops.Contains(shop.Key)) continue;
 
-                    shops.Add(shop.Item1);
+                    shops.Add(shop.Key);
                 }
             }
 
@@ -239,7 +256,7 @@ namespace ViewModels
 
         private void UpdateSelectedShops(object parameter)
         {
-            if(parameter is string shop)
+            if(parameter is ShopTypes shop)
             {
                 if (IsSelected)
                     selectedShops.Add(shop);
@@ -263,7 +280,7 @@ namespace ViewModels
         {
             GetAvailableShops();
             ShowOptimizedList = false;
-            selectedShops = new List<string>();
+            selectedShops = new List<ShopTypes>();
             OnlyReplaceUnspecifiedShops = false;
         }
     }

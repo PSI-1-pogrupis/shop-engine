@@ -1,6 +1,7 @@
 ﻿using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Input;
 
@@ -37,6 +38,8 @@ namespace ViewModels
         {
             ChangeViewCommand = new RelayCommand(ChangeViewModel, canExecute => true);
             ChangeStatusPanelCommand = new RelayCommand(ChangeStatusPanel, canExecute => true);
+            loadedShoppingLists = new List<ShoppingListManager>();
+            selectedShoppingList = null;
             SelectedViewModel = new HomeViewModel(this);
             StatusPanel = null;
         }

@@ -9,7 +9,7 @@ namespace CSE.BL
     {
         public ListOptimizer() { }
 
-        public ShoppingListManager GetLowestPriceList(ShoppingListManager list, List<string> availableShops, bool onlyReplaceUnspecified)
+        public ShoppingListManager GetLowestPriceList(ShoppingListManager list, List<ShopTypes> availableShops, bool onlyReplaceUnspecified)
         {
             ShoppingListManager newList = new ShoppingListManager();
 
@@ -17,17 +17,17 @@ namespace CSE.BL
             {
                 ShoppingItem newItem = new ShoppingItem(item);
 
-                (string, double) bestPrice = ("NULL", double.PositiveInfinity);
+                KeyValuePair<ShopTypes, double> bestPrice = new KeyValuePair<ShopTypes, double>(ShopTypes.UNKNOWN, double.PositiveInfinity);
 
-                if (!onlyReplaceUnspecified || item.SelectedShopName.Equals("ANY"))
+                if (!onlyReplaceUnspecified || item.SelectedShopName == ShopTypes.UNKNOWN)
                 {
-                    foreach ((string, double) shop in item.ShopPrices)
+                    foreach (KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
                     {
-                        if (shop.Item1.Equals("ANY")) continue;
+                        if (shop.Key == ShopTypes.UNKNOWN) continue;
 
-                        if (!availableShops.Contains(shop.Item1)) continue;
+                        if (!availableShops.Contains(shop.Key)) continue;
 
-                        if (shop.Item2 < bestPrice.Item2) bestPrice = shop;
+                        if (shop.Value < bestPrice.Value) bestPrice = shop;
                     }
                 }
                 else

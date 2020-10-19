@@ -1,4 +1,7 @@
-﻿namespace CSE.BL.ShoppingList
+﻿using System;
+using System.Collections.Generic;
+
+namespace CSE.BL.ShoppingList
 {
     public static class ShoppingListResourceProcessor
     {
@@ -12,11 +15,12 @@
         public static ShoppingListManager LoadList()
         {
             return BinaryFileManager.ReadObjectFromBinaryFile<ShoppingListManager>(filePath);
+        }
         public static List<ShoppingListManager> LoadLists()
         {
             try
             {
-                return BinaryFileManager.ReadFromBinaryFile<List<ShoppingListManager>>(filePath);
+                return BinaryFileManager.ReadObjectFromBinaryFile<List<ShoppingListManager>>(filePath);
             }
             catch(Exception)
             {

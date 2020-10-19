@@ -1,4 +1,7 @@
-﻿using CSE.BL.ShoppingList;
+﻿using CSE.BL;
+using CSE.BL.Database;
+using CSE.BL.Interfaces;
+using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,7 @@ namespace ViewModels
     {
         public class ItemComparison
         {
-            public string Shop { get; set; }
+            public ShopTypes Shop { get; set; }
             public string PriceDifference { get; set; }
         }
 
@@ -21,7 +24,7 @@ namespace ViewModels
         private List<ItemComparison> shopComparison;
 
         private ShoppingItem selectedItem;
-        private (string, double) selectedShop;
+        private KeyValuePair<ShopTypes, double> selectedShop;
         private int selectedAmount = 1;
         private string selectedName = "";
         private bool isNotSelected = true;
@@ -82,7 +85,7 @@ namespace ViewModels
             }
         }
 
-        public (string, double) SelectedShop
+        public KeyValuePair<ShopTypes, double> SelectedShop
         {
             get { return selectedShop; }
             set
@@ -138,9 +141,9 @@ namespace ViewModels
             //TODO: Product list should be retrieved from the database
             ProductList = new List<ShoppingItem>();
 
-            for (int i = 0; i < 20; i++)
+            using (IShoppingItemRepository repo = new ShoppingItemRepository())
             {
-                ProductList.Add(new ShoppingItem("Item " + i.ToString(), 1, UnitTypes.kg));
+                ProductList = repo.GetAll();
             }
 
             string text = SearchText;
@@ -157,7 +160,7 @@ namespace ViewModels
             if(parameter is ShoppingItem item)
             {
                 SelectedItem = item;
-                if (item.ShopPrices.Count > 0) SelectedShop = item.ShopPrices[0];
+                if (item.ShopPrices.Count > 0) SelectedShop = item.ShopPrices.First();
             }
         }
 
@@ -183,13 +186,13 @@ namespace ViewModels
         {
             List<ItemComparison> comparison = new List<ItemComparison>();
 
-            foreach((string, double) shop in SelectedItem.ShopPrices)
+            foreach(KeyValuePair<ShopTypes, double> shop in SelectedItem.ShopPrices)
             {
-                if (shop.Item1.Equals("ANY")) continue;
+                if (shop.Key == ShopTypes.UNKNOWN) continue;
 
-                if(shop.Item1 != SelectedShop.Item1)
+                if(shop.Key != SelectedShop.Key)
                 {
-                    ItemComparison comp = new ItemComparison { Shop = shop.Item1, PriceDifference = Math.Round((shop.Item2 - SelectedShop.Item2) * selectedAmount, 2).ToString() };
+                    ItemComparison comp = new ItemComparison { Shop = shop.Key, PriceDifference = Math.Round((shop.Value - SelectedShop.Value) * selectedAmount, 2).ToString() };
                     comparison.Add(comp);
                 }
             }

@@ -63,10 +63,9 @@ namespace CSE.BL.Database
                                  select item)
             {
                 item.Name = shoppingItem.Name;
-                item.Shop = shoppingItem.Shop;
                 item.Unit = shoppingItem.Unit;
                 item.Amount = shoppingItem.Amount;
-                item.Price = shoppingItem.Price;
+                item.ShopPrices = shoppingItem.ShopPrices;
                 break;
             }
         }

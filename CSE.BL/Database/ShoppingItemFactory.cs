@@ -1,5 +1,6 @@
 ﻿using CSE.BL.Interfaces;
 using CSE.BL.ShoppingList;
+using System.Collections.Generic;
 
 namespace CSE.BL.Database
 {
@@ -19,9 +20,9 @@ namespace CSE.BL.Database
             return instance;
         }
         // Create new ready-to-use object using values
-        public ShoppingItem CreateInstance(int id, ShopTypes shopType, string name, double amount, UnitTypes unit, double price)
+        public ShoppingItem CreateInstance(int id, string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
         {
-            ShoppingItem instance = new ShoppingItem(id, shopType, name, amount, unit, price);
+            ShoppingItem instance = new ShoppingItem(id, name, amount, unit, prices);
 
             return instance;
         }
@@ -32,7 +33,7 @@ namespace CSE.BL.Database
             instance.Id = data.Id;
             instance.Name = data.Name;
             instance.Unit = data.Unit;
-            instance.Price = data.Price;
+            instance.ShopPrices = data.ShopPrices;
             instance.Amount = data.Amount;
         }
     }
