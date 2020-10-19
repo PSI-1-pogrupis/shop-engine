@@ -8,13 +8,13 @@ namespace CSE.BL.ShoppingList
     [Serializable]
     public class ShoppingItem
     {
-        public Dictionary<string, double> dictionary;//dictionary for saving same item prices over different shops
         private int? id;//item id
-        private ShopTypes shop; //item shop place
         private string name; //name of the item
         private UnitTypes unit; //the unit of measurement for this item
         private double amount; //amount of the item 
-        private double price; //price of the item
+
+        public Dictionary<ShopTypes, double> ShopPrices { get; set; } //dictionary for saving same item prices over different shops
+        public KeyValuePair<ShopTypes, double> SelectedShop { get; set; }
 
         public int? Id
         {
@@ -28,17 +28,14 @@ namespace CSE.BL.ShoppingList
             }
         }
 
-        // get/set index of shop
-        public ShopTypes Shop
+        public ShopTypes SelectedShopName
         {
-            get
-            {
-                return shop;
-            }
-            set
-            {
-                shop = value;
-            }
+            get { return SelectedShop.Key; }
+        }
+
+        public double Price
+        {
+            get { return Amount * SelectedShop.Value; }
         }
 
         // get/set the name of the item
@@ -50,8 +47,7 @@ namespace CSE.BL.ShoppingList
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                    name = value;
+                if (!string.IsNullOrEmpty(value)) name = value;
             }
         }
 
@@ -80,24 +76,7 @@ namespace CSE.BL.ShoppingList
             }
             set
             {
-                if (Enum.IsDefined(typeof(UnitTypes), value))
-                    unit = value;
-            }
-        }
-
-        // get/set the price of the item
-        public double Price
-        {
-            get
-            {
-                return price;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    price = value;
-                }
+                if (Enum.IsDefined(typeof(UnitTypes), value)) unit = value;
             }
         }
 
@@ -106,15 +85,13 @@ namespace CSE.BL.ShoppingList
         }
 
         //constructor for the ShoppingItem class
-        public ShoppingItem(int? id, ShopTypes shop, string name, double amount, UnitTypes unit, double price)
+        public ShoppingItem(int? id, string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
         {
-            dictionary.Add(shop.ToString(), price);
+            ShopPrices = prices;
             this.id = id;
-            this.shop = shop;
             this.name = name;
             this.amount = amount;
             this.unit = unit;
-            this.price = price;
         }
 
         public ShoppingItem(ShoppingItem item)
@@ -122,13 +99,12 @@ namespace CSE.BL.ShoppingList
             if (item != null)
             {
                 id = item.id;
-                shop = item.shop;
                 name = item.name;
                 amount = item.amount;
                 unit = item.unit;
-                price = item.price;
+                ShopPrices = item.ShopPrices;
             }
-            dictionary.Add(shop.ToString(), price);
+
         }
 
         public override string ToString()

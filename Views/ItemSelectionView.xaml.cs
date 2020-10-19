@@ -14,18 +14,13 @@ using System.Windows.Shapes;
 namespace Views
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for ItemSelectionView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class ItemSelectionView : UserControl
     {
-        public HomeView()
+        public ItemSelectionView()
         {
             InitializeComponent();
-        }
-
-        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
     }
 }

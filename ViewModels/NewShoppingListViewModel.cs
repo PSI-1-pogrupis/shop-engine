@@ -5,170 +5,283 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
+using System.Security.Cryptography.Xml;
+using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
-using CSE.BL;
 
 namespace ViewModels
 {
     public class NewShoppingListViewModel : BaseViewModel
     {
-        private string searchText = "";
-        private readonly List<ShoppingItem> Products;
+        private readonly MainViewModel mainVM;
+        private ShoppingListManager manager;
 
+        private ShoppingListManager optimizedList;
         private ObservableCollection<ShoppingItem> shoppingList;
-        private List<ShoppingItem> productList;
+        private List<ShopTypes> listShops;
+        private List<ShopTypes> selectedShops;
+        private List<ShopTypes> availableShops;
 
-        private bool isPopupVisible = false;
-        private ShoppingItem selectedItem;
-        private int selectedAmount = 1;
+        private string selectedName = "";
+        private double estimatedPrice = 0;
+        private double optimizedListPriceDifference = 0;
+        private bool showOptimizedList = false;
+        private bool onlyReplaceUnspecifiedShops = false;
+        private readonly bool editMode = false;
 
-        public ObservableCollection<ShoppingItem> ShoppingList
+        public ShoppingListManager OptimizedList {
+            get { return optimizedList; }
+            set
+            {
+                optimizedList = value;
+                OnPropertyChanged(nameof(OptimizedList));
+                OnPropertyChanged(nameof(OptimizedListEstimatedPrice));
+            }
+        }
+
+        public ObservableCollection<ShoppingItem> ObservableShoppingList
         {
-            get { return shoppingList; }
+            get => shoppingList;
             set
             {
                 shoppingList = value;
-                OnPropertyChanged(nameof(ShoppingList));
+                OnPropertyChanged(nameof(ObservableShoppingList));
             }
         }
 
-        public List<ShoppingItem> ProductList
+        public string SelectedName
         {
-            get { return productList; }
+            get { return selectedName; }
             set
             {
-                productList = value;
-                OnPropertyChanged(nameof(ProductList));
+                selectedName = value;
+                manager.Name = value;
+                OnPropertyChanged(nameof(SelectedName));
             }
         }
 
-        public string SearchText
+        public List<ShopTypes> ListShops
         {
-            get { return searchText; }
-
+            get { return listShops; }
             set
             {
-                searchText = value;
-                OnPropertyChanged(nameof(SearchText));
+                listShops = value;
+                OnPropertyChanged(nameof(ListShops));
             }
         }
 
-        public ShoppingItem SelectedItem{
-            get { return selectedItem; }
-            set
-            {
-                selectedItem = value;
-                OnPropertyChanged(nameof(SelectedItem));
-            }
-        }
-
-        public string SelectedAmount
+        public List<ShopTypes> AvailableShops
         {
-            get { return selectedAmount.ToString(); }
+            get { return availableShops; }
             set
             {
-                if (int.TryParse(value, out int amount)) selectedAmount = amount;
-                else selectedAmount = 1;
-
-                OnPropertyChanged(nameof(SelectedAmount));
+                availableShops = value;
+                OnPropertyChanged(nameof(AvailableShops));
             }
         }
 
-        public bool IsPopupVisible
+        public bool IsSelected { get; set; }
+
+        public double EstimatedPrice
         {
-            get { return isPopupVisible; }
+            get { return estimatedPrice; }
             set
             {
-                isPopupVisible = value;
-                OnPropertyChanged(nameof(IsPopupVisible));
+                estimatedPrice = Math.Round(value, 2);
+                OnPropertyChanged(nameof(EstimatedPrice));
             }
         }
 
-        public ICommand ClosePopupCommand { get; private set; }
-        public ICommand AddItemPopupCommand { get; private set; }
+        public double OptimizedListEstimatedPrice
+        {
+            get {
+                if (optimizedList != null)
+                    return Math.Round(optimizedList.EstimatedPrice, 2);
+                else return 0;
+            }
+        }
+
+        public double OptimizedListPriceDifference
+        {
+            get { return optimizedListPriceDifference; }
+            set
+            {
+                optimizedListPriceDifference = Math.Round(value, 2);
+                OnPropertyChanged(nameof(OptimizedListPriceDifference));
+            }
+        }
+
+        public bool ShowOverview
+        {
+            get { return !showOptimizedList; }
+        }
+
+        public bool ShowOptimizedList
+        {
+            get { return showOptimizedList; }
+            set
+            {
+                showOptimizedList = value;
+                OnPropertyChanged(nameof(ShowOptimizedList));
+                OnPropertyChanged(nameof(ShowOverview));
+            }
+        }
+
+        public bool OnlyReplaceUnspecifiedShops
+        {
+            get { return onlyReplaceUnspecifiedShops; }
+            set
+            {
+                onlyReplaceUnspecifiedShops = value;
+                OnPropertyChanged(nameof(OnlyReplaceUnspecifiedShops));
+            }
+        }
+
+        public ICommand SaveShoppingListCommand { get; private set; }
         public ICommand AddItemCommand { get; private set; }
         public ICommand RemoveItemCommand { get; private set; }
-        public ICommand SearchCommand { get; private set; }
-        public NewShoppingListViewModel()
+        public ICommand OptimizeShoppingListCommand { get; private set; }
+        public ICommand UpdateSelectedShopsCommand { get; private set; }
+        public ICommand ReplaceShoppingListCommand { get; private set; }
+        public ICommand CancelOptimizationCommand { get; private set; }
+        public NewShoppingListViewModel(MainViewModel _mainVM, bool _editMode)
         {
+            mainVM = _mainVM;
+            editMode = _editMode;
+
             AddItemCommand = new RelayCommand(AddItem, canExecute => true);
             RemoveItemCommand = new RelayCommand(RemoveItem, canExecute => true);
-            SearchCommand = new RelayCommand(SearchList, canExecute => true);
-            AddItemPopupCommand = new RelayCommand(AddPopup, canExecute => true);
-            ClosePopupCommand = new RelayCommand(ClosePopup, canExecute => true);
+            SaveShoppingListCommand = new RelayCommand(SaveShoppingList, canExecute => CanSaveShoppingList());
+            OptimizeShoppingListCommand = new RelayCommand(OptimizeShoppingList, canExecute => CanOptimizeList());
+            UpdateSelectedShopsCommand = new RelayCommand(UpdateSelectedShops, canExecute => true);
+            ReplaceShoppingListCommand = new RelayCommand(ReplaceShoppingList, canExecute => true);
+            CancelOptimizationCommand = new RelayCommand(CancelOptimization, canExecute => true);
 
-            ProductList = new List<ShoppingItem>();
-            ShoppingList = new ObservableCollection<ShoppingItem>();
-
-            Products = new List<ShoppingItem>();
-
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            if (editMode)
             {
-                Products = repo.GetAll();
+                manager = mainVM.selectedShoppingList;
+                manager.Name = mainVM.selectedShoppingList.Name;
+                SelectedName = manager.Name;
             }
-            productList = Products;
-        }
-
-        private void AddPopup(object parameter)
-        {
-            if(parameter is ShoppingItem selected)
+            else
             {
-                SelectedItem = selected;
-                IsPopupVisible = true;
+                manager = new ShoppingListManager();
+                SelectedName = "New Shopping List";
             }
+
+            selectedShops = new List<ShopTypes>();
+            ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
+            UpdateOverview();
+            GetAvailableShops();
+
+            ShowOptimizedList = false;
         }
 
         private void AddItem(object parameter)
-        {   
-            foreach(ShoppingItem item in ShoppingList)
-            {
-                if (item.Name.Equals(SelectedItem.Name))
-                {
-                    ShoppingList.Remove(item);
-                    item.Amount += selectedAmount;
-                    ShoppingList.Add(item);
-
-                    ClosePopup(null);
-                    return;
-                }
-            }
-
-            ShoppingItem newItem = (new ShoppingItem(SelectedItem));
-            newItem.Amount = selectedAmount;
-            ShoppingList.Add(newItem);
-
-            ClosePopup(null);
+        {
+            mainVM.selectedShoppingList = manager;
+            mainVM.ChangeViewCommand.Execute("ItemSelection");
         }
 
         private void RemoveItem(object parameter)
         {
-            if (parameter is ShoppingItem selectedItem)
+            if (parameter is ShoppingItem item)
             {
-                ShoppingList.Remove(selectedItem);
+                ObservableShoppingList.Remove(item);
+                manager.RemoveItem(item);
+                UpdateOverview();
+            }
+
+            GetAvailableShops();
+        }
+
+        private bool CanSaveShoppingList()
+        {
+            if (ObservableShoppingList.Count() == 0) return false;
+
+            return true;
+        }
+
+        private void SaveShoppingList(object parameter)
+        {
+            if (editMode && mainVM.loadedShoppingLists.Contains(mainVM.selectedShoppingList)) mainVM.loadedShoppingLists.Remove(mainVM.selectedShoppingList);
+
+            mainVM.loadedShoppingLists.Insert(0, manager);
+            mainVM.selectedShoppingList = manager;
+
+            ShoppingListResourceProcessor.SaveLists(mainVM.loadedShoppingLists);
+
+            mainVM.ChangeViewCommand.Execute("ViewShoppingList");
+        }
+
+        private void UpdateOverview()
+        {
+            ListShops = manager.UniqueShops;
+            EstimatedPrice = manager.EstimatedPrice;
+        }
+
+        private void GetAvailableShops()
+        {
+            List<ShopTypes> shops = new List<ShopTypes>();
+
+            foreach(ShoppingItem item in manager.ShoppingList)
+            {
+                foreach(KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
+                {
+                    if (shop.Key == ShopTypes.UNKNOWN || shops.Contains(shop.Key)) continue;
+
+                    shops.Add(shop.Key);
+                }
+            }
+
+            AvailableShops = shops;
+        }
+
+        private void OptimizeShoppingList(object parameter)
+        {
+            ListOptimizer optimizer = new ListOptimizer();
+
+            OptimizedList = optimizer.GetLowestPriceList(manager, selectedShops, OnlyReplaceUnspecifiedShops);
+
+            OptimizedListPriceDifference = Math.Round(manager.EstimatedPrice - OptimizedList.EstimatedPrice, 2);
+            ShowOptimizedList = true;
+        }
+
+        private bool CanOptimizeList()
+        {
+            if (selectedShops.Count > 0) return true;
+            else return false;
+        }
+
+        private void UpdateSelectedShops(object parameter)
+        {
+            if(parameter is ShopTypes shop)
+            {
+                if (IsSelected)
+                    selectedShops.Add(shop);
+                else selectedShops.Remove(shop);
             }
         }
 
-        private void SearchList(object parameter)
+        private void ReplaceShoppingList(object parameter)
         {
+            manager = OptimizedList;
+            manager.Name = SelectedName;
 
-            string text = SearchText;
+            ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
+            EstimatedPrice = manager.EstimatedPrice;
+            ListShops = manager.UniqueShops;
 
-            var selected = from i in Products
-                           where i.Name.Contains(text)
-                           select i;
-
-            ProductList = selected.ToList();
+            CancelOptimization(null);
         }
 
-        private void ClosePopup(object parameter)
+        private void CancelOptimization(object parameter)
         {
-            SelectedAmount = "1";
-            SelectedItem = null;
-            IsPopupVisible = false;
+            GetAvailableShops();
+            ShowOptimizedList = false;
+            selectedShops = new List<ShopTypes>();
+            OnlyReplaceUnspecifiedShops = false;
         }
-        
     }
 }

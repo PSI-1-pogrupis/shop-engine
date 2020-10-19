@@ -22,6 +22,9 @@
                     <DataTemplate DataType="{x:Type viewModels:NewShoppingListViewModel}">
                         <views:NewShoppingListView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:ItemSelectionViewModel}">
+                        <views:ItemSelectionView/>
+                    </DataTemplate>
                     <DataTemplate DataType="{x:Type viewModels:BillingStatementViewModel}">
                         <views:BillingStatementView/>
                     </DataTemplate>
@@ -47,9 +50,9 @@
                     </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary>
-                    <Style>
+                    <Style x:Key="booleanConverter">
                         <Style.Resources>
-                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+                            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
                         </Style.Resources>
                     </Style>
                 </ResourceDictionary>

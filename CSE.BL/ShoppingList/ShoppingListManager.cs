@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,13 +10,36 @@ namespace CSE.BL.ShoppingList
     [Serializable]
     public class ShoppingListManager
     {
-        private List<ShoppingItem> shoppingList;
+        private string name;
+        public List<ShopTypes> UniqueShops { get; set; }
+        public double EstimatedPrice { get; private set; }
 
         //constructor for ShoppingListManager class
         public ShoppingListManager()
         {
-            shoppingList = new List<ShoppingItem>();
+            ShoppingList = new List<ShoppingItem>();
+            UniqueShops = new List<ShopTypes>();
         }
+
+        public ShoppingListManager(IEnumerable<ShoppingItem> collection) : base()
+        {
+            ShoppingList = new List<ShoppingItem>(collection);
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    name = value;
+            }
+        }
+
+        public List<ShoppingItem> ShoppingList { get; set; }
 
         //method that gets the item from the shopping list at the given index
         public ShoppingItem GetItem(int index)
@@ -23,11 +47,10 @@ namespace CSE.BL.ShoppingList
             if (!CheckIndex(index))
                 return null;
 
-            return shoppingList[index];
+            return ShoppingList[index];
         }
 
-        //method that returns an item list
-        public List<ShoppingItem> GetItemList() { return shoppingList; }
+        public int Count() { return ShoppingList.Count; }
 
         //method that adds given item to the list and returns value 'true' if the input was correct
         public bool AddItem(ShoppingItem item)
@@ -36,7 +59,21 @@ namespace CSE.BL.ShoppingList
 
             if (item != null)
             {
-                shoppingList.Add(item);
+                foreach(ShoppingItem itm in ShoppingList)
+                {
+                    if(item.Name.Equals(itm.Name) && item.SelectedShop.Equals(itm.SelectedShop))
+                    {
+                        itm.Amount += item.Amount;
+                        EstimatedPrice += item.Price;
+
+                        return true;
+                    }
+                }
+
+                EstimatedPrice += item.Price;
+
+                ShoppingList.Add(item);
+                FindUniqueShops();
                 ok = true;
             }
 
@@ -49,9 +86,11 @@ namespace CSE.BL.ShoppingList
             bool ok = false;
             if (CheckIndex(index))
             {
-                shoppingList[index].Name = item.Name;
-                shoppingList[index].Amount = item.Amount;
-                shoppingList[index].Unit = item.Unit;
+                ShoppingList[index].Name = item.Name;
+                ShoppingList[index].Amount = item.Amount;
+                ShoppingList[index].Unit = item.Unit;
+
+                FindUniqueShops();
                 ok = true;
             }
 
@@ -59,25 +98,43 @@ namespace CSE.BL.ShoppingList
         }
 
         //method to delete item from the list at given index. Returns 'true' if index was valid
-        public bool DeleteItem(int index)
+        public bool RemoveItem(int index)
         {
             bool ok = false;
 
             if (CheckIndex(index))
             {
-                shoppingList.RemoveAt(index);
+                ShoppingItem item = ShoppingList[index];
+
+                EstimatedPrice -= item.Price;
+
+                ShoppingList.Remove(item);
+                FindUniqueShops();
                 ok = true;
             }
 
             return ok;
         }
+
+        //method to remove an item from the list
+        public bool RemoveItem(ShoppingItem item)
+        {
+            if (!ShoppingList.Contains(item)) return false;
+
+            ShoppingList.Remove(item);
+
+            EstimatedPrice -= item.Price;
+            FindUniqueShops();
+
+            return true;
+        } 
 
         //method to check if the given index is valid
         private bool CheckIndex(int index)
         {
             bool ok = false;
 
-            if ((index >= 0) && index < shoppingList.Count)
+            if ((index >= 0) && index < ShoppingList.Count)
             {
                 ok = true;
             }
@@ -85,5 +142,30 @@ namespace CSE.BL.ShoppingList
             return ok;
         }
 
+        private void FindUniqueShops()
+        {
+            UniqueShops = new List<ShopTypes>();
+
+            foreach(ShoppingItem item in ShoppingList)
+            {
+                if (item.SelectedShopName == ShopTypes.UNKNOWN) continue;
+
+                if (!UniqueShops.Contains(item.SelectedShop.Key)) UniqueShops.Add(item.SelectedShop.Key);
+            }
+        }
+
+        public void UpdateInformation()
+        {
+            EstimatedPrice = 0;
+
+            foreach(ShoppingItem item in ShoppingList)
+            {
+                if (item.SelectedShop.Key.Equals("ANY")) continue;
+
+                EstimatedPrice += item.SelectedShop.Value * item.Amount;
+            }
+
+            FindUniqueShops();
+        }
     }
 }

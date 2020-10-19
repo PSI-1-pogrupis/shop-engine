@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CSE.BL.ShoppingList;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Input;
 
@@ -9,6 +11,9 @@ namespace ViewModels
     {
         private BaseViewModel selectedViewModel;
         private BaseViewModel statusPanel;
+
+        public ShoppingListManager selectedShoppingList;
+        public List<ShoppingListManager> loadedShoppingLists;
 
         public BaseViewModel SelectedViewModel
         {
@@ -33,7 +38,9 @@ namespace ViewModels
         {
             ChangeViewCommand = new RelayCommand(ChangeViewModel, canExecute => true);
             ChangeStatusPanelCommand = new RelayCommand(ChangeStatusPanel, canExecute => true);
-            SelectedViewModel = new HomeViewModel();
+            loadedShoppingLists = new List<ShoppingListManager>();
+            selectedShoppingList = null;
+            SelectedViewModel = new HomeViewModel(this);
             StatusPanel = null;
         }
         public ICommand ChangeViewCommand { get; set; }
@@ -46,16 +53,18 @@ namespace ViewModels
 
             SelectedViewModel = (parameter.ToString()) switch
             {
-                "Home" => new HomeViewModel(),
+                "Home" => new HomeViewModel(this),
                 "CheckScanning" => new CheckScanningViewModel(),
-                "NewShoppingList" => new NewShoppingListViewModel(),
+                "NewShoppingList" => new NewShoppingListViewModel(this, false),
+                "EditShoppingList" => new NewShoppingListViewModel(this, true),
+                "ItemSelection" => new ItemSelectionViewModel(this),
                 "BillingStatement" => new BillingStatementViewModel(),
                 "ShoppingHistory" => new ShoppingHistoryViewModel(),
                 "Settings" => new SettingsViewModel(),
                 "Login" => new LoginViewModel(),
                 "Register" => new RegisterViewModel(),
                 "Faq" => new FaqViewModel(),
-                _ => new HomeViewModel(),
+                _ => new HomeViewModel(this),
             };
             return;
         }
@@ -65,5 +74,6 @@ namespace ViewModels
             if (StatusPanel == null) StatusPanel = new UserLoggedOutViewModel(this);
             else StatusPanel = null;
         }
+
     }
 }
