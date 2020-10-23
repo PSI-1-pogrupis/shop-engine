@@ -8,33 +8,19 @@ namespace CSE.BL.Database
     public class BinaryShoppingItemGateway : IShoppingItemGateway
     {
         private string filePath;
-        protected int id = 0;
 
         public BinaryShoppingItemGateway(string filePath)
         {
             this.filePath = filePath;
         }
 
-        public int Id
+        public ShoppingItem Find(string name, List<ShoppingItem> list)
         {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-
-        public ShoppingItem Find(int id, List<ShoppingItem> list)
-        {
-            return list.Find(b => b.Id.Equals(id));
+            return list.Find(b => b.Name.Equals(name));
         }
 
         public void Insert(ShoppingItem shoppingItem, List<ShoppingItem> list)
         {
-            SetId(shoppingItem);
             list.Add(shoppingItem);
             BinaryFileManager.WriteToBinaryFile(filePath, list);
         }
@@ -45,10 +31,10 @@ namespace CSE.BL.Database
             return readList;
         }
 
-        public void Remove(int? id, List<ShoppingItem> cache)
+        public void Remove(string name, List<ShoppingItem> cache)
         {
             foreach (var item in from ShoppingItem item in cache
-                                 where item.Id == id
+                                 where item.Name == name
                                  select item)
             {
                 cache.Remove(item);
@@ -59,7 +45,7 @@ namespace CSE.BL.Database
         public void Update(List<ShoppingItem> cache, ShoppingItem shoppingItem)
         {
             foreach (var item in from ShoppingItem item in cache
-                                 where item.Id == shoppingItem.Id
+                                 where item.Name == shoppingItem.Name
                                  select item)
             {
                 item.Name = shoppingItem.Name;
@@ -78,14 +64,6 @@ namespace CSE.BL.Database
         public void SetConnection(object dataPath)
         {
             this.filePath = (string)dataPath;
-        }
-
-        private void SetId(ShoppingItem shoppingItem)
-        {
-            if (shoppingItem.Id == null)
-            {
-                shoppingItem.Id = ++id;
-            }
         }
     }
 }

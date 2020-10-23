@@ -22,7 +22,7 @@ namespace CSE.BL.Database
         // Create new ready-to-use object using values
         public ShoppingItem CreateInstance(int id, string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
         {
-            ShoppingItem instance = new ShoppingItem(id, name, amount, unit, prices);
+            ShoppingItem instance = new ShoppingItem(name, amount, unit, prices);
 
             return instance;
         }
@@ -30,7 +30,6 @@ namespace CSE.BL.Database
         // Update passed object
         public void UpdateInstance(ShoppingItem data, ShoppingItem instance)
         {
-            instance.Id = data.Id;
             instance.Name = data.Name;
             instance.Unit = data.Unit;
             instance.ShopPrices = data.ShopPrices;
