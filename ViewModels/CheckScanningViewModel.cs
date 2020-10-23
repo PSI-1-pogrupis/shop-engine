@@ -2,6 +2,8 @@
 using CSE.BL.ScannedData;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -13,7 +15,7 @@ namespace ViewModels
     {
         private readonly ImageReader imgReader;
         private readonly ItemsScanner itemsScanner;
-        private readonly ScannedListManager scannedListManager;
+        private ScannedListManager scannedListManager;
         private string browseText = "";
         public string BrowseText
         {
@@ -64,12 +66,12 @@ namespace ViewModels
                 OnPropertyChanged("ImageSrc");
             }
         }
-        public List<ScannedItem> ScannedList
+        public ObservableCollection<ScannedItem> ScannedList
         {
-            get { return scannedListManager.ScannedItems; }
+            get { return new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems); }
             set
             {
-                scannedListManager.ScannedItems = value;
+                scannedListManager.ScannedItems = new List<ScannedItem>(value);
                 OnPropertyChanged("ScannedList");
             }
         }
@@ -96,6 +98,7 @@ namespace ViewModels
             BrowseText = "";
             ShopText = "";
             ImageSrc = null;
+            ScannedList = new ObservableCollection<ScannedItem>();
          
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
             {
@@ -120,6 +123,10 @@ namespace ViewModels
         {
             Thread.CurrentThread.IsBackground = true;
             ReadedText = imgReader.ReadImage(dlg.FileName);
+            itemsScanner.ScanProducts(scannedListManager, ReadedText);
+            ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
+            
+
             //ShopTypes shop = itemsScanner.GetShop(ReadedText);
             //switch (shop)
             //{

@@ -81,10 +81,10 @@
                                 <ListView.View>
                                     <GridView>
                                         
-                                        <GridViewColumn Header="Product" Width="200">
+                                        <GridViewColumn Header="Product" Width="240">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock x:Name="Txt" Text="{Binding Name}" Foreground="Black" />
+                                                    <TextBlock x:Name="Txt" Text="{Binding Name}" Foreground="White" />
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
 
@@ -110,7 +110,7 @@
                                         <GridViewColumn Header="Price" Width="100">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock x:Name="Txt" Text="{Binding Price}" Foreground="Black"/>
+                                                    <TextBlock x:Name="Txt" Text="{Binding Price}" Foreground="Wheat"/>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
 
