@@ -1,5 +1,7 @@
 ﻿using CSE.BL;
+using CSE.BL.ScannedData;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -11,6 +13,7 @@ namespace ViewModels
     {
         private readonly ImageReader imgReader;
         private readonly ItemsScanner itemsScanner;
+        private readonly ScannedListManager scannedListManager;
         private string browseText = "";
         public string BrowseText
         {
@@ -61,6 +64,15 @@ namespace ViewModels
                 OnPropertyChanged("ImageSrc");
             }
         }
+        public List<ScannedItem> ScannedList
+        {
+            get { return scannedListManager.ScannedItems; }
+            set
+            {
+                scannedListManager.ScannedItems = value;
+                OnPropertyChanged("ScannedList");
+            }
+        }
 
 
         public ICommand BrowseCommand { get; set; }
@@ -70,6 +82,12 @@ namespace ViewModels
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
+            scannedListManager = new ScannedListManager();
+            
+
+            // *** for testing:
+            ScannedList.Add(new ScannedItem("Braškės", 3.99f));
+            ScannedList.Add(new ScannedItem("Dvaro pienas", 2.49f));
         }
 
         private void Browse_Click(object obj)
@@ -102,28 +120,28 @@ namespace ViewModels
         {
             Thread.CurrentThread.IsBackground = true;
             ReadedText = imgReader.ReadImage(dlg.FileName);
-            ShopTypes shop = itemsScanner.GetShop(ReadedText);
-            switch (shop)
-            {
-                case ShopTypes.IKI:
-                    ShopText = ShopTypes.IKI.ToString();
-                    break;
-                case ShopTypes.MAXIMA:
-                    ShopText = ShopTypes.MAXIMA.ToString();
-                    break;
-                case ShopTypes.LIDL:
-                    ShopText = ShopTypes.LIDL.ToString();
-                    break;
-                case ShopTypes.NORFA:
-                    ShopText = ShopTypes.NORFA.ToString();
-                    break;
-                case ShopTypes.RIMI:
-                    ShopText = ShopTypes.RIMI.ToString();
-                    break;
-                case ShopTypes.UNKNOWN:
-                    ShopText = "";
-                    break;
-            }
+            //ShopTypes shop = itemsScanner.GetShop(ReadedText);
+            //switch (shop)
+            //{
+            //    case ShopTypes.IKI:
+            //        ShopText = ShopTypes.IKI.ToString();
+            //        break;
+            //    case ShopTypes.MAXIMA:
+            //        ShopText = ShopTypes.MAXIMA.ToString();
+            //        break;
+            //    case ShopTypes.LIDL:
+            //        ShopText = ShopTypes.LIDL.ToString();
+            //        break;
+            //    case ShopTypes.NORFA:
+            //        ShopText = ShopTypes.NORFA.ToString();
+            //        break;
+            //    case ShopTypes.RIMI:
+            //        ShopText = ShopTypes.RIMI.ToString();
+            //        break;
+            //    case ShopTypes.UNKNOWN:
+            //        ShopText = "";
+            //        break;
+            //}
             ListLabelContent = "";
         }
     }
