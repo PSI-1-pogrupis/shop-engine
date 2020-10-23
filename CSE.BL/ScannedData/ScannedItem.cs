@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace CSE.BL.ScannedData
@@ -8,7 +9,7 @@ namespace CSE.BL.ScannedData
     public class ScannedItem
     {
         private string name;
-        private float price;
+        private decimal price;
 
         public string Name 
         {
@@ -22,7 +23,7 @@ namespace CSE.BL.ScannedData
                     name = value;
             }
         }
-        public float Price
+        public decimal Price
         {
             get
             {
@@ -32,15 +33,31 @@ namespace CSE.BL.ScannedData
             {
                 if (value > 0)
                 {
+                    PriceString = value.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
                     price = value;
                 }
             }
         }
-
-        public ScannedItem (string name, float price)
+        private decimal discount;
+        public decimal Discount
         {
-            this.name = name;
-            this.price = price;
+            get
+            {
+                return discount;
+            }
+            set
+            {
+                DiscountString = value.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
+                discount = value;
+            }
+        }
+        public string PriceString { get; set; }
+        public string DiscountString { get; set; }
+
+        public ScannedItem (string name, decimal price)
+        {
+            Name = name;
+            Price = price;
         }
 
     }

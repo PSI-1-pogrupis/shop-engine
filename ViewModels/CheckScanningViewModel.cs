@@ -87,9 +87,6 @@ namespace ViewModels
             scannedListManager = new ScannedListManager();
             
 
-            // *** for testing:
-            ScannedList.Add(new ScannedItem("Braškės", 3.99f));
-            ScannedList.Add(new ScannedItem("Dvaro pienas", 2.49f));
         }
 
         private void Browse_Click(object obj)

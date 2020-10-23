@@ -23,6 +23,11 @@ namespace CSE.BL.ScannedData
             return ScannedItems[index];
         }
 
+        public int GetCount()
+        {
+            return ScannedItems.Count;
+        }
+
         public bool AddItem(ScannedItem item)
         {
             bool ok = false;
