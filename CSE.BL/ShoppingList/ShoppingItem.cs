@@ -8,25 +8,12 @@ namespace CSE.BL.ShoppingList
     [Serializable]
     public class ShoppingItem
     {
-        private int? id;//item id
         private string name; //name of the item
         private UnitTypes unit; //the unit of measurement for this item
         private double amount; //amount of the item 
 
         public Dictionary<ShopTypes, double> ShopPrices { get; set; } //dictionary for saving same item prices over different shops
         public KeyValuePair<ShopTypes, double> SelectedShop { get; set; }
-
-        public int? Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
 
         public ShopTypes SelectedShopName
         {
@@ -85,10 +72,9 @@ namespace CSE.BL.ShoppingList
         }
 
         //constructor for the ShoppingItem class
-        public ShoppingItem(int? id, string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
+        public ShoppingItem(string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
         {
             ShopPrices = prices;
-            this.id = id;
             this.name = name;
             this.amount = amount;
             this.unit = unit;
@@ -98,7 +84,6 @@ namespace CSE.BL.ShoppingList
         {
             if (item != null)
             {
-                id = item.id;
                 name = item.name;
                 amount = item.amount;
                 unit = item.unit;

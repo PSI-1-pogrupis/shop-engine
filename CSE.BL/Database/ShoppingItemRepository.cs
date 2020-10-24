@@ -25,8 +25,6 @@ namespace CSE.BL.Database
 
                     foreach (var record in data)
                     {
-                        if (record.Id != null && record.Id > gateway.Id)
-                            gateway.Id = record.Id.Value;
                         cache.Add(factory.CreateInstance(record));
                     }
                 }
@@ -53,12 +51,11 @@ namespace CSE.BL.Database
                 gateway.Insert(shoppingItem, cache);
             }
         }
-        // Retrieve searched Shopping Item
-        public ShoppingItem Find(int id)
+        public ShoppingItem Find(string name)
         {
             if (cache == null)
-                return gateway.Find(id, Cache);
-            return gateway.Find(id, cache);
+                return gateway.Find(name, Cache);
+            return gateway.Find(name, cache);
         }
         // Retrieve all Shopping Items
         public List<ShoppingItem> GetAll()
@@ -72,11 +69,11 @@ namespace CSE.BL.Database
         {
             if (cache == null && shoppingItem != null)
             {
-                gateway.Remove(shoppingItem.Id, Cache);
+                gateway.Remove(shoppingItem.Name, Cache);
             }
             else if (shoppingItem != null)
             {
-                gateway.Remove(shoppingItem.Id, cache);
+                gateway.Remove(shoppingItem.Name, cache);
             }
         }
         // Update specific Shopping Item
