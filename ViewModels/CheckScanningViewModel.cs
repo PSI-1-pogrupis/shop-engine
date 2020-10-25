@@ -3,9 +3,7 @@ using CSE.BL.ScannedData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -73,6 +71,19 @@ namespace ViewModels
             {
                 scannedListManager.ScannedItems = new List<ScannedItem>(value);
                 OnPropertyChanged("ScannedList");
+            }
+        }
+
+        private ShopTypes selectedShop;
+        public ShopTypes SelectedShop {
+            get { return selectedShop;}
+            set
+            {
+                if(selectedShop != value)
+                {
+                    selectedShop = value;
+                    OnPropertyChanged("SelectedShop");
+                }
             }
         }
 
@@ -149,4 +160,6 @@ namespace ViewModels
             ListLabelContent = "";
         }
     }
+
+    
 }

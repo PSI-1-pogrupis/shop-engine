@@ -92,7 +92,11 @@ namespace CSE.BL
                 {
                     productPrice = ParseDecimal(line, i);
 
-                    if (productPrice != 0) return true;
+                    if (productPrice != 0)
+                    {
+                        if (productName.ContainsSimilar("UŽST", 1) && productPrice == 0.1m) return false; // deposit bottle
+                        return true;
+                    }
                     return false;
                 }
             }
