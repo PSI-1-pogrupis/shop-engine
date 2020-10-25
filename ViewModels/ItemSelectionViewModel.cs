@@ -164,7 +164,7 @@ namespace ViewModels
 
         private void AddItem(object parameter)
         {
-            ShoppingItem item = new ShoppingItem(SelectedItem, selectedAmount, SelectedShop.Key, selectedShop.Value);
+            ShoppingItem item = new ShoppingItem(SelectedItem.Name, SelectedShop.Key, selectedShop.Value, selectedAmount, SelectedItem.Unit);
 
             mainVM.selectedShoppingList.AddItem(item);
             mainVM.ChangeViewCommand.Execute("EditShoppingList");

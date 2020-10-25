@@ -20,7 +20,7 @@ namespace CSE.BL.ShoppingList
         public string Name
         {
             get { return name; }
-            set
+            private set
             {
                 if (!string.IsNullOrEmpty(value)) name = value;
             }
@@ -40,7 +40,7 @@ namespace CSE.BL.ShoppingList
         public UnitTypes Unit
         {
             get { return unit; }
-            set
+            private set
             {
                 if (Enum.IsDefined(typeof(UnitTypes), value)) unit = value;
             }
@@ -57,19 +57,6 @@ namespace CSE.BL.ShoppingList
 
             Shop = shop;
             Price = price;
-        }
-
-        public ShoppingItem(ShoppingItemData data, double amount, ShopTypes shop, double price)
-        {
-            if (data != null)
-            {
-                name = data.Name;
-                unit = data.Unit;
-
-                Amount = amount;
-                Shop = shop;
-                Price = price;
-            }
         }
 
         public override string ToString()

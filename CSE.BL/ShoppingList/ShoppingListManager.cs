@@ -80,23 +80,6 @@ namespace CSE.BL.ShoppingList
             return ok;
         }
 
-        //method to change the list item at given index. Returns 'true' if the index was valic
-        public bool ChangeItem(ShoppingItem item, int index)
-        {
-            bool ok = false;
-            if (CheckIndex(index))
-            {
-                ShoppingList[index].Name = item.Name;
-                ShoppingList[index].Amount = item.Amount;
-                ShoppingList[index].Unit = item.Unit;
-
-                FindUniqueShops();
-                ok = true;
-            }
-
-            return ok;
-        }
-
         //method to delete item from the list at given index. Returns 'true' if index was valid
         public bool RemoveItem(int index)
         {
