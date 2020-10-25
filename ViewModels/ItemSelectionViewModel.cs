@@ -20,10 +20,10 @@ namespace ViewModels
 
         private string searchText = "";
 
-        private List<ShoppingItem> productList;
+        private List<ShoppingItemData> productList;
         private List<ItemComparison> shopComparison;
 
-        private ShoppingItem selectedItem;
+        private ShoppingItemData selectedItem;
         private KeyValuePair<ShopTypes, double> selectedShop;
         private int selectedAmount = 1;
         private string selectedName = "";
@@ -41,7 +41,7 @@ namespace ViewModels
             }
         }
 
-        public List<ShoppingItem> ProductList
+        public List<ShoppingItemData> ProductList
         {
             get { return productList; }
             set
@@ -72,7 +72,7 @@ namespace ViewModels
             }
         }
 
-        public ShoppingItem SelectedItem
+        public ShoppingItemData SelectedItem
         {
             get { return selectedItem; }
             set
@@ -139,8 +139,6 @@ namespace ViewModels
             IsNotSelected = true;
 
             //TODO: Product list should be retrieved from the database
-            ProductList = new List<ShoppingItem>();
-
             using (IShoppingItemRepository repo = new ShoppingItemRepository())
             {
                 ProductList = repo.GetAll();
@@ -157,7 +155,7 @@ namespace ViewModels
 
         private void ViewItem(object parameter)
         {
-            if(parameter is ShoppingItem item)
+            if(parameter is ShoppingItemData item)
             {
                 SelectedItem = item;
                 if (item.ShopPrices.Count > 0) SelectedShop = item.ShopPrices.First();
@@ -166,11 +164,7 @@ namespace ViewModels
 
         private void AddItem(object parameter)
         {
-            ShoppingItem item = new ShoppingItem(SelectedItem)
-            {
-                Amount = selectedAmount,
-                SelectedShop = SelectedShop
-            };
+            ShoppingItem item = new ShoppingItem(SelectedItem.Name, SelectedShop.Key, selectedShop.Value, selectedAmount, SelectedItem.Unit);
 
             mainVM.selectedShoppingList.AddItem(item);
             mainVM.ChangeViewCommand.Execute("EditShoppingList");

@@ -40,6 +40,7 @@ namespace CSE.BL
                 }
                 else
                 {
+                    FileInfo info = new FileInfo(filePath);
                     return new List<T>();
                 }
             }

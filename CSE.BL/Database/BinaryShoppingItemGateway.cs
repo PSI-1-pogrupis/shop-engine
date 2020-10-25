@@ -14,26 +14,26 @@ namespace CSE.BL.Database
             this.filePath = filePath;
         }
 
-        public ShoppingItem Find(string name, List<ShoppingItem> list)
+        public ShoppingItemData Find(string name, List<ShoppingItemData> list)
         {
             return list.Find(b => b.Name.Equals(name));
         }
 
-        public void Insert(ShoppingItem shoppingItem, List<ShoppingItem> list)
+        public void Insert(ShoppingItemData shoppingItem, List<ShoppingItemData> list)
         {
             list.Add(shoppingItem);
             BinaryFileManager.WriteToBinaryFile(filePath, list);
         }
 
-        public List<ShoppingItem> Load()
+        public List<ShoppingItemData> Load()
         {
-            List<ShoppingItem> readList = BinaryFileManager.ReadFromBinaryFile<ShoppingItem>(filePath);
+            List<ShoppingItemData> readList = BinaryFileManager.ReadFromBinaryFile<ShoppingItemData>(filePath);
             return readList;
         }
 
-        public void Remove(string name, List<ShoppingItem> cache)
+        public void Remove(string name, List<ShoppingItemData> cache)
         {
-            foreach (var item in from ShoppingItem item in cache
+            foreach (var item in from ShoppingItemData item in cache
                                  where item.Name == name
                                  select item)
             {
@@ -42,28 +42,27 @@ namespace CSE.BL.Database
             }
         }
 
-        public void Update(List<ShoppingItem> cache, ShoppingItem shoppingItem)
+        public void Update(List<ShoppingItemData> cache, ShoppingItemData shoppingItem)
         {
-            foreach (var item in from ShoppingItem item in cache
+            foreach (var item in from ShoppingItemData item in cache
                                  where item.Name == shoppingItem.Name
                                  select item)
             {
                 item.Name = shoppingItem.Name;
                 item.Unit = shoppingItem.Unit;
-                item.Amount = shoppingItem.Amount;
                 item.ShopPrices = shoppingItem.ShopPrices;
                 break;
             }
         }
 
-        public void SaveChanges(List<ShoppingItem> cache)
+        public void SaveChanges(List<ShoppingItemData> cache)
         {
             BinaryFileManager.WriteToBinaryFile(filePath, cache);
         }
 
         public void SetConnection(object dataPath)
         {
-            this.filePath = (string)dataPath;
+            filePath = (string)dataPath;
         }
     }
 }

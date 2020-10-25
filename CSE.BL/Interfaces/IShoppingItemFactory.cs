@@ -1,12 +1,13 @@
-﻿using CSE.BL.ShoppingList;
+﻿using CSE.BL.Database;
+using CSE.BL.ShoppingList;
 using System.Collections.Generic;
 
 namespace CSE.BL.Interfaces
 {
     public interface IShoppingItemFactory
     {
-        ShoppingItem CreateInstance(ShoppingItem data);
-        ShoppingItem CreateInstance(int id, string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices);
-        void UpdateInstance(ShoppingItem data, ShoppingItem instance);
+        ShoppingItemData CreateInstance(ShoppingItemData data);
+        ShoppingItemData CreateInstance(int id, string name, UnitTypes unit, Dictionary<ShopTypes, double> prices);
+        void UpdateInstance(ShoppingItemData data, ShoppingItemData instance);
     }
 }

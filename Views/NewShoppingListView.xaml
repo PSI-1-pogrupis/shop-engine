@@ -102,7 +102,7 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="7*" FontSize="12"/>
                             <DataGridTextColumn Header="N" Binding="{Binding Amount}" Width="4*" FontSize="12"/>
                             <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="6*" FontSize="12"/>
-                            <DataGridTextColumn Header="Shop" Binding="{Binding SelectedShopName}" Width="8*" FontSize="12"/>
+                            <DataGridTextColumn Header="Shop" Binding="{Binding Shop}" Width="8*" FontSize="12"/>
                             <DataGridTemplateColumn Width="7*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -224,8 +224,8 @@
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" FontSize="12"/>
                                                     <DataGridTextColumn Header="N" Binding="{Binding Amount}" Width="*" FontSize="12"/>
-                                                    <DataGridTextColumn Header="Price" Binding="{Binding SelectedShopName}" Width="*" FontSize="12"/>
-                                                    <DataGridTextColumn Header="Shop" Binding="{Binding Price}" Width="*" FontSize="12"/>
+                                                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*" FontSize="12"/>
+                                                    <DataGridTextColumn Header="Shop" Binding="{Binding Shop}" Width="*" FontSize="12"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </Expander>

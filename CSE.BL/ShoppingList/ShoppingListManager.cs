@@ -61,7 +61,7 @@ namespace CSE.BL.ShoppingList
             {
                 foreach(ShoppingItem itm in ShoppingList)
                 {
-                    if(item.Name.Equals(itm.Name) && item.SelectedShop.Equals(itm.SelectedShop))
+                    if(item.Name.Equals(itm.Name) && item.Shop.Equals(itm.Shop))
                     {
                         itm.Amount += item.Amount;
                         EstimatedPrice += item.Price;
@@ -73,23 +73,6 @@ namespace CSE.BL.ShoppingList
                 EstimatedPrice += item.Price;
 
                 ShoppingList.Add(item);
-                FindUniqueShops();
-                ok = true;
-            }
-
-            return ok;
-        }
-
-        //method to change the list item at given index. Returns 'true' if the index was valic
-        public bool ChangeItem(ShoppingItem item, int index)
-        {
-            bool ok = false;
-            if (CheckIndex(index))
-            {
-                ShoppingList[index].Name = item.Name;
-                ShoppingList[index].Amount = item.Amount;
-                ShoppingList[index].Unit = item.Unit;
-
                 FindUniqueShops();
                 ok = true;
             }
@@ -148,9 +131,9 @@ namespace CSE.BL.ShoppingList
 
             foreach(ShoppingItem item in ShoppingList)
             {
-                if (item.SelectedShopName == ShopTypes.UNKNOWN) continue;
+                if (item.Shop == ShopTypes.UNKNOWN) continue;
 
-                if (!UniqueShops.Contains(item.SelectedShop.Key)) UniqueShops.Add(item.SelectedShop.Key);
+                if (!UniqueShops.Contains(item.Shop)) UniqueShops.Add(item.Shop);
             }
         }
 
@@ -160,9 +143,9 @@ namespace CSE.BL.ShoppingList
 
             foreach(ShoppingItem item in ShoppingList)
             {
-                if (item.SelectedShop.Key.Equals("ANY")) continue;
+                if (item.Shop.Equals("ANY")) continue;
 
-                EstimatedPrice += item.SelectedShop.Value * item.Amount;
+                EstimatedPrice += item.Price * item.Amount;
             }
 
             FindUniqueShops();
