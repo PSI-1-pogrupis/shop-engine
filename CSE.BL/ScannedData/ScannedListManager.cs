@@ -7,11 +7,12 @@ namespace CSE.BL.ScannedData
     [Serializable]
     public class ScannedListManager
     {
-        private List<ScannedItem> scannedItems;
+        public List<ScannedItem> ScannedItems { get; set; }
+        
 
         public ScannedListManager()
         {
-            scannedItems = new List<ScannedItem>();
+            ScannedItems = new List<ScannedItem>();
         }
 
         public ScannedItem GetItem(int index)
@@ -19,7 +20,12 @@ namespace CSE.BL.ScannedData
             if (!CheckIndex(index))
                 return null;
 
-            return scannedItems[index];
+            return ScannedItems[index];
+        }
+
+        public int GetCount()
+        {
+            return ScannedItems.Count;
         }
 
         public bool AddItem(ScannedItem item)
@@ -28,7 +34,7 @@ namespace CSE.BL.ScannedData
 
             if (item != null)
             {
-                scannedItems.Add(item);
+                ScannedItems.Add(item);
                 ok = true;
             }
 
@@ -39,7 +45,7 @@ namespace CSE.BL.ScannedData
         {
             bool ok = false;
 
-            if ((index >= 0) && index < scannedItems.Count)
+            if ((index >= 0) && index < ScannedItems.Count)
             {
                 ok = true;
             }

@@ -1,7 +1,9 @@
 ﻿using CSE.BL;
+using CSE.BL.ScannedData;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -11,6 +13,7 @@ namespace ViewModels
     {
         private readonly ImageReader imgReader;
         private readonly ItemsScanner itemsScanner;
+        private ScannedListManager scannedListManager;
         private string browseText = "";
         public string BrowseText
         {
@@ -61,6 +64,28 @@ namespace ViewModels
                 OnPropertyChanged("ImageSrc");
             }
         }
+        public ObservableCollection<ScannedItem> ScannedList
+        {
+            get { return new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems); }
+            set
+            {
+                scannedListManager.ScannedItems = new List<ScannedItem>(value);
+                OnPropertyChanged("ScannedList");
+            }
+        }
+
+        private ShopTypes selectedShop;
+        public ShopTypes SelectedShop {
+            get { return selectedShop;}
+            set
+            {
+                if(selectedShop != value)
+                {
+                    selectedShop = value;
+                    OnPropertyChanged("SelectedShop");
+                }
+            }
+        }
 
 
         public ICommand BrowseCommand { get; set; }
@@ -70,6 +95,9 @@ namespace ViewModels
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
+            scannedListManager = new ScannedListManager();
+            
+
         }
 
         private void Browse_Click(object obj)
@@ -78,6 +106,7 @@ namespace ViewModels
             BrowseText = "";
             ShopText = "";
             ImageSrc = null;
+            ScannedList = new ObservableCollection<ScannedItem>();
          
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
             {
@@ -102,29 +131,35 @@ namespace ViewModels
         {
             Thread.CurrentThread.IsBackground = true;
             ReadedText = imgReader.ReadImage(dlg.FileName);
-            ShopTypes shop = itemsScanner.GetShop(ReadedText);
-            switch (shop)
-            {
-                case ShopTypes.IKI:
-                    ShopText = ShopTypes.IKI.ToString();
-                    break;
-                case ShopTypes.MAXIMA:
-                    ShopText = ShopTypes.MAXIMA.ToString();
-                    break;
-                case ShopTypes.LIDL:
-                    ShopText = ShopTypes.LIDL.ToString();
-                    break;
-                case ShopTypes.NORFA:
-                    ShopText = ShopTypes.NORFA.ToString();
-                    break;
-                case ShopTypes.RIMI:
-                    ShopText = ShopTypes.RIMI.ToString();
-                    break;
-                case ShopTypes.UNKNOWN:
-                    ShopText = "";
-                    break;
-            }
+            itemsScanner.ScanProducts(scannedListManager, ReadedText);
+            ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
+            
+
+            //ShopTypes shop = itemsScanner.GetShop(ReadedText);
+            //switch (shop)
+            //{
+            //    case ShopTypes.IKI:
+            //        ShopText = ShopTypes.IKI.ToString();
+            //        break;
+            //    case ShopTypes.MAXIMA:
+            //        ShopText = ShopTypes.MAXIMA.ToString();
+            //        break;
+            //    case ShopTypes.LIDL:
+            //        ShopText = ShopTypes.LIDL.ToString();
+            //        break;
+            //    case ShopTypes.NORFA:
+            //        ShopText = ShopTypes.NORFA.ToString();
+            //        break;
+            //    case ShopTypes.RIMI:
+            //        ShopText = ShopTypes.RIMI.ToString();
+            //        break;
+            //    case ShopTypes.UNKNOWN:
+            //        ShopText = "";
+            //        break;
+            //}
             ListLabelContent = "";
         }
     }
+
+    
 }
