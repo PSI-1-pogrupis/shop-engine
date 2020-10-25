@@ -11,9 +11,9 @@ namespace CSE.BL.Database
     {
         private readonly IShoppingItemGateway gateway;
         private readonly IShoppingItemFactory factory;
-        private List<ShoppingItem> cache;
+        private List<ShoppingItemData> cache = null;
         // Load shopping items list into cache
-        public List<ShoppingItem> Cache
+        public List<ShoppingItemData> Cache
         {
             get
             {
@@ -21,7 +21,7 @@ namespace CSE.BL.Database
                 {
                     var data = gateway.Load();
 
-                    cache = new List<ShoppingItem>();
+                    cache = new List<ShoppingItemData>();
 
                     foreach (var record in data)
                     {
@@ -40,7 +40,7 @@ namespace CSE.BL.Database
             this.factory = factory ?? new ShoppingItemFactory();
         }
         // Insert Shopping Item into database
-        public void Insert(ShoppingItem shoppingItem)
+        public void Insert(ShoppingItemData shoppingItem)
         {
             if (cache == null)
             {
@@ -51,21 +51,17 @@ namespace CSE.BL.Database
                 gateway.Insert(shoppingItem, cache);
             }
         }
-        public ShoppingItem Find(string name)
+        public ShoppingItemData Find(string name)
         {
-            if (cache == null)
-                return gateway.Find(name, Cache);
-            return gateway.Find(name, cache);
+            return gateway.Find(name, Cache);
         }
         // Retrieve all Shopping Items
-        public List<ShoppingItem> GetAll()
+        public List<ShoppingItemData> GetAll()
         {
-            if (cache == null)
-                return Cache;
-            return cache;
+            return Cache;
         }
         // Remove specific Shopping Item
-        public void Remove(ShoppingItem shoppingItem)
+        public void Remove(ShoppingItemData shoppingItem)
         {
             if (cache == null && shoppingItem != null)
             {
@@ -77,7 +73,7 @@ namespace CSE.BL.Database
             }
         }
         // Update specific Shopping Item
-        public void Update(ShoppingItem shoppingItem)
+        public void Update(ShoppingItemData shoppingItem)
         {
             if (cache == null)
                 gateway.Update(Cache, shoppingItem);
@@ -96,7 +92,6 @@ namespace CSE.BL.Database
         // Close connection and save changes
         public void Dispose()
         {
-            SaveChanges();
         }
     }
 }

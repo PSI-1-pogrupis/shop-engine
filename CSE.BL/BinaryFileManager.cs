@@ -40,6 +40,8 @@ namespace CSE.BL
                 }
                 else
                 {
+                    FileInfo info = new FileInfo(filePath);
+                    Console.Write("LOL");
                     return new List<T>();
                 }
             }

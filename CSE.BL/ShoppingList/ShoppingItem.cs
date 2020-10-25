@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSE.BL.Database;
+using System;
 using System.Collections.Generic;
 
 namespace CSE.BL.ShoppingList
@@ -12,26 +13,13 @@ namespace CSE.BL.ShoppingList
         private UnitTypes unit; //the unit of measurement for this item
         private double amount; //amount of the item 
 
-        public Dictionary<ShopTypes, double> ShopPrices { get; set; } //dictionary for saving same item prices over different shops
-        public KeyValuePair<ShopTypes, double> SelectedShop { get; set; }
-
-        public ShopTypes SelectedShopName
-        {
-            get { return SelectedShop.Key; }
-        }
-
-        public double Price
-        {
-            get { return Amount * SelectedShop.Value; }
-        }
+        public ShopTypes Shop { get; private set; } // shop where this item is sold
+        public double Price { get; private set; } // price of the item
 
         // get/set the name of the item
         public string Name
         {
-            get
-            {
-                return name;
-            }
+            get { return name; }
             set
             {
                 if (!string.IsNullOrEmpty(value)) name = value;
@@ -41,55 +29,47 @@ namespace CSE.BL.ShoppingList
         // get/set the amount of the item
         public double Amount
         {
-            get
-            {
-                return amount;
-            }
+            get { return amount; }
             set
             {
-                if (value > 0)
-                {
-                    amount = value;
-                }
+                if (value > 0) amount = value;
             }
         }
 
         // get/set the measurement unit for the item
         public UnitTypes Unit
         {
-            get
-            {
-                return unit;
-            }
+            get { return unit; }
             set
             {
                 if (Enum.IsDefined(typeof(UnitTypes), value)) unit = value;
             }
         }
 
-        public ShoppingItem()
-        {
-        }
+        public ShoppingItem() { }
 
         //constructor for the ShoppingItem class
-        public ShoppingItem(string name, double amount, UnitTypes unit, Dictionary<ShopTypes, double> prices)
+        public ShoppingItem(string name, ShopTypes shop, double price, double amount, UnitTypes unit)
         {
-            ShopPrices = prices;
             this.name = name;
             this.amount = amount;
             this.unit = unit;
+
+            Shop = shop;
+            Price = price;
         }
 
-        public ShoppingItem(ShoppingItem item)
+        public ShoppingItem(ShoppingItemData data, double amount, ShopTypes shop, double price)
         {
-            if (item != null)
+            if (data != null)
             {
-                name = item.name;
-                amount = item.amount;
-                unit = item.unit;
-                ShopPrices = item.ShopPrices;
-            }
+                name = data.Name;
+                unit = data.Unit;
 
+                Amount = amount;
+                Shop = shop;
+                Price = price;
+            }
         }
 
         public override string ToString()

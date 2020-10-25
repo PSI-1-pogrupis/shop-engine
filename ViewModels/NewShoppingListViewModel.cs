@@ -9,6 +9,7 @@ using System.Security.Cryptography.Xml;
 using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
+using System.Data;
 
 namespace ViewModels
 {
@@ -19,6 +20,7 @@ namespace ViewModels
 
         private ShoppingListManager optimizedList;
         private ObservableCollection<ShoppingItem> shoppingList;
+        private List<ShoppingItemData> dataList;
         private List<ShopTypes> listShops;
         private List<ShopTypes> selectedShops;
         private List<ShopTypes> availableShops;
@@ -172,6 +174,19 @@ namespace ViewModels
 
             selectedShops = new List<ShopTypes>();
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
+
+            dataList = new List<ShoppingItemData>();
+            
+            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            {
+                foreach(ShoppingItem item in manager.ShoppingList)
+                {
+                    ShoppingItemData data = repo.Find(item.Name);
+
+                    if (data != null) dataList.Add(data);
+                }
+            }
+            
             UpdateOverview();
             GetAvailableShops();
 
@@ -188,12 +203,19 @@ namespace ViewModels
         {
             if (parameter is ShoppingItem item)
             {
-                ObservableShoppingList.Remove(item);
-                manager.RemoveItem(item);
-                UpdateOverview();
+                for(int i = 0; i < ObservableShoppingList.Count; i++)
+                {
+                    if(ObservableShoppingList[i] == item)
+                    {
+                        ObservableShoppingList.RemoveAt(i);
+                        manager.RemoveItem(i);
+                        dataList.RemoveAt(i);
+                        UpdateOverview();
+                        GetAvailableShops();
+                        return;
+                    }
+                }
             }
-
-            GetAvailableShops();
         }
 
         private bool CanSaveShoppingList()
@@ -225,7 +247,7 @@ namespace ViewModels
         {
             List<ShopTypes> shops = new List<ShopTypes>();
 
-            foreach(ShoppingItem item in manager.ShoppingList)
+            foreach(ShoppingItemData item in dataList)
             {
                 foreach(KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
                 {
@@ -242,7 +264,7 @@ namespace ViewModels
         {
             ListOptimizer optimizer = new ListOptimizer();
 
-            OptimizedList = optimizer.GetLowestPriceList(manager, selectedShops, OnlyReplaceUnspecifiedShops);
+            OptimizedList = optimizer.GetLowestPriceList(manager, dataList, selectedShops, OnlyReplaceUnspecifiedShops);
 
             OptimizedListPriceDifference = Math.Round(manager.EstimatedPrice - OptimizedList.EstimatedPrice, 2);
             ShowOptimizedList = true;

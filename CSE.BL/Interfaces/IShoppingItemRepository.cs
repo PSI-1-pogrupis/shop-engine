@@ -1,4 +1,5 @@
-﻿using CSE.BL.ShoppingList;
+﻿using CSE.BL.Database;
+using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
 
@@ -6,11 +7,11 @@ namespace CSE.BL.Interfaces
 {
     public interface IShoppingItemRepository : IDisposable
     {
-        List<ShoppingItem> GetAll();
-        ShoppingItem Find(string id);
-        void Insert(ShoppingItem shoppingItem);
-        void Update(ShoppingItem shoppingItem);
-        void Remove(ShoppingItem shoppingItem);
+        List<ShoppingItemData> GetAll();
+        ShoppingItemData Find(string id);
+        void Insert(ShoppingItemData shoppingItem);
+        void Update(ShoppingItemData shoppingItem);
+        void Remove(ShoppingItemData shoppingItem);
         void SaveChanges();
     }
 }
