@@ -180,7 +180,7 @@ namespace ViewModels
         {
             List<ItemComparison> comparison = new List<ItemComparison>();
 
-            foreach (KeyValuePair<ShopTypes, decimal> shop in SelectedItem.ShopPrices)
+            foreach(KeyValuePair<ShopTypes, decimal> shop in SelectedItem.ShopPrices)
             {
                 if (shop.Key == ShopTypes.UNKNOWN) continue;
 
