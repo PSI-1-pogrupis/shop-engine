@@ -35,9 +35,9 @@ namespace CSE.BL.Database.Models
             }
         }
         // Retrieve shop prices for specified shopping item
-        private Dictionary<ShopTypes, double> FindDictionary(string name)
+        private Dictionary<ShopTypes, decimal> FindDictionary(string name)
         {
-            Dictionary<ShopTypes, double> dictionary = new Dictionary<ShopTypes, double>();
+            Dictionary<ShopTypes, decimal> dictionary = new Dictionary<ShopTypes, decimal>();
             foreach (Iki i in Iki.Where(a => a.Product == name).ToList())
                 dictionary.Add(ShopTypes.IKI, i.Price);
             foreach (Maxima i in Maxima.Where(a => a.Product == name).ToList())
@@ -151,7 +151,7 @@ namespace CSE.BL.Database.Models
         // Find shopping item by name
         public ShoppingItemData Find(string name)
         {
-            Dictionary<ShopTypes, double> dictionary = FindDictionary(name);
+            Dictionary<ShopTypes, decimal> dictionary = FindDictionary(name);
 
             try
             {
@@ -226,7 +226,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()
@@ -247,7 +249,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()
@@ -268,7 +272,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()
@@ -289,7 +295,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()
@@ -335,7 +343,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()
@@ -356,7 +366,9 @@ namespace CSE.BL.Database.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(4,2)");
 
                 entity.Property(e => e.Product)
                     .IsRequired()

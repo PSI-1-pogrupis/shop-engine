@@ -24,7 +24,7 @@ namespace ViewModels
         private List<ItemComparison> shopComparison;
 
         private ShoppingItemData selectedItem;
-        private KeyValuePair<ShopTypes, double> selectedShop;
+        private KeyValuePair<ShopTypes, decimal> selectedShop;
         private int selectedAmount = 1;
         private string selectedName = "";
         private bool isNotSelected = true;
@@ -85,7 +85,7 @@ namespace ViewModels
             }
         }
 
-        public KeyValuePair<ShopTypes, double> SelectedShop
+        public KeyValuePair<ShopTypes, decimal> SelectedShop
         {
             get { return selectedShop; }
             set
@@ -180,7 +180,7 @@ namespace ViewModels
         {
             List<ItemComparison> comparison = new List<ItemComparison>();
 
-            foreach (KeyValuePair<ShopTypes, double> shop in SelectedItem.ShopPrices)
+            foreach (KeyValuePair<ShopTypes, decimal> shop in SelectedItem.ShopPrices)
             {
                 if (shop.Key == ShopTypes.UNKNOWN) continue;
 

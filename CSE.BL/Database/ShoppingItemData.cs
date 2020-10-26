@@ -11,9 +11,9 @@ namespace CSE.BL.Database
 
         public UnitTypes Unit { get; set; }
 
-        public Dictionary<ShopTypes, double> ShopPrices { get; set; } //dictionary of shopd that contain this item and the item's prices in those shops
+        public Dictionary<ShopTypes, decimal> ShopPrices { get; set; } //dictionary of shopd that contain this item and the item's prices in those shops
 
-        public ShoppingItemData(string name, UnitTypes unit, Dictionary<ShopTypes, double> prices) 
+        public ShoppingItemData(string name, UnitTypes unit, Dictionary<ShopTypes, decimal> prices) 
         {
             Name = name;
             Unit = unit;

@@ -2,11 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows.Input;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
+using System.Data;
 using CSE.BL.Database.Models;
 
 namespace ViewModels
@@ -24,13 +27,14 @@ namespace ViewModels
         private List<ShopTypes> availableShops;
 
         private string selectedName = "";
-        private double estimatedPrice = 0;
-        private double optimizedListPriceDifference = 0;
+        private decimal estimatedPrice = 0;
+        private decimal optimizedListPriceDifference = 0;
         private bool showOptimizedList = false;
         private bool onlyReplaceUnspecifiedShops = false;
         private readonly bool editMode = false;
 
-        public ShoppingListManager OptimizedList {
+        public ShoppingListManager OptimizedList
+        {
             get { return optimizedList; }
             set
             {
@@ -83,7 +87,7 @@ namespace ViewModels
 
         public bool IsSelected { get; set; }
 
-        public double EstimatedPrice
+        public decimal EstimatedPrice
         {
             get { return estimatedPrice; }
             set
@@ -93,16 +97,17 @@ namespace ViewModels
             }
         }
 
-        public double OptimizedListEstimatedPrice
+        public decimal OptimizedListEstimatedPrice
         {
-            get {
+            get
+            {
                 if (optimizedList != null)
                     return Math.Round(optimizedList.EstimatedPrice, 2);
                 else return 0;
             }
         }
 
-        public double OptimizedListPriceDifference
+        public decimal OptimizedListPriceDifference
         {
             get { return optimizedListPriceDifference; }
             set
@@ -174,17 +179,17 @@ namespace ViewModels
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
 
             dataList = new List<ShoppingItemData>();
-            
+
             using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
-                foreach(ShoppingItem item in manager.ShoppingList)
+                foreach (ShoppingItem item in manager.ShoppingList)
                 {
                     ShoppingItemData data = repo.Find(item.Name);
 
                     if (data != null) dataList.Add(data);
                 }
             }
-            
+
             UpdateOverview();
             GetAvailableShops();
 
@@ -201,9 +206,9 @@ namespace ViewModels
         {
             if (parameter is ShoppingItem item)
             {
-                for(int i = 0; i < ObservableShoppingList.Count; i++)
+                for (int i = 0; i < ObservableShoppingList.Count; i++)
                 {
-                    if(ObservableShoppingList[i] == item)
+                    if (ObservableShoppingList[i] == item)
                     {
                         ObservableShoppingList.RemoveAt(i);
                         manager.RemoveItem(i);
@@ -245,9 +250,9 @@ namespace ViewModels
         {
             List<ShopTypes> shops = new List<ShopTypes>();
 
-            foreach(ShoppingItemData item in dataList)
+            foreach (ShoppingItemData item in dataList)
             {
-                foreach(KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
+                foreach (KeyValuePair<ShopTypes, decimal> shop in item.ShopPrices)
                 {
                     if (shop.Key == ShopTypes.UNKNOWN || shops.Contains(shop.Key)) continue;
 
@@ -276,7 +281,7 @@ namespace ViewModels
 
         private void UpdateSelectedShops(object parameter)
         {
-            if(parameter is ShopTypes shop)
+            if (parameter is ShopTypes shop)
             {
                 if (IsSelected)
                     selectedShops.Add(shop);

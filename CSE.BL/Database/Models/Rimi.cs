@@ -6,7 +6,7 @@ namespace CSE.BL.Database.Models
     {
         public int Id { get; set; }
         public string Product { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public DateTime? Date { get; set; }
     }
 }
