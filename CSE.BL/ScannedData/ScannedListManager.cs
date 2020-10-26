@@ -36,7 +36,6 @@ namespace CSE.BL.ScannedData
             {
                 ScannedItems.Add(item);
                 TotalSum += item.Price;
-                TotalSum += item.Discount;
                 ok = true;
             }
 
