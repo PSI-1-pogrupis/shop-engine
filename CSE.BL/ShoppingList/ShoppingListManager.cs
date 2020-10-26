@@ -27,7 +27,7 @@ namespace CSE.BL.ShoppingList
 
             foreach(ShoppingItem item in collection)
             {
-                EstimatedPrice += item.Price;
+                EstimatedPrice += item.Price * (decimal)item.Amount;
             }
 
             FindUniqueShops();
@@ -71,13 +71,13 @@ namespace CSE.BL.ShoppingList
                     if(item.Name.Equals(itm.Name) && item.Shop.Equals(itm.Shop))
                     {
                         itm.Amount += item.Amount;
-                        EstimatedPrice += item.Price;
+                        EstimatedPrice += item.Price * (decimal)item.Amount;
 
                         return true;
                     }
                 }
 
-                EstimatedPrice += item.Price;
+                EstimatedPrice += item.Price * (decimal)item.Amount;
 
                 ShoppingList.Add(item);
                 FindUniqueShops();
@@ -96,7 +96,7 @@ namespace CSE.BL.ShoppingList
             {
                 ShoppingItem item = ShoppingList[index];
 
-                EstimatedPrice -= item.Price;
+                EstimatedPrice -= item.Price * (decimal)item.Amount;
 
                 ShoppingList.Remove(item);
                 FindUniqueShops();
@@ -113,7 +113,7 @@ namespace CSE.BL.ShoppingList
 
             ShoppingList.Remove(item);
 
-            EstimatedPrice -= item.Price;
+            EstimatedPrice -= item.Price * (decimal)item.Amount;
             FindUniqueShops();
 
             return true;
