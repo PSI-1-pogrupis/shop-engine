@@ -222,10 +222,10 @@
                                                     </Style>
                                                 </DataGrid.Resources>
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" FontSize="12"/>
-                                                    <DataGridTextColumn Header="N" Binding="{Binding Amount}" Width="*" FontSize="12"/>
-                                                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*" FontSize="12"/>
-                                                    <DataGridTextColumn Header="Shop" Binding="{Binding Shop}" Width="*" FontSize="12"/>
+                                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="3*" FontSize="12"/>
+                                                    <DataGridTextColumn Header="N" Binding="{Binding Amount}" Width="100" FontSize="12"/>
+                                                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="2*" FontSize="12"/>
+                                                    <DataGridTextColumn Header="Shop" Binding="{Binding Shop}" Width="2*" FontSize="12"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </Expander>
@@ -254,8 +254,11 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="10*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Margin="20" Content="Cancel" Command="{Binding CancelOptimizationCommand}"/>
+                                        <Button Margin="20" Content="Save as new" Command="{Binding SaveAsNewCommand}"/>
                                         <Button Grid.Column="2" Margin="20" Content="Replace" Command="{Binding ReplaceShoppingListCommand}"/>
+                                    </Grid>
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Button Grid.Column="4" Margin="20,5,100,0" HorizontalAlignment="Left" Content="Cancel" Command="{Binding CancelOptimizationCommand}"/>
                                     </Grid>
                                 </StackPanel>
                             </ScrollViewer>

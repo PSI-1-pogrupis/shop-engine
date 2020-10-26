@@ -24,13 +24,13 @@ namespace CSE.BL
             {
                 ShoppingItem item = list.ShoppingList[i];
 
-                KeyValuePair<ShopTypes, double> bestPrice = new KeyValuePair<ShopTypes, double>(ShopTypes.UNKNOWN, double.PositiveInfinity);
+                KeyValuePair<ShopTypes, decimal> bestPrice = new KeyValuePair<ShopTypes, decimal>(ShopTypes.UNKNOWN, decimal.MaxValue);
 
                 if (!onlyReplaceUnspecified || item.Shop == ShopTypes.UNKNOWN)
                 {
                     ShoppingItemData itemData = dataList[i];
 
-                    foreach (KeyValuePair<ShopTypes, double> shop in itemData.ShopPrices)
+                    foreach (KeyValuePair<ShopTypes, decimal> shop in itemData.ShopPrices)
                     {
                         if (shop.Key == ShopTypes.UNKNOWN) continue;
 
@@ -41,8 +41,10 @@ namespace CSE.BL
                 }
                 else
                 {
-                    bestPrice = new KeyValuePair<ShopTypes, double>(item.Shop, item.Price);
+                    bestPrice = new KeyValuePair<ShopTypes, decimal>(item.Shop, item.Price);
                 }
+
+                if (bestPrice.Key == ShopTypes.UNKNOWN) bestPrice = new KeyValuePair<ShopTypes, decimal>(ShopTypes.UNKNOWN, 0);
 
                 ShoppingItem newItem = new ShoppingItem(item.Name, bestPrice.Key, bestPrice.Value, item.Amount, item.Unit);
 

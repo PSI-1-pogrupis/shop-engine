@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using CSE.BL.BillingData;
+using CSE.BL.Interfaces;
+using CSE.BL.Database;
 
 namespace ViewModels
 {
@@ -89,10 +92,12 @@ namespace ViewModels
 
 
         public ICommand BrowseCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
 
         public CheckScanningViewModel()
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
+            ConfirmCommand = new RelayCommand(Confirm_List, canExecute => CanConfirmList());
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
             scannedListManager = new ScannedListManager();
@@ -113,9 +118,9 @@ namespace ViewModels
                 Filter = "Image Files|*.jpg;*.jpeg;*.png;"
             };
 
-            Nullable<bool> result = dlg.ShowDialog();
+            bool? result = dlg.ShowDialog();
 
-            if (result != null && !String.IsNullOrEmpty(dlg.FileName))
+            if (result != null && !string.IsNullOrEmpty(dlg.FileName))
             {
                 BrowseText = dlg.FileName;
                 ImageSrc = new BitmapImage(new Uri(dlg.FileName));
@@ -125,6 +130,44 @@ namespace ViewModels
                 Thread scanThread = new Thread(() => ScanThread(dlg));
                 scanThread.Start();
             }
+        }
+
+        private void Confirm_List(object obj)
+        {
+            ScannedListLibrary.AddList(scannedListManager);
+            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, scannedListManager.TotalSum);
+
+            using(IShoppingItemRepository repo = new ShoppingItemRepository())
+            {
+                ItemDataSelector selector = new ItemDataSelector();
+
+                List<ShoppingItemData> items = repo.GetAll();
+
+                foreach(ScannedItem item in ScannedList)
+                {
+                    ShoppingItemData data = selector.FindClosestItem(item.Name, items);
+
+                    if (data == null) continue;
+
+                    if (SelectedShop == ShopTypes.UNKNOWN) continue;
+
+                    if (!data.ShopPrices.ContainsKey(SelectedShop))
+                    {
+                        data.ShopPrices.Add(SelectedShop, item.Price);
+                        continue;
+                    }
+
+                    data.ShopPrices[SelectedShop] = item.Price;
+                }
+
+                repo.SaveChanges();
+            }
+        }
+
+        private bool CanConfirmList()
+        {
+            if (ScannedList.Count <= 0 || SelectedShop == ShopTypes.UNKNOWN) return false;
+            else return true;
         }
 
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)

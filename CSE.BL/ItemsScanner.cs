@@ -78,7 +78,7 @@ namespace CSE.BL
 
         private bool ReadProduct(string line, out string productName, out decimal productPrice)
         {
-            productName = String.Empty;
+            productName = string.Empty;
             productPrice = default;
             char c;
 
@@ -86,7 +86,7 @@ namespace CSE.BL
             {
                 c = line[i];
 
-                if (!Char.IsDigit(c))
+                if (!char.IsDigit(c))
                     productName += c;
                 else
                 {
@@ -112,7 +112,7 @@ namespace CSE.BL
             {
                 c = line[i];
 
-                if (!Char.IsDigit(c) && c != '.')
+                if (!char.IsDigit(c) && c != '.')
                 {
                     break;
                 }
@@ -132,7 +132,7 @@ namespace CSE.BL
         private decimal ParseDecimal(string line)   // TODO: if dot isnt in the number, it parsed wrong thus return 0
         {
             bool foundNumber = false;
-            string numberString = String.Empty;
+            string numberString = string.Empty;
             char c;
 
             for (int i = 0; i < line.Length; i++)
@@ -140,13 +140,13 @@ namespace CSE.BL
                 c = line[i];
                 if (foundNumber)
                 {
-                    if (Char.IsDigit(c) || c == '.')
+                    if (char.IsDigit(c) || c == '.')
                         numberString += c;
                     else break;
                 }
                 else
                 {
-                    if (Char.IsDigit(c) && (line[i+1] == '.' || Char.IsDigit(line[i+1])))
+                    if (char.IsDigit(c) && (line[i+1] == '.' || char.IsDigit(line[i+1])))
                     {
                         foundNumber = true;
                         numberString += c;
@@ -163,5 +163,4 @@ namespace CSE.BL
         }
     }
 
-    
 }
