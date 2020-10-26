@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using CSE.BL.BillingData;
 
 namespace ViewModels
 {
@@ -89,10 +90,12 @@ namespace ViewModels
 
 
         public ICommand BrowseCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
 
         public CheckScanningViewModel()
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
+            ConfirmCommand = new RelayCommand(Confirm_List, canExecute => true);
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
             scannedListManager = new ScannedListManager();
@@ -125,6 +128,12 @@ namespace ViewModels
                 Thread scanThread = new Thread(() => ScanThread(dlg));
                 scanThread.Start();
             }
+        }
+
+        private void Confirm_List(object obj)
+        {
+            ScannedListLibrary.AddList(scannedListManager);
+            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, scannedListManager.TotalSum);
         }
 
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)

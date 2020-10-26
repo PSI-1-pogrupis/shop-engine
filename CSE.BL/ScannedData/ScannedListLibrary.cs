@@ -5,42 +5,56 @@ using System.Text;
 namespace CSE.BL.ScannedData
 {
     [Serializable]
-    public class ScannedListLibrary
+    public static class ScannedListLibrary
     {
-        private List<ScannedListManager> allLists;
-
-        public ScannedListLibrary()
+        private static Dictionary<DateTime, ScannedListManager> allLists = new Dictionary<DateTime, ScannedListManager>();
+        public static Dictionary<DateTime, ScannedListManager> AllLists 
         {
-            allLists = new List<ScannedListManager>();
+            get
+            {
+                return allLists;
+            }
+            set
+            {
+                allLists = value;
+            }
         }
 
-        public ScannedListManager GetList(int index)
+        public static ScannedListManager GetList(DateTime index)
         {
-            if (!CheckIndex(index))
-                return null;
+            if(!AllLists.ContainsKey(index))
+                AllLists[index] = new ScannedListManager();
+            return AllLists[index]; 
 
-            return allLists[index];
         }
 
-        public bool AddList(ScannedListManager list)
+        public static bool AddList(ScannedListManager list)
         {
             bool ok = false;
 
-            if (list != null)
+            if (list.GetCount() != 0 && list != null)
             {
-                allLists.Add(list);
+                DateTime dateTime = DateTime.Now.Date;
+                if (allLists.ContainsKey(dateTime))//temporararily, there can only be one list per day
+                    allLists.Remove(dateTime);
+
+                allLists.Add(DateTime.Now.Date, list);
                 ok = true;
             }
 
             return ok;
         }
 
-        private bool CheckIndex(int index)
+        public static bool AddList(ScannedListManager list, DateTime date)
         {
             bool ok = false;
 
-            if ((index >= 0) && index < allLists.Count)
+            if (list.GetCount() != 0 && list != null)
             {
+                if (allLists.ContainsKey(date.Date))//temporararily, there can only be one list per day
+                    allLists.Remove(date.Date);
+
+                allLists.Add(date.Date, list);
                 ok = true;
             }
 
