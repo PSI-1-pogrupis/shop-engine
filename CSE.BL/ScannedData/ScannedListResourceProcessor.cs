@@ -4,18 +4,18 @@ using System.Text;
 
 namespace CSE.BL.ScannedData
 {
-    public static class ScannedListResourceProcessor
-    {
-        private static string filePath = "shoppingHistory.bin";
+    //public static class ScannedListResourceProcessor
+    //{
+    //    private static string filePath = "shoppingHistory.bin";
 
-        public static void SaveList(ScannedListLibrary scannedLists)
-        {
-            BinaryFileManager.WriteToBinaryFile<ScannedListLibrary>(filePath, scannedLists);
-        }
+    //    public static void SaveList()
+    //    {
+    //        BinaryFileManager.WriteToBinaryFile<ScannedListLibrary>(filePath, ScannedListLibrary.AllLists);
+    //    }
 
-        public static ScannedListLibrary LoadList()
-        {
-            return BinaryFileManager.ReadObjectFromBinaryFile<ScannedListLibrary>(filePath);
-        }
-    }
+    //    public static void LoadList()
+    //    {
+    //        ScannedListLibrary.AllLists =  BinaryFileManager.ReadObjectFromBinaryFile<ScannedListLibrary>(filePath);
+    //    }
+    //}
 }

@@ -89,10 +89,12 @@ namespace ViewModels
 
 
         public ICommand BrowseCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
 
         public CheckScanningViewModel()
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
+            ConfirmCommand = new RelayCommand(Confirm_List, canExecute => true);
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
             scannedListManager = new ScannedListManager();
@@ -125,6 +127,11 @@ namespace ViewModels
                 Thread scanThread = new Thread(() => ScanThread(dlg));
                 scanThread.Start();
             }
+        }
+
+        private void Confirm_List(object obj)
+        {
+            ScannedListLibrary.AddList(scannedListManager);
         }
 
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)

@@ -7,8 +7,7 @@ namespace CSE.BL.ScannedData
     [Serializable]
     public class ScannedListManager
     {
-        public List<ScannedItem> ScannedItems { get; set; }
-        
+        public List<ScannedItem> ScannedItems { get; set; }      
 
         public ScannedListManager()
         {
