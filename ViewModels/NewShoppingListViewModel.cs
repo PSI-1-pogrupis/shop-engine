@@ -10,6 +10,7 @@ using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using System.Data;
+using System.Net.NetworkInformation;
 
 namespace ViewModels
 {
@@ -147,6 +148,7 @@ namespace ViewModels
         public ICommand UpdateSelectedShopsCommand { get; private set; }
         public ICommand ReplaceShoppingListCommand { get; private set; }
         public ICommand CancelOptimizationCommand { get; private set; }
+        public ICommand SaveAsNewCommand { get; private set; }
         public NewShoppingListViewModel(MainViewModel _mainVM, bool _editMode)
         {
             mainVM = _mainVM;
@@ -158,6 +160,7 @@ namespace ViewModels
             OptimizeShoppingListCommand = new RelayCommand(OptimizeShoppingList, canExecute => CanOptimizeList());
             UpdateSelectedShopsCommand = new RelayCommand(UpdateSelectedShops, canExecute => true);
             ReplaceShoppingListCommand = new RelayCommand(ReplaceShoppingList, canExecute => true);
+            SaveAsNewCommand = new RelayCommand(SaveAsNew, canExecute => true);
             CancelOptimizationCommand = new RelayCommand(CancelOptimization, canExecute => true);
 
             if (editMode)
@@ -294,6 +297,19 @@ namespace ViewModels
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
             EstimatedPrice = manager.EstimatedPrice;
             ListShops = manager.UniqueShops;
+
+            CancelOptimization(null);
+        }
+
+        private void SaveAsNew(object parameter)
+        {
+            ShoppingListManager newManager = new ShoppingListManager(OptimizedList.ShoppingList);
+            newManager.Name = SelectedName + "_OPT";
+
+            mainVM.loadedShoppingLists.Remove(manager);
+            mainVM.loadedShoppingLists.Insert(0, newManager);
+            ShoppingListResourceProcessor.SaveLists(mainVM.loadedShoppingLists);
+            mainVM.loadedShoppingLists.Add(manager);
 
             CancelOptimization(null);
         }
