@@ -49,15 +49,7 @@
                             <ToggleButton Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </DockPanel>
                     </Grid>
-                    <Grid Grid.Row="2" Margin="5,5,5,5">
-                        <DockPanel Margin="10,0,10,0" Background="#FF313638">
-                            <DockPanel.Effect>
-                                <DropShadowEffect Direction="-90" BlurRadius="5" ShadowDepth="2"/>
-                            </DockPanel.Effect>
-                            <Label Content="Dark theme:" FontSize="24" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <ToggleButton Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        </DockPanel>
-                    </Grid>
+                    <Grid Grid.Row="2" Margin="5,5,5,5"></Grid>
                     <Grid Grid.Row="3" Margin="5,5,5,5"></Grid>
                     <Grid Grid.Row="4" Margin="5,5,5,5"></Grid>
                     <Grid Grid.Row="5" Margin="5,5,5,5"></Grid>
