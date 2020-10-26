@@ -24,6 +24,13 @@ namespace CSE.BL.ShoppingList
         public ShoppingListManager(IEnumerable<ShoppingItem> collection) : base()
         {
             ShoppingList = new List<ShoppingItem>(collection);
+
+            foreach(ShoppingItem item in collection)
+            {
+                EstimatedPrice += item.Price;
+            }
+
+            FindUniqueShops();
         }
 
         public string Name

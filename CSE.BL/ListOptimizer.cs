@@ -44,6 +44,8 @@ namespace CSE.BL
                     bestPrice = new KeyValuePair<ShopTypes, decimal>(item.Shop, item.Price);
                 }
 
+                if (bestPrice.Key == ShopTypes.UNKNOWN) bestPrice = new KeyValuePair<ShopTypes, decimal>(ShopTypes.UNKNOWN, 0);
+
                 ShoppingItem newItem = new ShoppingItem(item.Name, bestPrice.Key, bestPrice.Value, item.Amount, item.Unit);
 
                 newList.AddItem(newItem);
