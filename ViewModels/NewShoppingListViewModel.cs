@@ -10,6 +10,7 @@ using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using System.Data;
+using CSE.BL.Database.Models;
 
 namespace ViewModels
 {
@@ -177,7 +178,7 @@ namespace ViewModels
 
             dataList = new List<ShoppingItemData>();
             
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 foreach(ShoppingItem item in manager.ShoppingList)
                 {

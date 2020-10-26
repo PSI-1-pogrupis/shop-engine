@@ -1,5 +1,6 @@
 ﻿using CSE.BL;
 using CSE.BL.Database;
+using CSE.BL.Database.Models;
 using CSE.BL.Interfaces;
 using CSE.BL.ShoppingList;
 using System;
@@ -138,8 +139,8 @@ namespace ViewModels
         {
             IsNotSelected = true;
 
-            //TODO: Product list should be retrieved from the database
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            // Product list retrieved from mysql database
+            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 ProductList = repo.GetAll();
             }
@@ -155,7 +156,7 @@ namespace ViewModels
 
         private void ViewItem(object parameter)
         {
-            if(parameter is ShoppingItemData item)
+            if (parameter is ShoppingItemData item)
             {
                 SelectedItem = item;
                 if (item.ShopPrices.Count > 0) SelectedShop = item.ShopPrices.First();
@@ -170,7 +171,7 @@ namespace ViewModels
             mainVM.ChangeViewCommand.Execute("EditShoppingList");
         }
 
-        private bool CanAddItem() 
+        private bool CanAddItem()
         {
             if (SelectedItem != null) return true;
             else return false;
@@ -180,11 +181,11 @@ namespace ViewModels
         {
             List<ItemComparison> comparison = new List<ItemComparison>();
 
-            foreach(KeyValuePair<ShopTypes, double> shop in SelectedItem.ShopPrices)
+            foreach (KeyValuePair<ShopTypes, double> shop in SelectedItem.ShopPrices)
             {
                 if (shop.Key == ShopTypes.UNKNOWN) continue;
 
-                if(shop.Key != SelectedShop.Key)
+                if (shop.Key != SelectedShop.Key)
                 {
                     ItemComparison comp = new ItemComparison { Shop = shop.Key, PriceDifference = Math.Round((shop.Value - SelectedShop.Value) * selectedAmount, 2).ToString() };
                     comparison.Add(comp);
