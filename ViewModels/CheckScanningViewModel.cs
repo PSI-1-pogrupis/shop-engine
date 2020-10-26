@@ -13,8 +13,10 @@ namespace ViewModels
     {
         private readonly ImageReader imgReader;
         private readonly ItemsScanner itemsScanner;
+        private readonly MainViewModel mainVM;
         private ScannedListManager scannedListManager;
         private string browseText = "";
+
         public string BrowseText
         {
             get { return browseText; }
@@ -89,15 +91,23 @@ namespace ViewModels
 
 
         public ICommand BrowseCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
 
-        public CheckScanningViewModel()
+        public CheckScanningViewModel(MainViewModel mainVM)
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
+            ConfirmCommand = new RelayCommand(Confirm_Click, canExecute => true);
             imgReader = new ImageReader();
             itemsScanner = new ItemsScanner();
             scannedListManager = new ScannedListManager();
+            this.mainVM = mainVM;
             
 
+        }
+
+        private void Confirm_Click(object obj)
+        {
+            mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
 
         private void Browse_Click(object obj)
