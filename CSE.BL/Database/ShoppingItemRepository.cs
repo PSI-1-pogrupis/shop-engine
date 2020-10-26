@@ -1,6 +1,4 @@
 ﻿using CSE.BL.Interfaces;
-using CSE.BL.ShoppingList;
-using System;
 using System.Collections.Generic;
 
 namespace CSE.BL.Database

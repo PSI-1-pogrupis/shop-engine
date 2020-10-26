@@ -2,14 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using System.Linq;
-using System.Security.Cryptography.Xml;
 using CSE.BL;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
-using System.Data;
 using CSE.BL.Database.Models;
 
 namespace ViewModels
