@@ -123,6 +123,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <Label Content="{Binding TotalSum}" Foreground="White" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Label>
             </Grid>
             <Grid Grid.Row="0" Grid.Column="1" Margin="0,5,0,0">
                 <Border CornerRadius="10,10,0,0" Background="#FF313638" Margin="10,5,10,5">
@@ -130,7 +131,6 @@
                         <DropShadowEffect Direction="-90" ShadowDepth="1" BlurRadius="3"/>
                     </Border.Effect>
                     <Label Content="Calendar" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
                 </Border>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1" Background="#FF313638" Margin="10,-2,10,10">

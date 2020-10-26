@@ -37,10 +37,20 @@ namespace CSE.BL.BillingData
 
         public static void AddToLibrary(int monthNumber, decimal value)
         {
-            if (monthNumber < 13)
+            if (monthNumber > 0 && monthNumber < 13)
             {
                 yearSpending[monthNumber].AddToShoppingLog(value);
                 numberOfShoppings++;
+            }
+        }
+
+        public static void RemoveFromLibrary(int monthNumber)
+        {
+            var length = yearSpending[monthNumber].ShoppingLog.Count;
+            if (length > 0)
+            {                
+                yearSpending[monthNumber].RemoveFromShoppingLog(length-1);
+                numberOfShoppings--;
             }
         }
 

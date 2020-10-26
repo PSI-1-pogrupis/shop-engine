@@ -10,8 +10,8 @@ namespace ViewModels
 {
     public class ShoppingHistoryViewModel : BaseViewModel
     {
-        public ScannedListManager ScannedListManager { get; set; }
-        public string Title { get; set; }
+        private ScannedListManager scannedListManager;
+        public string TotalSum { get; set; }
         private DateTime selectedDate;
 
         public DateTime SelectedDate
@@ -23,10 +23,11 @@ namespace ViewModels
             set
             {
                 selectedDate = value;
-                ScannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);
-                ScannedList = new ObservableCollection<ScannedItem>(ScannedListManager.ScannedItems);
+                scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);
+                ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
+                TotalSum = "Suma: " + scannedListManager.TotalSum.ToString();
                 OnPropertyChanged(nameof(ScannedList));
-                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(TotalSum));
             }
         }
 
@@ -36,8 +37,9 @@ namespace ViewModels
         {
             new TempData();
             SelectedDate = DateTime.Now;
-            ScannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);            
-            ScannedList = new ObservableCollection<ScannedItem>(ScannedListManager.ScannedItems);
+            scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);            
+            ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
+            TotalSum = "Suma: " + scannedListManager.TotalSum.ToString();
         }
     }
 }

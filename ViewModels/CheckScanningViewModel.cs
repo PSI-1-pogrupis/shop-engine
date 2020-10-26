@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using CSE.BL.BillingData;
 
 namespace ViewModels
 {
@@ -132,6 +133,7 @@ namespace ViewModels
         private void Confirm_List(object obj)
         {
             ScannedListLibrary.AddList(scannedListManager);
+            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, scannedListManager.TotalSum);
         }
 
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
