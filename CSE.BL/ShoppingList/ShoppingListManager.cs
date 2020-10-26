@@ -12,7 +12,7 @@ namespace CSE.BL.ShoppingList
     {
         private string name;
         public List<ShopTypes> UniqueShops { get; set; }
-        public double EstimatedPrice { get; private set; }
+        public decimal EstimatedPrice { get; private set; }
 
         //constructor for ShoppingListManager class
         public ShoppingListManager()
@@ -145,7 +145,7 @@ namespace CSE.BL.ShoppingList
             {
                 if (item.Shop.Equals("ANY")) continue;
 
-                EstimatedPrice += item.Price * item.Amount;
+                EstimatedPrice += item.Price * (decimal)item.Amount;
             }
 
             FindUniqueShops();

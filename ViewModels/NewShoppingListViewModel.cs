@@ -26,8 +26,8 @@ namespace ViewModels
         private List<ShopTypes> availableShops;
 
         private string selectedName = "";
-        private double estimatedPrice = 0;
-        private double optimizedListPriceDifference = 0;
+        private decimal estimatedPrice = 0;
+        private decimal optimizedListPriceDifference = 0;
         private bool showOptimizedList = false;
         private bool onlyReplaceUnspecifiedShops = false;
         private readonly bool editMode = false;
@@ -85,7 +85,7 @@ namespace ViewModels
 
         public bool IsSelected { get; set; }
 
-        public double EstimatedPrice
+        public decimal EstimatedPrice
         {
             get { return estimatedPrice; }
             set
@@ -95,7 +95,7 @@ namespace ViewModels
             }
         }
 
-        public double OptimizedListEstimatedPrice
+        public decimal OptimizedListEstimatedPrice
         {
             get {
                 if (optimizedList != null)
@@ -104,7 +104,7 @@ namespace ViewModels
             }
         }
 
-        public double OptimizedListPriceDifference
+        public decimal OptimizedListPriceDifference
         {
             get { return optimizedListPriceDifference; }
             set
@@ -249,7 +249,7 @@ namespace ViewModels
 
             foreach(ShoppingItemData item in dataList)
             {
-                foreach(KeyValuePair<ShopTypes, double> shop in item.ShopPrices)
+                foreach(KeyValuePair<ShopTypes, decimal> shop in item.ShopPrices)
                 {
                     if (shop.Key == ShopTypes.UNKNOWN || shops.Contains(shop.Key)) continue;
 
