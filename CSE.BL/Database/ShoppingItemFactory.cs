@@ -20,7 +20,7 @@ namespace CSE.BL.Database
             return instance;
         }
         // Create new ready-to-use object using values
-        public ShoppingItemData CreateInstance(int id, string name, UnitTypes unit, Dictionary<ShopTypes, double> prices)
+        public ShoppingItemData CreateInstance(int id, string name, UnitTypes unit, Dictionary<ShopTypes, decimal> prices)
         {
             ShoppingItemData instance = new ShoppingItemData(name, unit, prices);
 
