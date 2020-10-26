@@ -34,6 +34,10 @@ namespace CSE.BL.ScannedData
 
             if (list.GetCount() != 0 && list != null)
             {
+                DateTime dateTime = DateTime.Now.Date;
+                if (allLists.ContainsKey(dateTime))//temporararily, there can only be one list per day
+                    allLists.Remove(dateTime);
+
                 allLists.Add(DateTime.Now.Date, list);
                 ok = true;
             }
@@ -47,6 +51,9 @@ namespace CSE.BL.ScannedData
 
             if (list.GetCount() != 0 && list != null)
             {
+                if (allLists.ContainsKey(date.Date))//temporararily, there can only be one list per day
+                    allLists.Remove(date.Date);
+
                 allLists.Add(date.Date, list);
                 ok = true;
             }
