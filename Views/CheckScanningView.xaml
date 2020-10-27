@@ -78,7 +78,12 @@
                             <Label Content="{Binding ListLabelContent}" FontSize="36" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <!--<TextBox Text="{Binding ReadedText}" TextWrapping="Wrap" IsReadOnly="True" Foreground="White"/> -->
                             <ListView Background="#FF313638" ItemsSource="{Binding ScannedList}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="Height" Value="30"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
                                 <ListView.View>
                                     <GridView>
                                         

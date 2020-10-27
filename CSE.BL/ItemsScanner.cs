@@ -33,6 +33,8 @@ namespace CSE.BL
 
         private const int minLineLength = 10;
 
+        public ShopTypes Shop { get; set; }
+
         public void ScanProducts(ScannedListManager scannedList, string text)
         {
             string[] tLines = text.Split('\n');
@@ -61,7 +63,18 @@ namespace CSE.BL
                 }
 
                 if (ReadProduct(newline, out productName, out productPrice))
-                    scannedList.AddItem(new ScannedItem(productName, productPrice));
+                {
+                    scannedList.AddItem(new ScannedItem(productName, productPrice, Shop)
+                    {
+                        // delete this when SearchForProductsWithBetterPrices in ProductComparisonViewModel is implemented
+                        BetterPricedItem = new ScannedItem
+                        {
+                            Shop = ShopTypes.RIMI,
+                            PriceString = "25eu"
+                        }
+                    });
+                     
+                }
                     
 
             }
@@ -163,27 +176,5 @@ namespace CSE.BL
         }
     }
 
-    public static class ContainsExtension
-    {
-        //public static bool ContainsIgnCase(this string source, string toCheck)
-        //{
-        //    return source?.IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
-        //}
-
-        public static bool ContainsSimilar(this string source, string toCheck,int tolerance)
-        {
-            bool subsequenceTolerated = source.LongestCommonSubsequence(toCheck).Item1.Length >= toCheck.Length - tolerance;
-
-            return subsequenceTolerated;
-        }
-
-        public static int LettersCount(this string source)
-        {
-            int count = 0;
-            foreach (char c in source)
-                if (Char.IsLetter(c)) count++;
-
-            return count;
-        }
-    }
+    
 }

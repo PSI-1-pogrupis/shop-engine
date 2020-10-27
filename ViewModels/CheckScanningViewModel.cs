@@ -107,6 +107,7 @@ namespace ViewModels
 
         private void Confirm_Click(object obj)
         {
+            mainVM.ProductsListToCompare = scannedListManager;
             mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
 
@@ -141,6 +142,7 @@ namespace ViewModels
         {
             Thread.CurrentThread.IsBackground = true;
             ReadedText = imgReader.ReadImage(dlg.FileName);
+            itemsScanner.Shop = SelectedShop;
             itemsScanner.ScanProducts(scannedListManager, ReadedText);
             ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
             
