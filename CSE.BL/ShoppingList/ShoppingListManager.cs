@@ -12,7 +12,7 @@ namespace CSE.BL.ShoppingList
     {
         private string name;
         public List<ShopTypes> UniqueShops { get; set; }
-        public double EstimatedPrice { get; private set; }
+        public decimal EstimatedPrice { get; private set; }
 
         //constructor for ShoppingListManager class
         public ShoppingListManager()
@@ -24,6 +24,13 @@ namespace CSE.BL.ShoppingList
         public ShoppingListManager(IEnumerable<ShoppingItem> collection) : base()
         {
             ShoppingList = new List<ShoppingItem>(collection);
+
+            foreach(ShoppingItem item in collection)
+            {
+                EstimatedPrice += item.Price * (decimal)item.Amount;
+            }
+
+            FindUniqueShops();
         }
 
         public string Name
@@ -64,13 +71,13 @@ namespace CSE.BL.ShoppingList
                     if(item.Name.Equals(itm.Name) && item.Shop.Equals(itm.Shop))
                     {
                         itm.Amount += item.Amount;
-                        EstimatedPrice += item.Price;
+                        EstimatedPrice += item.Price * (decimal)item.Amount;
 
                         return true;
                     }
                 }
 
-                EstimatedPrice += item.Price;
+                EstimatedPrice += item.Price * (decimal)item.Amount;
 
                 ShoppingList.Add(item);
                 FindUniqueShops();
@@ -89,7 +96,7 @@ namespace CSE.BL.ShoppingList
             {
                 ShoppingItem item = ShoppingList[index];
 
-                EstimatedPrice -= item.Price;
+                EstimatedPrice -= item.Price * (decimal)item.Amount;
 
                 ShoppingList.Remove(item);
                 FindUniqueShops();
@@ -106,7 +113,7 @@ namespace CSE.BL.ShoppingList
 
             ShoppingList.Remove(item);
 
-            EstimatedPrice -= item.Price;
+            EstimatedPrice -= item.Price * (decimal)item.Amount;
             FindUniqueShops();
 
             return true;
@@ -145,7 +152,7 @@ namespace CSE.BL.ShoppingList
             {
                 if (item.Shop.Equals("ANY")) continue;
 
-                EstimatedPrice += item.Price * item.Amount;
+                EstimatedPrice += item.Price * (decimal)item.Amount;
             }
 
             FindUniqueShops();

@@ -8,7 +8,7 @@ namespace CSE.BL.ScannedData
     public class ScannedListManager
     {
         public List<ScannedItem> ScannedItems { get; set; }
-        
+        public decimal TotalSum { get; private set; }
 
         public ScannedListManager()
         {
@@ -35,6 +35,7 @@ namespace CSE.BL.ScannedData
             if (item != null)
             {
                 ScannedItems.Add(item);
+                TotalSum += item.Price;
                 ok = true;
             }
 

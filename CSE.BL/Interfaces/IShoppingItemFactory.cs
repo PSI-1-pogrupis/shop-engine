@@ -7,7 +7,7 @@ namespace CSE.BL.Interfaces
     public interface IShoppingItemFactory
     {
         ShoppingItemData CreateInstance(ShoppingItemData data);
-        ShoppingItemData CreateInstance(int id, string name, UnitTypes unit, Dictionary<ShopTypes, double> prices);
+        ShoppingItemData CreateInstance(int id, string name, UnitTypes unit, Dictionary<ShopTypes, decimal> prices);
         void UpdateInstance(ShoppingItemData data, ShoppingItemData instance);
     }
 }

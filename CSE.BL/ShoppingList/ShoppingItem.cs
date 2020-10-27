@@ -14,7 +14,7 @@ namespace CSE.BL.ShoppingList
         private double amount; //amount of the item 
 
         public ShopTypes Shop { get; private set; } // shop where this item is sold
-        public double Price { get; private set; } // price of the item
+        public decimal Price { get; private set; } // price of the item
 
         // get/set the name of the item
         public string Name
@@ -49,7 +49,7 @@ namespace CSE.BL.ShoppingList
         public ShoppingItem() { }
 
         //constructor for the ShoppingItem class
-        public ShoppingItem(string name, ShopTypes shop, double price, double amount, UnitTypes unit)
+        public ShoppingItem(string name, ShopTypes shop, decimal price, double amount, UnitTypes unit)
         {
             this.name = name;
             this.amount = amount;
