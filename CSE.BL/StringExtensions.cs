@@ -19,11 +19,11 @@ namespace CSE.BL
             return subsequenceTolerated;
         }
 
-        public static int LettersCount(this string source)
+        public static int SymbolsCount(this string source)
         {
             int count = 0;
             foreach (char c in source)
-                if (Char.IsLetter(c)) count++;
+                if (!char.IsDigit(c) && !char.IsWhiteSpace(c)) count++;
 
             return count;
         }
