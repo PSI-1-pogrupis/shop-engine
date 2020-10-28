@@ -31,7 +31,7 @@ namespace CSE.BL
 
         //TODO: method to scan all shopping items
 
-        private const int minLineLength = 10;
+        private const int minLineLength = 5;
 
         public void ScanProducts(ScannedListManager scannedList, string text)
         {
@@ -40,13 +40,21 @@ namespace CSE.BL
             decimal productPrice;
             string newline;
             decimal discount;
+            decimal pricePerQuantity = 0;
+            ScannedItem tempScannedItem = null;
 
             foreach(string line in tLines)
             {
-                if (line.LettersCount() < minLineLength) continue;
+                if (line.SymbolsCount() < minLineLength) continue;
 
                 newline = line.ToUpper();
                 newline = newline.Replace(',', '.');
+                newline = newline.Replace('\'', '.');
+                newline = newline.Replace('”', '-');
+                newline = newline.Replace('„', '-');
+                newline = newline.Replace('“', '-');
+                newline = newline.Replace('"', '-');
+                newline = newline.Replace('—', '-');
 
 
                 discount = Discount(newline);
@@ -54,22 +62,76 @@ namespace CSE.BL
                 {
                     if (scannedList.GetCount() > 0)
                     {
-                        scannedList.GetItem(scannedList.GetCount() - 1).Discount = discount;
+                        if (scannedList.GetItem(scannedList.GetCount() - 1).Discount == 0)
+                        {
+                            scannedList.GetItem(scannedList.GetCount() - 1).Discount = discount;
+                        }
                         continue;
                     }
                     
                 }
 
+                
+                if (tempScannedItem != null)
+                {
+                    // check if its "0,225 kg x 4,35 EUR / kg 1,20 A" or "VNT..." type of line
+                    productPrice = QuantitiesAndPricesLine(newline, out pricePerQuantity);
+                    if (productPrice != 0)
+                    {
+                        tempScannedItem.Price = productPrice;
+                        tempScannedItem.PricePerQuantity = pricePerQuantity;
+                        scannedList.AddItem(tempScannedItem);
+                        tempScannedItem = null;
+                        continue;
+                    }
+                }
+
+                
+
+
                 if (ReadProduct(newline, out productName, out productPrice))
                     scannedList.AddItem(new ScannedItem(productName, productPrice));
-                    
+                else
+                    tempScannedItem = new ScannedItem(productName, 0);
 
             }
         }
 
+        private decimal QuantitiesAndPricesLine(string newline, out decimal pricePerQuantity)
+        {
+            char c;
+            pricePerQuantity = 0;
+
+            int pos = newline.IndexOf("EUR");
+            if(pos > 7)
+            {
+                for (int i = pos-7; i < pos; i++)
+                {
+                    c = newline[i];
+                    if (char.IsDigit(c))
+                    {
+                        pricePerQuantity = ParseDecimal(newline, i);
+                    }
+                }
+            }
+
+            if((newline.Contains("EUR") && (newline.Contains("X") || newline.Contains(")("))) || newline.Contains("VNT")){
+                for (int i = newline.Length - 10; i < newline.Length; i++)  // so i would read only the last number (price)
+                {
+                    c = newline[i];
+                    if (char.IsDigit(c))
+                    {
+                        return ParseDecimal(newline, i);
+                    }
+                }
+            }
+            return 0;
+        }
+
         private decimal Discount(string line)
         {
-            if (line.ContainsSimilar("NUOLAIDA", 1))
+            //if (line.ContainsSimilar("NUOL", 1)) -- bad cuz sometimes confuzes products with discounts
+            if(line.Contains("NUOL"))
             {
                 return ParseDecimal(line) * -1;
             }
@@ -86,7 +148,7 @@ namespace CSE.BL
             {
                 c = line[i];
 
-                if (!char.IsDigit(c))
+                if (!char.IsDigit(c) || line.Length - i > 8)
                     productName += c;
                 else
                 {
@@ -123,7 +185,14 @@ namespace CSE.BL
 
             if(numberString.Length > 3) //more than min possible readed price 
             {
-                return decimal.Parse(numberString);
+                try
+                {
+                    return decimal.Parse(numberString);
+                }
+                catch (System.FormatException)
+                {
+                    return 0;
+                }
             }
 
             return 0;
@@ -156,7 +225,15 @@ namespace CSE.BL
 
             if (numberString.Length > 3) //more than min possible readed price 
             {
-                return decimal.Parse(numberString);
+                try
+                {
+                    return decimal.Parse(numberString);
+                }
+                catch (System.FormatException)
+                {
+                    return 0;
+                }
+                
             }
 
             return 0;
@@ -170,18 +247,20 @@ namespace CSE.BL
         //    return source?.IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
         //}
 
-        public static bool ContainsSimilar(this string source, string toCheck,int tolerance)
+
+  
+        public static bool ContainsSimilar(this string source, string toCheck,int tolerance)          
         {
             bool subsequenceTolerated = source.LongestCommonSubsequence(toCheck).Item1.Length >= toCheck.Length - tolerance;
 
             return subsequenceTolerated;
         }
 
-        public static int LettersCount(this string source)
+        public static int SymbolsCount(this string source)
         {
             int count = 0;
             foreach (char c in source)
-                if (char.IsLetter(c)) count++;
+                if (!char.IsDigit(c) && !char.IsWhiteSpace(c)) count++;
 
             return count;
         }
