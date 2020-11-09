@@ -337,7 +337,7 @@ namespace ViewModels
         {
             dataList = new List<ShoppingItemData>();
 
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 foreach (ShoppingItem item in manager.ShoppingList)
                 {
