@@ -54,10 +54,19 @@ namespace CSE.BL.ScannedData
         public string PriceString { get; set; }
         public string DiscountString { get; set; }
 
-        public ScannedItem (string name, decimal price)
+        public ShopTypes Shop { get; set; }
+
+        public ScannedItem BetterPricedItem { get; set; }
+
+        public ScannedItem (string name, decimal price, ShopTypes shop)
         {
             Name = name;
             Price = price;
+            Shop = shop;
+        }
+
+        public ScannedItem()
+        {
         }
 
     }

@@ -33,6 +33,8 @@ namespace CSE.BL
 
         private const int minLineLength = 10;
 
+        public ShopTypes Shop { get; set; }
+
         public void ScanProducts(ScannedListManager scannedList, string text)
         {
             string[] tLines = text.Split('\n');
@@ -61,7 +63,18 @@ namespace CSE.BL
                 }
 
                 if (ReadProduct(newline, out productName, out productPrice))
-                    scannedList.AddItem(new ScannedItem(productName, productPrice));
+                {
+                    scannedList.AddItem(new ScannedItem(productName, productPrice, Shop)
+                    {
+                        // delete this when SearchForProductsWithBetterPrices in ProductComparisonViewModel is implemented
+                        BetterPricedItem = new ScannedItem
+                        {
+                            Shop = ShopTypes.RIMI,
+                            PriceString = "25eu"
+                        }
+                    });
+                     
+                }
                     
 
             }
@@ -162,5 +175,6 @@ namespace CSE.BL
             return 0;
         }
     }
+
 
 }

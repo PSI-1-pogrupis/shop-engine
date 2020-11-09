@@ -1,4 +1,5 @@
-﻿using CSE.BL.ShoppingList;
+﻿using CSE.BL.ScannedData;
+using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,8 @@ namespace ViewModels
 
         public ShoppingListManager selectedShoppingList;
         public List<ShoppingListManager> loadedShoppingLists;
+
+        public ScannedListManager ProductsListToCompare { get; set; }
 
         public BaseViewModel SelectedViewModel
         {
@@ -54,7 +57,8 @@ namespace ViewModels
             SelectedViewModel = (parameter.ToString()) switch
             {
                 "Home" => new HomeViewModel(this),
-                "CheckScanning" => new CheckScanningViewModel(),
+                "CheckScanning" => new CheckScanningViewModel(this),
+                "ProductsComparison" => new ProductsComparisonViewModel(ProductsListToCompare),
                 "NewShoppingList" => new NewShoppingListViewModel(this, false),
                 "EditShoppingList" => new NewShoppingListViewModel(this, true),
                 "ItemSelection" => new ItemSelectionViewModel(this),
