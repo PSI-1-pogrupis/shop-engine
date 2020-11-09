@@ -1,17 +1,16 @@
 ﻿using CSE.BL.Database;
 using CSE.BL.ShoppingList;
+using System;
 using System.Collections.Generic;
 
 namespace CSE.BL.Interfaces
 {
-    public interface IShoppingItemGateway
+    public interface IShoppingItemGateway : IDisposable
     {
-        List<ShoppingItemData> Load();
-        ShoppingItemData Find(string name, List<ShoppingItemData> list);
-        void Insert(ShoppingItemData shoppingItem, List<ShoppingItemData> list);
-        void Update(List<ShoppingItemData> cache, ShoppingItemData item);
-        void Remove(string name, List<ShoppingItemData> cache);
-        void SaveChanges(List<ShoppingItemData> cache);
-        void SetConnection(object dataPath);
+        List<ShoppingItemData> GetAll();
+        ShoppingItemData Find(string shoppingItemName);
+        void Insert(ShoppingItemData shoppingItem);
+        void Remove(ShoppingItemData shoppingItem);
+        int SaveChanges();
     }
 }

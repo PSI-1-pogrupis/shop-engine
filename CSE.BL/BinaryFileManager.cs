@@ -7,7 +7,7 @@ namespace CSE.BL
     public class BinaryFileManager
     {
         /* Writes the given object instance to a binary file.*/
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite)
+        public static int WriteToBinaryFile<T>(string filePath, T objectToWrite)
         {
             try
             {
@@ -15,13 +15,12 @@ namespace CSE.BL
                 {
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     binaryFormatter.Serialize(stream, objectToWrite);
+                    return 0;
                 }
-            } catch (DirectoryNotFoundException)
+            }
+            catch (Exception)
             {
-                // Exception for not finding specified file directory
-            } catch (Exception)
-            {
-                // Other exceptions
+                return 1;
             }
         }
         /* Reads an object list instance from a binary file and returns it.

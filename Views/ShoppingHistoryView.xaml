@@ -38,7 +38,7 @@
                 <Grid.Effect>
                     <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="-90"/>
                 </Grid.Effect>
-                <ListView Background="#FF313638" ItemsSource="{Binding ScannedList}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsHitTestVisible="False">
+                <ListView Background="#FF313638" ItemsSource="{Binding ScannedList}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Product" Width="240">
@@ -123,7 +123,15 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Label Content="{Binding TotalSum}" Foreground="White" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Label>
+                <Label Content="{Binding Total}" Foreground="LightGray" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                    <Label.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="#00131618" Offset="0"/>
+                            <GradientStop Color="#FF131618" Offset="0.777"/>
+                            <GradientStop Color="#FF131618" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Background>
+                </Label>
             </Grid>
             <Grid Grid.Row="0" Grid.Column="1" Margin="0,5,0,0">
                 <Border CornerRadius="10,10,0,0" Background="#FF313638" Margin="10,5,10,5">

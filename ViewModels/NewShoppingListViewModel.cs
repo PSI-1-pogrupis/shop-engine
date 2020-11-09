@@ -11,6 +11,7 @@ using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using System.Data;
 using System.Net.NetworkInformation;
+using CSE.BL.Database.Models;
 
 namespace ViewModels
 {
