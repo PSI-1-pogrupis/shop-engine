@@ -27,8 +27,9 @@ namespace ViewModels
         private List<ShopTypes> availableShops;
 
         private string selectedName = "";
-        private decimal estimatedPrice = 0;
-        private decimal optimizedListPriceDifference = 0;
+        private string estimatedPrice = "";
+        private string optimizedListPrice = "";
+        private string optimizedListPriceDifference = "";
         private bool showOptimizedList = false;
         private bool onlyReplaceUnspecifiedShops = false;
         private readonly bool editMode = false;
@@ -38,8 +39,13 @@ namespace ViewModels
             set
             {
                 optimizedList = value;
+
+                GetMinMaxPrices(optimizedList.ShoppingList, dataList, out decimal minPrice, out decimal maxPrice);
+
+                if (minPrice == maxPrice) OptimizedListPrice = minPrice.ToString();
+                else OptimizedListPrice = minPrice.ToString() + " - " + maxPrice.ToString();
+
                 OnPropertyChanged(nameof(OptimizedList));
-                OnPropertyChanged(nameof(OptimizedListEstimatedPrice));
             }
         }
 
@@ -86,31 +92,32 @@ namespace ViewModels
 
         public bool IsSelected { get; set; }
 
-        public decimal EstimatedPrice
+        public string EstimatedPrice
         {
             get { return estimatedPrice; }
             set
             {
-                estimatedPrice = Math.Round(value, 2);
+                estimatedPrice = value;
                 OnPropertyChanged(nameof(EstimatedPrice));
             }
         }
 
-        public decimal OptimizedListEstimatedPrice
+        public string OptimizedListPrice
         {
-            get {
-                if (optimizedList != null)
-                    return Math.Round(optimizedList.EstimatedPrice, 2);
-                else return 0;
+            get { return optimizedListPrice; }
+            set
+            {
+                optimizedListPrice = value;
+                OnPropertyChanged(nameof(OptimizedListPrice));
             }
         }
 
-        public decimal OptimizedListPriceDifference
+        public string OptimizedListPriceDifference
         {
             get { return optimizedListPriceDifference; }
             set
             {
-                optimizedListPriceDifference = Math.Round(value, 2);
+                optimizedListPriceDifference = value;
                 OnPropertyChanged(nameof(OptimizedListPriceDifference));
             }
         }
@@ -178,18 +185,8 @@ namespace ViewModels
             selectedShops = new List<ShopTypes>();
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
 
-            dataList = new List<ShoppingItemData>();
-            
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
-            {
-                foreach(ShoppingItem item in manager.ShoppingList)
-                {
-                    ShoppingItemData data = repo.Find(item.Name);
-
-                    if (data != null) dataList.Add(data);
-                }
-            }
-            
+            LoadDataList();
+            manager.UpdateInformation();
             UpdateOverview();
             GetAvailableShops();
 
@@ -243,7 +240,11 @@ namespace ViewModels
         private void UpdateOverview()
         {
             ListShops = manager.UniqueShops;
-            EstimatedPrice = manager.EstimatedPrice;
+
+            GetMinMaxPrices(manager.ShoppingList, dataList, out decimal minPrice, out decimal maxPrice);
+
+            if (minPrice == maxPrice) EstimatedPrice = minPrice.ToString();
+            else EstimatedPrice = minPrice.ToString() + " - " + maxPrice.ToString();
         }
 
         private void GetAvailableShops()
@@ -269,7 +270,15 @@ namespace ViewModels
 
             OptimizedList = optimizer.GetLowestPriceList(manager, dataList, selectedShops, OnlyReplaceUnspecifiedShops);
 
-            OptimizedListPriceDifference = Math.Round(manager.EstimatedPrice - OptimizedList.EstimatedPrice, 2);
+            GetMinMaxPrices(manager.ShoppingList, dataList, out decimal minPrice1, out decimal maxPrice1);
+            GetMinMaxPrices(OptimizedList.ShoppingList, dataList, out decimal minPrice2, out decimal maxPrice2);
+
+            decimal minDiff = minPrice1 - maxPrice2;
+            decimal maxDiff = maxPrice1 - minPrice2;
+
+            if (minDiff == maxDiff) OptimizedListPriceDifference = minDiff.ToString();
+            else OptimizedListPriceDifference = "from: " + minDiff.ToString() + " to:  " + maxDiff.ToString();
+
             ShowOptimizedList = true;
         }
 
@@ -295,16 +304,17 @@ namespace ViewModels
             manager.Name = SelectedName;
 
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
-            EstimatedPrice = manager.EstimatedPrice;
-            ListShops = manager.UniqueShops;
+            UpdateOverview();
 
             CancelOptimization(null);
         }
 
         private void SaveAsNew(object parameter)
         {
-            ShoppingListManager newManager = new ShoppingListManager(OptimizedList.ShoppingList);
-            newManager.Name = SelectedName + "_OPT";
+            ShoppingListManager newManager = new ShoppingListManager(OptimizedList.ShoppingList)
+            {
+                Name = SelectedName + "_OPT"
+            };
 
             mainVM.loadedShoppingLists.Remove(manager);
             mainVM.loadedShoppingLists.Insert(0, newManager);
@@ -320,6 +330,72 @@ namespace ViewModels
             ShowOptimizedList = false;
             selectedShops = new List<ShopTypes>();
             OnlyReplaceUnspecifiedShops = false;
+        }
+
+        private void LoadDataList()
+        {
+            dataList = new List<ShoppingItemData>();
+
+            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            {
+                foreach (ShoppingItem item in manager.ShoppingList)
+                {
+                    ShoppingItemData data = repo.Find(item.Name);
+
+                    if (data == null)
+                    {
+                        data = new ShoppingItemData(item.Name, item.Unit, new Dictionary<ShopTypes, decimal>());
+                    }
+
+                    decimal loadedPrice;
+
+                    if (data.ShopPrices.TryGetValue(item.Shop, out loadedPrice))
+                    {
+                        item.PricePerUnit = loadedPrice;
+                    }
+                    else item.PricePerUnit = 0;
+
+                    dataList.Add(data);
+                }
+            }
+
+        }
+
+        private void GetMinMaxPrices(List<ShoppingItem> list, List<ShoppingItemData> data, out decimal minPrice, out decimal maxPrice)
+        {
+            minPrice = 0;
+            maxPrice = 0;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                ShoppingItem item = list[i];
+
+                if (item.Shop == ShopTypes.UNKNOWN)
+                {
+                    decimal minItemPrice = decimal.MaxValue;
+                    decimal maxItemPrice = 0;
+
+                    foreach (KeyValuePair<ShopTypes, decimal> price in data[i].ShopPrices)
+                    {
+                        if (price.Key == ShopTypes.UNKNOWN) continue;
+
+                        if (price.Value < minItemPrice) minItemPrice = price.Value;
+
+                        if (price.Value > maxItemPrice) maxItemPrice = price.Value;
+                    }
+
+                    if (minItemPrice != decimal.MaxValue && maxItemPrice != 0)
+                    {
+                        minPrice += minItemPrice * (decimal)item.Amount;
+                        maxPrice += maxItemPrice * (decimal)item.Amount;
+                    }
+                }
+                else
+                {
+                    minPrice += item.Price;
+                    maxPrice += item.Price;
+                }
+            }
         }
     }
 }

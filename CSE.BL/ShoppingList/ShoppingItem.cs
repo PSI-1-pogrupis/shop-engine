@@ -13,8 +13,8 @@ namespace CSE.BL.ShoppingList
         private UnitTypes unit; //the unit of measurement for this item
         private double amount; //amount of the item 
 
-        public ShopTypes Shop { get; private set; } // shop where this item is sold
-        public decimal Price { get; private set; } // price of the item
+        public ShopTypes Shop { get; set; } // shop where this item is sold
+        public decimal PricePerUnit { get; set; } // price of the item
 
         // get/set the name of the item
         public string Name
@@ -34,6 +34,11 @@ namespace CSE.BL.ShoppingList
             {
                 if (value > 0) amount = value;
             }
+        }
+
+        public decimal Price
+        {
+            get { return PricePerUnit * (decimal)Amount; }
         }
 
         // get/set the measurement unit for the item
@@ -56,7 +61,7 @@ namespace CSE.BL.ShoppingList
             this.unit = unit;
 
             Shop = shop;
-            Price = price;
+            PricePerUnit = price;
         }
 
         public override string ToString()

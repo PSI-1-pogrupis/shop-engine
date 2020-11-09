@@ -25,6 +25,7 @@ namespace ViewModels
 
         private ShoppingItemData selectedItem;
         private KeyValuePair<ShopTypes, decimal> selectedShop;
+        private Dictionary<ShopTypes, decimal> itemShops;
         private int selectedAmount = 1;
         private string selectedName = "";
         private bool isNotSelected = true;
@@ -64,11 +65,20 @@ namespace ViewModels
         public string SearchText
         {
             get { return searchText; }
-
             set
             {
                 searchText = value;
                 OnPropertyChanged(nameof(SearchText));
+            }
+        }
+
+        public Dictionary<ShopTypes, decimal> ItemShops
+        {
+            get { return itemShops; }
+            set
+            {
+                itemShops = value;
+                OnPropertyChanged(nameof(ItemShops));
             }
         }
 
@@ -158,7 +168,13 @@ namespace ViewModels
             if(parameter is ShoppingItemData item)
             {
                 SelectedItem = item;
-                if (item.ShopPrices.Count > 0) SelectedShop = item.ShopPrices.First();
+
+                Dictionary<ShopTypes, decimal> newShops = new Dictionary<ShopTypes, decimal>(item.ShopPrices);
+                newShops.Add(ShopTypes.UNKNOWN, 0);
+
+                ItemShops = newShops;
+
+                SelectedShop = new KeyValuePair<ShopTypes, decimal>(ShopTypes.UNKNOWN, 0);
             }
         }
 
