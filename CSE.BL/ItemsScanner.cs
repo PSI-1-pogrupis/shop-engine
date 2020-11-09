@@ -73,15 +73,21 @@ namespace CSE.BL
                     
                 }
 
-                
+
                 if (tempScannedItem != null)
                 {
+
                     // check if its "0,225 kg x 4,35 EUR / kg 1,20 A" or "VNT..." type of line
                     productPrice = QuantitiesAndPricesLine(newline, out pricePerQuantity);
                     if (productPrice != 0)
                     {
                         tempScannedItem.Price = productPrice;
                         tempScannedItem.PricePerQuantity = pricePerQuantity;
+                        tempScannedItem.BetterPricedItem = new ScannedItem
+                        {
+                            Shop = ShopTypes.RIMI,
+                            PriceString = "2 €"
+                        };
                         scannedList.AddItem(tempScannedItem);
                         tempScannedItem = null;
                         continue;
@@ -93,16 +99,21 @@ namespace CSE.BL
 
                 if (ReadProduct(newline, out productName, out productPrice))
                 {
+
                     scannedList.AddItem(new ScannedItem(productName, productPrice, Shop)
                     {
                         // delete this when SearchForProductsWithBetterPrices in ProductComparisonViewModel is implemented
                         BetterPricedItem = new ScannedItem
                         {
                             Shop = ShopTypes.RIMI,
-                            PriceString = "25eu"
+                            PriceString = "2 €"
                         }
                     });
-                     
+
+                }
+                else
+                {
+                    tempScannedItem = new ScannedItem(productName, 0);
                 }
 
             }
