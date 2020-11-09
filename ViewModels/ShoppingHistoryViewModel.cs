@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
@@ -11,7 +12,7 @@ namespace ViewModels
     public class ShoppingHistoryViewModel : BaseViewModel
     {
         private ScannedListManager scannedListManager;
-        public string TotalSum { get; set; }
+        public string Total { get; set; }
         private DateTime selectedDate;
 
         public DateTime SelectedDate
@@ -25,9 +26,9 @@ namespace ViewModels
                 selectedDate = value;
                 scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);
                 ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
-                TotalSum = "Suma: " + scannedListManager.TotalSum.ToString();
+                Total = "Total: " + scannedListManager.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
                 OnPropertyChanged(nameof(ScannedList));
-                OnPropertyChanged(nameof(TotalSum));
+                OnPropertyChanged(nameof(Total));
             }
         }
 
@@ -39,7 +40,7 @@ namespace ViewModels
             SelectedDate = DateTime.Now;
             scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);            
             ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
-            TotalSum = "Suma: " + scannedListManager.TotalSum.ToString();
+            Total = "Total: " + scannedListManager.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
         }
     }
 }
