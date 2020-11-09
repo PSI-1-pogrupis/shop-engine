@@ -56,11 +56,20 @@ namespace CSE.BL.ScannedData
 
         // for products that are priced per quantity (kg, unit, litres etc..) if not, it's 0
         public decimal PricePerQuantity { get; set; } 
+      
+        public ShopTypes Shop { get; set; }
 
-        public ScannedItem (string name, decimal price)
+        public ScannedItem BetterPricedItem { get; set; }
+
+        public ScannedItem (string name, decimal price, ShopTypes shop)
         {
             Name = name;
             Price = price;
+            Shop = shop;
+        }
+
+        public ScannedItem()
+        {
         }
 
     }

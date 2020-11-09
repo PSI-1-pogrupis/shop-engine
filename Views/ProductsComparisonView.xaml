@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="Views.ProductsComparisonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#FF313638">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#FF313638" Panel.ZIndex="1">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="1"/>
+            </Grid.Effect>
+            <Label Content="Products Comparison" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Background="#FF413A39">
+            <Border CornerRadius="3" Background="#FF413A39" Margin="5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="34" Direction="-90" ShadowDepth="5"/>
+                </Border.Effect>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="350"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="#FF413A39" Margin="100,50,100,0">
+                        <Border CornerRadius="3" Background="#FF313638" Margin="5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="34" Direction="-90" ShadowDepth="5"/>
+                            </Border.Effect>
+
+                        </Border>
+                        <ListView Margin="5" ItemsSource="{Binding ProductsComparisonList}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Height" Value="30"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Product" Width="270">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="Txt" Text="{Binding Name}" Foreground="White" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                                <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                                                                    <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                    <Setter Property="Height" Value="30"/>
+                                                </Style>
+
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Price" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="Txt" Text="{Binding PriceString}" Foreground="Wheat"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                                <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                                                                    <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Height="20" TextAlignment="Center" />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                    <Setter Property="Height" Value="30"/>
+                                                </Style>
+
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+
+
+                                        <GridViewColumn Header="Better price" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <TextBlock x:Name="Txt" Text="{Binding BetterPricedItem.PriceString}" Foreground="LightGreen"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                                <Border BorderThickness="0,0,0,0" BorderBrush="Black">
+                                                                    <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Height="20" HorizontalAlignment="Center" />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                    <Setter Property="Height" Value="30"/>
+                                                </Style>
+
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+
+                                    <GridViewColumn Header="In Shop" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock x:Name="Txt" Text="{Binding BetterPricedItem.Shop}" Foreground="LightGreen"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                            <Border BorderThickness="0,0,0,0" BorderBrush="Black">
+                                                                <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Height="20" HorizontalAlignment="Center" />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="OverridesDefaultStyle" Value="True" />
+                                                <Setter Property="Foreground" Value="LightGray" />
+                                                <Setter Property="Height" Value="30"/>
+                                            </Style>
+
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+<!--
+                    <Grid Grid.Row="1" Margin="100,0,100,0">
+                        <Border CornerRadius="3" Background="#FF313638" Margin="5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="34" Direction="-90" ShadowDepth="5"/>
+                            </Border.Effect>
+
+                        </Border>
+                    </Grid>
+-->
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
