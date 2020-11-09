@@ -68,6 +68,12 @@ namespace CSE.BL.ScannedData
             Shop = shop;
         }
 
+        public ScannedItem(string name, decimal price)
+        {
+            Name = name;
+            Price = price;
+        }
+
         public ScannedItem()
         {
         }
