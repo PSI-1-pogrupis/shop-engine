@@ -173,6 +173,7 @@ namespace ViewModels
 
                 repo.SaveChanges();
             }
+            Confirm_Click(obj);
         }
 
         private bool CanConfirmList()
