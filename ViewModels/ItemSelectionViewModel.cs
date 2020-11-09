@@ -1,5 +1,6 @@
 ﻿using CSE.BL;
 using CSE.BL.Database;
+using CSE.BL.Database.Models;
 using CSE.BL.Interfaces;
 using CSE.BL.ShoppingList;
 using System;
@@ -139,7 +140,7 @@ namespace ViewModels
             IsNotSelected = true;
 
             //TODO: Product list should be retrieved from the database
-            using (IShoppingItemRepository repo = new ShoppingItemRepository())
+            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 ProductList = repo.GetAll();
             }

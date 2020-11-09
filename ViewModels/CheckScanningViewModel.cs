@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using CSE.BL.BillingData;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
+using CSE.BL.Database.Models;
 
 namespace ViewModels
 {
@@ -148,7 +149,7 @@ namespace ViewModels
             ScannedListLibrary.AddList(scannedListManager);
             MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, scannedListManager.TotalSum);
 
-            using(IShoppingItemRepository repo = new ShoppingItemRepository())
+            using(IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 ItemDataSelector selector = new ItemDataSelector();
 
