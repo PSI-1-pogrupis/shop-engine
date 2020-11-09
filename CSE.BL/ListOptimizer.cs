@@ -41,7 +41,7 @@ namespace CSE.BL
                 }
                 else
                 {
-                    bestPrice = new KeyValuePair<ShopTypes, decimal>(item.Shop, item.Price);
+                    bestPrice = new KeyValuePair<ShopTypes, decimal>(item.Shop, item.PricePerUnit);
                 }
 
                 if (bestPrice.Key == ShopTypes.UNKNOWN) bestPrice = new KeyValuePair<ShopTypes, decimal>(ShopTypes.UNKNOWN, 0);

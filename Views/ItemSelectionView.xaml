@@ -45,49 +45,60 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="-90"/>
                     </Border.Effect>
-                    <DataGrid VirtualizingPanel.IsVirtualizing="True" ItemsSource="{Binding ProductList}" Focusable="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" CanUserSortColumns="False">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                            <Style TargetType="{x:Type DataGridRow}">
-                                <Setter Property="Foreground" Value="Black"/>
-                                <Setter Property="Background" Value="Black"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="4*"/>
-                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="2*"/>
-                            <DataGridTemplateColumn Width="2*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="+" Command="{Binding DataContext.ViewItemCommand, ElementName=root}" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <ScrollViewer>
+                        <DataGrid VirtualizingPanel.IsVirtualizing="True" ItemsSource="{Binding ProductList}" Focusable="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" CanUserSortColumns="False">
+                            <DataGrid.Resources>
+                                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="{x:Type DataGridRow}">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="Background" Value="Black"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Width="4*">
+                                    <DataGridTemplateColumn.Header>
+                                        <TextBlock Text="Name"/>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="2*"/>
+                                <DataGridTemplateColumn Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="+" Command="{Binding DataContext.ViewItemCommand, ElementName=root}" CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
                 </Border>
             </Grid>
             <Grid Margin="10,0,10,10" Grid.Column="1" Grid.Row="1">
@@ -97,7 +108,7 @@
                     </Border.Effect>
                 </Border>
                 <StackPanel>
-                    <TextBlock Text="{Binding SelectedItem.Name}" FontSize="32" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20,10,20,10"/>
+                    <TextBlock Text="{Binding SelectedItem.Name}" TextWrapping="Wrap" FontSize="32" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20,10,20,10"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -112,7 +123,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Shop:" FontSize="20" Foreground="White" VerticalAlignment="Bottom" Margin="20,20,0,0"/>
-                        <ComboBox SelectedItem="{Binding SelectedShop}" ItemsSource="{Binding DataContext.SelectedItem.ShopPrices, ElementName=root}" Grid.Column="1" FontSize="20" Foreground="Black" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Margin="0,0,20,0"/>
+                        <ComboBox SelectedItem="{Binding SelectedShop}" ItemsSource="{Binding ItemShops}" Grid.Column="1" FontSize="20" Foreground="Black" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Margin="0,0,20,0"/>
                     </Grid>
                     <DataGrid Margin="50,20,50,0" VirtualizingPanel.IsVirtualizing="True" ItemsSource="{Binding ShopComparison}" Focusable="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True" AutoGenerateColumns="False" Background="#FF515253" FontSize="16" CanUserSortColumns="False">
                         <DataGrid.Resources>
