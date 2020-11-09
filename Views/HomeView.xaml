@@ -33,7 +33,7 @@
                 </Label>
             </Grid>
             <Grid Grid.Column="1">
-                <TextBlock Text="Now it is possible to create new shopping list for future shopping. OCR update. Billing statement graph implementation to follow shopping patterns." HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Background="{x:Null}" Foreground="#FFF06543" FontWeight="Normal" TextWrapping="Wrap"/>
+                <TextBlock Text="OCR improvements. Shopping history view improvements with total sum. Updated new shopping list section. Implemented remote database..." HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Background="{x:Null}" Foreground="#FFF06543" FontWeight="Normal" TextWrapping="Wrap"/>
             </Grid>
         </Grid>
         <!--Content-->

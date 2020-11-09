@@ -42,29 +42,29 @@
         <Grid Grid.Row="1" Background="#FF2B3032" >
             <ScrollViewer x:Name="faqScrollViewer" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10">
                 <StackPanel>
-                    <Expander Padding="50,0,0,0" Name="UsageExpander" Background="{x:Null}" Header="1. Program usage." Foreground="White" ExpandDirection="Down" IsExpanded="False" HeaderTemplate="{StaticResource expanderTemplate}">
+                    <Expander Padding="50,0,0,0" Name="UsageExpander" Background="{x:Null}" Header="1. Application usage." Foreground="White" ExpandDirection="Down" IsExpanded="True" HeaderTemplate="{StaticResource expanderTemplate}">
                         <TextBlock Style="{StaticResource expandedElement}">
-                            Usage information...
+                            Shop comprasion engine application is created in order to provide people with useful information about their shopping habits. Application provides a feature which gives an opportunity to create, modify and save daily shopping lists for future or current needs.
                         </TextBlock>
                     </Expander>
                     <Expander Padding="50,0,0,0" Name="HistoryExpander" Background="{x:Null}" Header="2. Check scanning." Foreground="White" ExpandDirection="Down" IsExpanded="False"  HeaderTemplate="{StaticResource expanderTemplate}">
                         <TextBlock Style="{StaticResource expandedElement}">
-                            Check Scannning information...
+                            Application uses OCR technique which allows to track user daily shopping cart and provide statistics for their most popular products. Shop comparison engine also has a feature to calculate discounts from other people scanned checks in order to lay out most recent discounts for created shopping lists.
                         </TextBlock>
                     </Expander>
                     <Expander Padding="50,0,0,0" Name="DatabaseExpander" Background="{x:Null}" Header="3. Database privacy." Foreground="White" ExpandDirection="Down" IsExpanded="False"  HeaderTemplate="{StaticResource expanderTemplate}">
                         <TextBlock Style="{StaticResource expandedElement}">
-                            Database privacy information...
+                            Currently application uses MySQL database. No user information is stored in any way. Main purpose is to update fresh products discounts.
                         </TextBlock>
                     </Expander>
                     <Expander Padding="50,0,0,0" Name="StatisticsExpander" Background="{x:Null}" Header="4. Statistics." Foreground="White" ExpandDirection="Down" IsExpanded="False"  HeaderTemplate="{StaticResource expanderTemplate}">
                         <TextBlock Style="{StaticResource expandedElement}">
-                            Statistics information...
+                            Statistics are made only for personal informativeness. None of the personal data is stored in our database.
                         </TextBlock>
                     </Expander>
                     <Expander Padding="50,0,0,0" Name="ApplicationExpander" Background="{x:Null}" Header="5. Application information." Foreground="White" ExpandDirection="Down" IsExpanded="False"  HeaderTemplate="{StaticResource expanderTemplate}">
                         <TextBlock x:Name="ggg" Style="{StaticResource expandedElement}">
-                            Application information...
+                            Application is created using Visual Studio 2019, .NET Core 3.1, C#.
                         </TextBlock>
                     </Expander>
                     <!-- User email request -->
