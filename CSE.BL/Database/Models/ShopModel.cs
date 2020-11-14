@@ -2,16 +2,15 @@
 
 namespace CSE.BL.Database.Models
 {
-    public partial class ProductModel
+    public partial class ShopModel
     {
-        public ProductModel()
+        public ShopModel()
         {
             ShopProduct = new HashSet<ShopProductModel>();
         }
 
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string ProductUnit { get; set; }
+        public int ShopId { get; set; }
+        public string ShopName { get; set; }
         public virtual ICollection<ShopProductModel> ShopProduct { get; set; }
     }
 }

@@ -68,7 +68,10 @@ namespace ViewModels
         private void Send(object parameter)
         {
             UserValidator validator = new UserValidator();
-            string message = (Question.Length >= 10) ? "" : "\n Please provide more details.";
+            string message = "";
+            message = (Question.Length > 10) ? message : "\n Please provide more details.";
+            message = (Question.Length <= 255) ? message : "\n Question is too long. (255 characters only)";
+            message = (EmailAddress.Length <= 320) ? message : "\n Email address is invalid.";
 
             if (validator.ValidateEmail(EmailAddress, ref message) & !Name.Equals("") & message.Equals(""))
             {
@@ -78,7 +81,7 @@ namespace ViewModels
                     repo.SaveChanges();
                 }
                 ClearEntry();
-                ErrorMessage = "Successfully sent!";
+                message = "Successfully sent!";
             }
             else
             {
