@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CSE.BL.Database.Models
 {
-    public partial class Product
+    public partial class ProductModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

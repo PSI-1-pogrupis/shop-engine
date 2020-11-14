@@ -19,9 +19,9 @@ namespace CSE.BL.Database.Models
             : base(options)
         {
         }
-
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<ShopProduct> ShopProducts { get; set; }
+        public virtual DbSet<UserQuestionModel> UserQuestions { get; set; }
+        public virtual DbSet<ProductModel> Products { get; set; }
+        public virtual DbSet<ShopProductModel> ShopProducts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,7 +35,7 @@ namespace CSE.BL.Database.Models
         {
             Dictionary<ShopTypes, decimal> dictionary = new Dictionary<ShopTypes, decimal>();
             // add or update item
-            foreach (ShopProduct i in ShopProducts.Where(a => a.ProductName == name).ToList())
+            foreach (ShopProductModel i in ShopProducts.Where(a => a.ProductName == name).ToList())
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace CSE.BL.Database.Models
             {
                 try
                 {
-                    ShopProduct product = ShopProducts.Where(a => a.ProductName == item.Name && a.ShopName == i.Key.ToString()).ToList().First();
+                    ShopProductModel product = ShopProducts.Where(a => a.ProductName == item.Name && a.ShopName == i.Key.ToString()).ToList().First();
                     product.Price = i.Value;
                     product.Date = DateTime.Now;
                     ShopProducts.Update(product);
@@ -83,7 +83,7 @@ namespace CSE.BL.Database.Models
                 catch (Exception e)
                 {
                     Debug.Print(e.StackTrace);
-                    ShopProducts.Add(new ShopProduct { ProductName = item.Name, ShopName = i.Key.ToString(), Price = i.Value });
+                    ShopProducts.Add(new ShopProductModel { ProductName = item.Name, ShopName = i.Key.ToString(), Price = i.Value });
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace CSE.BL.Database.Models
             {
                 if (checkItem.FirstOrDefault() == null)
                 {
-                    Products.Add(new Product { Name = item.Name, Unit = item.Unit.ToString() });
+                    Products.Add(new ProductModel { Name = item.Name, Unit = item.Unit.ToString() });
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace CSE.BL.Database.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>(entity =>
+            modelBuilder.Entity<ProductModel>(entity =>
             {
                 entity.ToTable("product");
 
@@ -244,9 +244,13 @@ namespace CSE.BL.Database.Models
                     .HasCollation("utf8mb4_general_ci");
             });
 
-            modelBuilder.Entity<ShopProduct>(entity =>
+            modelBuilder.Entity<ShopProductModel>(entity =>
             {
                 entity.ToTable("shop_product");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -265,14 +269,49 @@ namespace CSE.BL.Database.Models
                     .IsRequired()
                     .HasColumnName("product_name")
                     .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.ShopName)
+                    .IsRequired()
                     .HasColumnName("shop_name")
                     .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+            });
+
+            modelBuilder.Entity<UserQuestionModel>(entity =>
+            {
+                entity.ToTable("user_question");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnName("email")
+                    .HasColumnType("varchar(320)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Question)
+                    .IsRequired()
+                    .HasColumnName("question")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);

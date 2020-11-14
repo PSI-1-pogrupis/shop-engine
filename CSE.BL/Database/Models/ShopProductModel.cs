@@ -2,7 +2,7 @@
 
 namespace CSE.BL.Database.Models
 {
-    public partial class ShopProduct
+    public partial class ShopProductModel
     {
         public int Id { get; set; }
         public string ShopName { get; set; }

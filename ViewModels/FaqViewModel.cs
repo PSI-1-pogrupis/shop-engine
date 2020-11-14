@@ -1,4 +1,6 @@
 ﻿using CSE.BL;
+using CSE.BL.Database.Models;
+using CSE.BL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -66,13 +68,17 @@ namespace ViewModels
         private void Send(object parameter)
         {
             UserValidator validator = new UserValidator();
-            string message = "";
+            string message = (Question.Length >= 10) ? "" : "\n Please provide more details.";
 
-            if (validator.ValidateEmail(EmailAddress, ref message) & !Name.Equals("") & !Question.Equals(""))
+            if (validator.ValidateEmail(EmailAddress, ref message) & !Name.Equals("") & message.Equals(""))
             {
-                //TODO: Send question
-                message = "Sent successfully!";
+                using (MysqlShoppingItemGateway repo = new MysqlShoppingItemGateway())
+                {
+                    repo.UserQuestions.Add(new UserQuestionModel { Name = Name, Email = EmailAddress, Question = Question });
+                    repo.SaveChanges();
+                }
                 ClearEntry();
+                ErrorMessage = "Successfully sent!";
             }
             else
             {
