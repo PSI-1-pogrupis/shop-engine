@@ -8,47 +8,47 @@ namespace CSE.BL.ScannedData
     [Serializable]
     public class ScannedItem
     {
-        private string name;
-        private decimal price;
+        private string _name;
+        private decimal _price;
 
         public string Name 
         {
             get
             {
-                return name;
+                return _name;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
-                    name = value;
+                    _name = value;
             }
         }
         public decimal Price
         {
             get
             {
-                return price;
+                return _price;
             }
             set
             {
                 if (value > 0)
                 {
                     PriceString = value.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
-                    price = value;
+                    _price = value;
                 }
             }
         }
-        private decimal discount;
+        private decimal _discount;
         public decimal Discount
         {
             get
             {
-                return discount;
+                return _discount;
             }
             set
             {
                 DiscountString = value.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
-                discount = value;
+                _discount = value;
             }
         }
         public string PriceString { get; set; }

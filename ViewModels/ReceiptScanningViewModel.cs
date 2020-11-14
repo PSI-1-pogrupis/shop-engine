@@ -13,82 +13,82 @@ using CSE.BL.Database.Models;
 
 namespace ViewModels
 {
-    public class CheckScanningViewModel : BaseViewModel
+    public class ReceiptScanningViewModel : BaseViewModel
     {
-        private readonly ImageReader imgReader;
-        private readonly ItemsScanner itemsScanner;
-        private readonly MainViewModel mainVM;
-        private ScannedListManager scannedListManager;
-        private string browseText = "";
+        private readonly ImageReader _imgReader;
+        private readonly ItemsScanner _itemsScanner;
+        private readonly MainViewModel _mainVM;
+        private readonly ScannedListManager _scannedListManager;
+        private string _browseText = "";
 
         public string BrowseText
         {
-            get { return browseText; }
+            get { return _browseText; }
             set
             {
-                browseText = value;
-                OnPropertyChanged("BrowseText");
+                _browseText = value;
+                OnPropertyChanged(nameof(BrowseText));
             }
         }
-        private string readedText = "";
-        public string ReadedText
+        private string _readText = "";
+        public string ReadText
         {
-            get { return readedText; }
+            get { return _readText; }
             set
             {
-                readedText = value;
-                OnPropertyChanged("ReadedText");
+                _readText = value;
+                OnPropertyChanged(nameof(ReadText));
             }
         }
-        private string shopText = "";
+        private string _shopText = "";
         public string ShopText
         {
-            get { return shopText; }
+            get { return _shopText; }
             set
             {
-                shopText = value;
-                OnPropertyChanged("ShopText");
+                _shopText = value;
+                OnPropertyChanged(nameof(ShopText));
             }
         }
-        private string listLabelContent;
+        private string _listLabelContent;
         public string ListLabelContent
         {
-            get { return listLabelContent; }
+            get { return _listLabelContent; }
             set
             {
-                listLabelContent = value;
-                OnPropertyChanged("ListLabelContent");
+                _listLabelContent = value;
+                OnPropertyChanged(nameof(ListLabelContent));
             }
         }
-        private BitmapSource imageSrc = new BitmapImage();
+        private BitmapSource _imageSrc = new BitmapImage();
         public BitmapSource ImageSrc
         {
-            get { return imageSrc; }
+            get { return _imageSrc; }
             set
             {
-                imageSrc = value;
-                OnPropertyChanged("ImageSrc");
+                _imageSrc = value;
+                OnPropertyChanged(nameof(ImageSrc));
             }
         }
         public ObservableCollection<ScannedItem> ScannedList
         {
-            get { return new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems); }
+            get { return new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems); }
             set
             {
-                scannedListManager.ScannedItems = new List<ScannedItem>(value);
-                OnPropertyChanged("ScannedList");
+                _scannedListManager.ScannedItems = new List<ScannedItem>(value);
+                OnPropertyChanged(nameof(ScannedList));
             }
         }
 
-        private ShopTypes selectedShop;
+        private ShopTypes _selectedShop;
         public ShopTypes SelectedShop {
-            get { return selectedShop;}
+            get { return _selectedShop;}
             set
             {
-                if(selectedShop != value)
+                if(_selectedShop != value)
                 {
-                    selectedShop = value;
-                    OnPropertyChanged("SelectedShop");
+                    _selectedShop = value;
+                    OnPropertyChanged(nameof(SelectedShop));
                 }
             }
         }
@@ -97,29 +97,29 @@ namespace ViewModels
         public ICommand BrowseCommand { get; set; }
         public ICommand ConfirmCommand { get; set; }
 
-        public CheckScanningViewModel(MainViewModel mainVM)
+        public ReceiptScanningViewModel(MainViewModel mainVM)
         {
             BrowseCommand = new RelayCommand(Browse_Click, canExecute => true);
 
             ConfirmCommand = new RelayCommand(Confirm_List, canExecute => CanConfirmList());
 
-            imgReader = new ImageReader();
-            itemsScanner = new ItemsScanner();
-            scannedListManager = new ScannedListManager();
-            this.mainVM = mainVM;
+            _imgReader = new ImageReader();
+            _itemsScanner = new ItemsScanner();
+            _scannedListManager = new ScannedListManager();
+            _mainVM = mainVM;
             
 
         }
 
         private void Confirm_Click(object obj)
         {
-            mainVM.ProductsListToCompare = scannedListManager;
-            mainVM.ChangeViewCommand.Execute("ProductsComparison");
+            _mainVM.ProductsListToCompare = _scannedListManager;
+            _mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
 
         private void Browse_Click(object obj)
         {
-            ReadedText = "";
+            ReadText = "";
             BrowseText = "";
             ShopText = "";
             ImageSrc = null;
@@ -146,8 +146,8 @@ namespace ViewModels
 
         private void Confirm_List(object obj)
         {
-            ScannedListLibrary.AddList(scannedListManager);
-            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, scannedListManager.TotalSum);
+            ScannedListLibrary.AddList(_scannedListManager);
+            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, _scannedListManager.TotalSum);
 
             using(IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
@@ -186,10 +186,10 @@ namespace ViewModels
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
         {
             Thread.CurrentThread.IsBackground = true;
-            ReadedText = imgReader.ReadImage(dlg.FileName);
-            itemsScanner.Shop = SelectedShop;
-            itemsScanner.ScanProducts(scannedListManager, ReadedText);
-            ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
+            ReadText = _imgReader.ReadImage(dlg.FileName);
+            _itemsScanner.Shop = SelectedShop;
+            _itemsScanner.ScanProducts(_scannedListManager, ReadText);
+            ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
             
 
             //ShopTypes shop = itemsScanner.GetShop(ReadedText);

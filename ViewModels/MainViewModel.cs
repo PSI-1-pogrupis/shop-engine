@@ -57,7 +57,7 @@ namespace ViewModels
             SelectedViewModel = (parameter.ToString()) switch
             {
                 "Home" => new HomeViewModel(this),
-                "CheckScanning" => new CheckScanningViewModel(this),
+                "CheckScanning" => new ReceiptScanningViewModel(this),
                 "ProductsComparison" => new ProductsComparisonViewModel(ProductsListToCompare),
                 "NewShoppingList" => new NewShoppingListViewModel(this, false),
                 "EditShoppingList" => new NewShoppingListViewModel(this, true),

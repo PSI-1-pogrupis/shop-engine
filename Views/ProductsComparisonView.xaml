@@ -23,12 +23,8 @@
                     <DropShadowEffect BlurRadius="34" Direction="-90" ShadowDepth="5"/>
                 </Border.Effect>
                 <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="350"/>
-                        <RowDefinition Height="100"/>
-                    </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Background="#FF413A39" Margin="100,50,100,0">
+                    <Grid Grid.Row="0" Background="#FF413A39" Margin="100,50,100,50" Width="600" Height="450">
                         <Border CornerRadius="3" Background="#FF313638" Margin="5">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="34" Direction="-90" ShadowDepth="5"/>
@@ -109,7 +105,7 @@
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                                                <Border BorderThickness="0,0,0,0" BorderBrush="Black">
+                                                                <Border BorderThickness="0,0,1,0" BorderBrush="Black">
                                                                     <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Height="20" HorizontalAlignment="Center" />
                                                                 </Border>
                                                             </ControlTemplate>
