@@ -16,9 +16,9 @@ namespace Views
     /// <summary>
     /// Interaction logic for CheckScanningView.xaml
     /// </summary>
-    public partial class CheckScanningView : UserControl
+    public partial class ReceiptScanningView : UserControl
     {
-        public CheckScanningView()
+        public ReceiptScanningView()
         {
             InitializeComponent();
         }

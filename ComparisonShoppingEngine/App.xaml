@@ -16,8 +16,8 @@
                     <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
                         <views:HomeView/>
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:CheckScanningViewModel}">
-                        <views:CheckScanningView/>
+                    <DataTemplate DataType="{x:Type viewModels:ReceiptScanningViewModel}">
+                        <views:ReceiptScanningView/>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewModels:ProductsComparisonViewModel}">
                         <views:ProductsComparisonView/>
