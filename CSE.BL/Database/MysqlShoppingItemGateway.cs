@@ -19,9 +19,11 @@ namespace CSE.BL.Database.Models
             : base(options)
         {
         }
-        public virtual DbSet<UserQuestionModel> UserQuestions { get; set; }
+
         public virtual DbSet<ProductModel> Products { get; set; }
+        public virtual DbSet<ShopModel> Shops { get; set; }
         public virtual DbSet<ShopProductModel> ShopProducts { get; set; }
+        public virtual DbSet<UserQuestionModel> UserQuestions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,45 +32,44 @@ namespace CSE.BL.Database.Models
                 optionsBuilder.UseMySql(ConfigurationManager.ConnectionStrings["HerokuMySqlDatabaseConnectionString"].ConnectionString, x => x.ServerVersion("8.0.22-mysql"));
             }
         }
-        // Retrieve shop prices for specified shopping item
+        // Retrieve shop prices for specified shop item
         private Dictionary<ShopTypes, decimal> FindDictionary(string name)
         {
             Dictionary<ShopTypes, decimal> dictionary = new Dictionary<ShopTypes, decimal>();
-            // add or update item
-            foreach (ShopProductModel i in ShopProducts.Where(a => a.ProductName == name).ToList())
+
+            try
             {
-                try
-                {
-                    dictionary.Add((ShopTypes)Enum.Parse(typeof(ShopTypes), i.ShopName, true), i.Price);
-                }
-                catch (ArgumentNullException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (ArgumentException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (OverflowException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (Exception e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
+                dictionary = ShopProducts.Include(x => x.Shop).Where(x => x.Product.ProductName == name).ToDictionary(x => (ShopTypes)Enum.Parse(typeof(ShopTypes), x.Shop.ShopName), x => x.Price);
             }
+            catch (ArgumentNullException e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+            catch (ArgumentException e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+            catch (OverflowException e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+
             return dictionary;
         }
-        // Insert and if exists update shopping item
-        private void InsertDictionary(ShoppingItemData item)
+        // Insert and if exists update shop item
+        private void InsertDictionary(ShoppingItemData shopItem)
         {
-            foreach (var i in item.ShopPrices)
+            foreach (var newShopPrice in shopItem.ShopPrices)
             {
                 try
                 {
-                    ShopProductModel product = ShopProducts.Where(a => a.ProductName == item.Name && a.ShopName == i.Key.ToString()).ToList().First();
-                    product.Price = i.Value;
+                    // Update all shop item shops prices if specific product exist in shop
+                    var product = ShopProducts.Include(x=>x.Shop).Include(x=>x.Product).Where(x => x.Product.ProductName == shopItem.Name).Single();
+                    product.Price = newShopPrice.Value;
                     product.Date = DateTime.Now;
                     ShopProducts.Update(product);
                 }
@@ -83,41 +84,25 @@ namespace CSE.BL.Database.Models
                 catch (Exception e)
                 {
                     Debug.Print(e.StackTrace);
-                    ShopProducts.Add(new ShopProductModel { ProductName = item.Name, ShopName = i.Key.ToString(), Price = i.Value });
+                    // Shop item prices do not exist therefore create new
+                    int productId = Products.Where(a => a.ProductName == shopItem.Name).Single().ProductId;
+                    int shopId = Shops.Where(a => a.ShopName == newShopPrice.Key.ToString().ToUpper()).Single().ShopId;
+                    ShopProducts.Add(new ShopProductModel {
+                                        ProductId = productId,
+                                        ShopId = shopId,
+                                        Price = newShopPrice.Value });
                 }
             }
         }
-        // Remove shopping item prices from all shops
-        private void RemoveDictionary(ShoppingItemData item)
-        {
-            ShopProducts.RemoveRange(ShopProducts.Where(a => a.ProductName == item.Name));
-        }
-        // Find shopping item by name
+        // Find shop item by name
         public ShoppingItemData Find(string name)
         {
-            Dictionary<ShopTypes, decimal> dictionary = FindDictionary(name);
-
-            try
+            if (name != null && name.Length > 0)
             {
-                var s = Products.Where(a => a.Name == name).Single();
                 try
                 {
-                    return new ShoppingItemData(s.Name, (UnitTypes)Enum.Parse(typeof(UnitTypes), s.Unit), dictionary);
-                }
-                catch (ArgumentNullException e)
-                {
-                    Debug.Print(e.StackTrace);
-                    return null;
-                }
-                catch (ArgumentException e)
-                {
-                    Debug.Print(e.StackTrace);
-                    return null;
-                }
-                catch (OverflowException e)
-                {
-                    Debug.Print(e.StackTrace);
-                    return null;
+                    var foundItem = Products.Where(a => a.ProductName == name).Single();
+                    return new ShoppingItemData(foundItem.ProductName, (UnitTypes)Enum.Parse(typeof(UnitTypes), foundItem.ProductUnit), FindDictionary(name));
                 }
                 catch (Exception e)
                 {
@@ -125,135 +110,154 @@ namespace CSE.BL.Database.Models
                     return null;
                 }
             }
-            catch (Exception e)
-            {
-                Debug.Print(e.StackTrace);
-                return null;
-            }
+
+            return null;
         }
-        // Retrieve all shopping items
+        // Retrieve all shop items
         public List<ShoppingItemData> GetAll()
         {
             List<ShoppingItemData> itemList = new List<ShoppingItemData>();
-            var allProducts = Products.ToList();
-            foreach (var i in allProducts)
+            var allProducts = Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).ToList();
+            
+            foreach (var singleProduct in allProducts)
+            {
+                itemList.Add(new ShoppingItemData(singleProduct.ProductName, (UnitTypes)Enum.Parse(typeof(UnitTypes), singleProduct.ProductUnit),
+                    singleProduct.ShopProduct.ToDictionary(x => (ShopTypes)Enum.Parse(typeof(ShopTypes), x.Shop.ShopName), x => x.Price)));
+            }
+
+            return itemList;
+        }
+        // Insert or if exists update shop item with its shop prices dictionary
+        public void Insert(ShoppingItemData shopItem)
+        {
+            if (shopItem != null)
             {
                 try
                 {
-                    itemList.Add(new ShoppingItemData(i.Name, (UnitTypes)Enum.Parse(typeof(UnitTypes), i.Unit), FindDictionary(i.Name)));
+                    var product = Products.SingleOrDefault(x => x.ProductName == shopItem.Name);
+
+                    if (product == null)
+                    {
+                        Products.Add(new ProductModel { ProductName = shopItem.Name, ProductUnit = shopItem.Unit.ToString().ToUpper() });
+                    }
+                    else
+                    {
+                        product.ProductUnit = shopItem.Unit.ToString();
+                        Products.Update(product);
+                    }
+
+                    InsertDictionary(shopItem);
                 }
-                catch (ArgumentNullException e)
+                catch (ArgumentNullException)
                 {
-                    Debug.Print(e.StackTrace);
+
                 }
-                catch (ArgumentException e)
+                catch (InvalidOperationException)
                 {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (OverflowException e)
-                {
-                    Debug.Print(e.StackTrace);
+
                 }
                 catch (Exception e)
                 {
                     Debug.Print(e.StackTrace);
                 }
             }
-            return itemList;
         }
-        // Insert and if exists update shopping item
-        public void Insert(ShoppingItemData item)
+        // Remove shop item and its all shop prices
+        public void Remove(ShoppingItemData shopItem)
         {
-            var checkItem = from p in Products
-                            where p.Name == item.Name
-                            select p;
-            try
-            {
-                if (checkItem.FirstOrDefault() == null)
-                {
-                    Products.Add(new ProductModel { Name = item.Name, Unit = item.Unit.ToString() });
-                }
-                else
-                {
-                    var i = checkItem.First();
-                    i.Unit = item.Unit.ToString();
-                    Products.Update(i);
-                }
-                InsertDictionary(item);
-            }
-            catch (ArgumentNullException)
-            {
-
-            }
-            catch (InvalidOperationException)
-            {
-
-            }
-            catch (Exception e)
-            {
-                Debug.Print(e.StackTrace);
-            }
-        }
-
-        public void Remove(ShoppingItemData item)
-        {
-            if (item != null)
+            if (shopItem != null)
             {
                 try
                 {
-                    Products.Remove(Products.Where(a => a.Name == item.Name).Single());
+                    Products.Remove(Products.Where(a => a.ProductName == shopItem.Name).Single());
                 }
-                finally
+                catch (Exception e)
                 {
-                    RemoveDictionary(item);
+                    Debug.Print(e.StackTrace);
                 }
             }
         }
-
+        // Query made changes into database
         public override int SaveChanges()
         {
             return base.SaveChanges();
         }
-
+        // MySQL Schema modeling for EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductModel>(entity =>
             {
+                entity.HasKey(x => new { x.ProductId });
                 entity.ToTable("product");
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("product_id_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("product_id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.ProductName)
                     .IsRequired()
-                    .HasColumnName("name")
+                    .HasColumnName("product_name")
                     .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Unit)
+                entity.Property(e => e.ProductUnit)
                     .IsRequired()
-                    .HasColumnName("unit")
+                    .HasColumnName("product_unit")
                     .HasColumnType("enum('kg','g','l','ml','m','cm','piece')")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<ShopModel>(entity =>
+            {
+                entity.HasKey(x => new { x.ShopId });
+                entity.ToTable("shop");
+
+                entity.HasIndex(e => e.ShopId)
+                    .HasName("shop_id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.ShopId)
+                    .HasColumnName("shop_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ShopName)
+                    .IsRequired()
+                    .HasColumnName("shop_name")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             modelBuilder.Entity<ShopProductModel>(entity =>
             {
+                entity.HasKey(e => new { e.ShopProductId, e.ProductId })
+                    .HasName("PRIMARY");
+
                 entity.ToTable("shop_product");
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("fk_shop_product_product_idx");
+
+                entity.HasIndex(e => e.ShopId)
+                    .HasName("fk_shop_product_shop_idx");
+
+                entity.HasIndex(e => e.ShopProductId)
+                    .HasName("shop_product_id_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.ShopProductId)
+                    .HasColumnName("shop_product_id")
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("product_id")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Date)
@@ -265,19 +269,20 @@ namespace CSE.BL.Database.Models
                     .HasColumnName("price")
                     .HasColumnType("decimal(4,2)");
 
-                entity.Property(e => e.ProductName)
-                    .IsRequired()
-                    .HasColumnName("product_name")
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ShopId)
+                    .HasColumnName("shop_id")
+                    .HasColumnType("int(11)");
 
-                entity.Property(e => e.ShopName)
-                    .IsRequired()
-                    .HasColumnName("shop_name")
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ShopProduct)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("fk_shop_product_product");
+
+                entity.HasOne(d => d.Shop)
+                    .WithMany(p => p.ShopProduct)
+                    .HasForeignKey(d => d.ShopId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("fk_shop_product_shop");
             });
 
             modelBuilder.Entity<UserQuestionModel>(entity =>
