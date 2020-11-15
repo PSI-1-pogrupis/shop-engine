@@ -62,8 +62,10 @@ namespace CSE.BL
                 discount = Discount(newline);
                 if (discount != 0)
                 {
+                    
                     if (scannedList.GetCount() > 0)
                     {
+                        if (Math.Abs(discount) > scannedList.GetItem(scannedList.GetCount() - 1).Price) continue;
                         if (scannedList.GetItem(scannedList.GetCount() - 1).Discount == 0)
                         {
                             scannedList.GetItem(scannedList.GetCount() - 1).Discount = discount;
@@ -81,13 +83,11 @@ namespace CSE.BL
                     productPrice = QuantitiesAndPricesLine(newline, out pricePerQuantity);
                     if (productPrice != 0)
                     {
+                        
                         tempScannedItem.Price = productPrice;
                         tempScannedItem.PricePerQuantity = pricePerQuantity;
-                        tempScannedItem.BetterPricedItem = new ScannedItem
-                        {
-                            Shop = ShopTypes.RIMI,
-                            PriceString = "2 €"
-                        };
+                        tempScannedItem.Shop = Shop;
+                        Debug.WriteLine(Shop);
                         scannedList.AddItem(tempScannedItem);
                         tempScannedItem = null;
                         continue;
@@ -99,17 +99,7 @@ namespace CSE.BL
 
                 if (ReadProduct(newline, out productName, out productPrice))
                 {
-
-                    scannedList.AddItem(new ScannedItem(productName, productPrice, Shop)
-                    {
-                        // delete this when SearchForProductsWithBetterPrices in ProductComparisonViewModel is implemented
-                        BetterPricedItem = new ScannedItem
-                        {
-                            Shop = ShopTypes.RIMI,
-                            PriceString = "2 €"
-                        }
-                    });
-
+                    scannedList.AddItem(new ScannedItem(productName, productPrice, Shop));
                 }
                 else
                 {
@@ -117,6 +107,10 @@ namespace CSE.BL
                 }
 
             }
+
+            // change the names of products according to database:
+            ProductsComparer productsComparer = new ProductsComparer();
+            productsComparer.ChangeIncorrectNames(scannedList.ScannedItems);
         }
 
         private decimal QuantitiesAndPricesLine(string newline, out decimal pricePerQuantity)
@@ -133,6 +127,7 @@ namespace CSE.BL
                     if (char.IsDigit(c))
                     {
                         pricePerQuantity = ParseDecimal(newline, i);
+                        break;
                     }
                 }
             }
@@ -185,6 +180,14 @@ namespace CSE.BL
                 }
             }
             return false;
+        }
+
+        public void SeedShops(ScannedListManager scannedList, ShopTypes shop)
+        {
+            foreach(ScannedItem product in scannedList.ScannedItems)
+            {
+                product.Shop = shop;
+            }
         }
 
         private decimal ParseDecimal(string line, int pos) // TODO: if dot isnt in the number, it parsed wrong thus return 0
