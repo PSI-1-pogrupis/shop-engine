@@ -25,78 +25,41 @@ namespace ComparisonShoppingEngineAPI.Data
                 .Build();
             optionsBuilder.UseMySql(configuration.GetConnectionString("DefaultConnection"));
         }
-        private Dictionary<string, decimal> FindDictionary(string name)
-        {
-            Dictionary<string, decimal> dictionary = new Dictionary<string, decimal>();
 
-            try
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        IEnumerable<ProductData> IProductRepository.GetAll()
+        {
+            List<ProductData> productList = new List<ProductData>();
+            var allProducts = Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).ToList();
+
+            foreach (var singleProduct in allProducts)
             {
-                dictionary = ShopProducts.Include(x => x.Shop).Where(x => x.Product.ProductName == name).ToDictionary(x => x.Shop.ShopName, x => x.Price);
-            }
-            catch (ArgumentNullException e)
-            {
-                Debug.Print(e.StackTrace);
-            }
-            catch (ArgumentException e)
-            {
-                Debug.Print(e.StackTrace);
-            }
-            catch (OverflowException e)
-            {
-                Debug.Print(e.StackTrace);
-            }
-            catch (Exception e)
-            {
-                Debug.Print(e.StackTrace);
+                productList.Add(new ProductData()
+                {
+                    Name = singleProduct.ProductName,
+                    Unit = singleProduct.ProductUnit,
+                    ShopPrices = singleProduct.ShopProduct.ToDictionary(x => x.Shop.ShopName, x => x.Price)
+                });
             }
 
-            return dictionary;
+            return productList;
         }
-        // Insert and if exists update shop item
-        private void InsertDictionary(ProductData shopItem)
-        {
-            foreach (var newShopPrice in shopItem.ShopPrices)
-            {
-                try
-                {
-                    // Update all shop item shops prices if specific product exist in shop
-                    var product = ShopProducts.Include(x => x.Shop).Include(x => x.Product).Where(x => x.Product.ProductName == shopItem.Name).Single();
-                    product.Price = newShopPrice.Value;
-                    product.Date = DateTime.Now;
-                    ShopProducts.Update(product);
-                }
-                catch (ArgumentException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (Exception e)
-                {
-                    Debug.Print(e.StackTrace);
-                    // Shop item prices do not exist therefore create new
-                    int productId = Products.Where(a => a.ProductName == shopItem.Name).Single().ProductId;
-                    int shopId = Shops.Where(a => a.ShopName == newShopPrice.Key.ToString().ToUpper()).Single().ShopId;
-                    ShopProducts.Add(new ShopProductModel
-                    {
-                        ProductId = productId,
-                        ShopId = shopId,
-                        Price = newShopPrice.Value
-                    });
-                }
-            }
-        }
-        // Find shop item by name
-        public ProductData Find(string name)
+
+        public ProductData GetProductByName(string name)
         {
             if (name != null && name.Length > 0)
             {
                 try
                 {
                     var foundItem = Products.Where(a => a.ProductName == name).Single();
-                    return new ProductData() { Name = foundItem.ProductName, Unit = foundItem.ProductUnit, ShopPrices = FindDictionary(name) };
+                    return new ProductData()
+                    {
+                        Name = foundItem.ProductName,
+                        Unit = foundItem.ProductUnit,
+                        ShopPrices = FindDictionary(name)
+                    };
                 }
                 catch (Exception e)
                 {
@@ -107,12 +70,102 @@ namespace ComparisonShoppingEngineAPI.Data
 
             return null;
         }
-        
+
+        public ProductData Insert(ProductData product)
+        {
+            if (Products.Any(a => a.ProductName == product.Name)) return Update(product);
+
+            ProductModel newProduct = new ProductModel()
+            {
+                ProductName = product.Name,
+                ProductUnit = product.Unit,
+            };
+
+            Products.Add(newProduct);
+            SaveChanges();
+            
+            foreach (KeyValuePair<string, decimal> price in product.ShopPrices)
+            {
+                var shop = Shops.Where(a => a.ShopName == price.Key).SingleOrDefault();
+
+                if (shop == null) continue;
+
+                ShopProducts.Add(new ShopProductModel()
+                {
+                    ProductId = newProduct.ProductId,
+                    ShopId = shop.ShopId,
+                    Price = price.Value
+                });
+            }
+
+            return new ProductData()
+            {
+                Name = newProduct.ProductName,
+                Unit = newProduct.ProductUnit,
+                ShopPrices = newProduct.ShopProduct.ToDictionary(x => x.Shop.ShopName, x => x.Price)
+            };
+        }
+
+        public void Delete(ProductData product)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Updates the information of a product
+        public ProductData Update(ProductData product)
+        {
+            var allProducts = Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).ToList();
+            var foundProduct = allProducts.Where(a => a.ProductName == product.Name.ToUpper()).SingleOrDefault();
+
+            if (foundProduct == null) return null;
+
+            foundProduct.ProductUnit = product.Unit;
+            
+            foreach(KeyValuePair<string, decimal> price in product.ShopPrices)
+            {
+                var shopProduct = foundProduct.ShopProduct.Where(a => a.Shop.ShopName == price.Key).SingleOrDefault();
+                var shop = Shops.Where(a => a.ShopName == price.Key).SingleOrDefault();
+
+                if (shop == null) continue;
+
+                if (shopProduct != null) shopProduct.Price = price.Value;
+                else ShopProducts.Add(new ShopProductModel()
+                {
+                    ProductId = foundProduct.ProductId,
+                    ShopId = shop.ShopId,
+                    Price = price.Value
+                });
+            }
+
+            return new ProductData() { 
+                Name = foundProduct.ProductName, 
+                Unit = foundProduct.ProductUnit, 
+                ShopPrices = foundProduct.ShopProduct.ToDictionary(x => x.Shop.ShopName, x => x.Price) };
+        }
+
+        // finds all prices for a particular item.
+        private Dictionary<string, decimal> FindDictionary(string name)
+        {
+            Dictionary<string, decimal> dictionary = new Dictionary<string, decimal>();
+
+            try
+            {
+                dictionary = ShopProducts.Include(x => x.Shop).Where(x => x.Product.ProductName == name).ToDictionary(x => x.Shop.ShopName, x => x.Price);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+
+            return dictionary;
+        }
+
         // Query made changes into database
         public override int SaveChanges()
         {
             return base.SaveChanges();
         }
+
         // MySQL Schema modeling for EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -219,61 +272,5 @@ namespace ComparisonShoppingEngineAPI.Data
             OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        IEnumerable<ProductData> IProductRepository.GetAll()
-        {
-            List<ProductData> productList = new List<ProductData>();
-            var allProducts = Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).ToList();
-
-            foreach (var singleProduct in allProducts)
-            {
-                productList.Add(new ProductData() { 
-                    Name = singleProduct.ProductName,
-                    Unit = singleProduct.ProductUnit,
-                    ShopPrices = singleProduct.ShopProduct.ToDictionary(x => x.Shop.ShopName, x => x.Price)
-                    });
-            }
-
-            return productList;
-        }
-
-        public ProductData GetProductByName(string name)
-        {
-            if (name != null && name.Length > 0)
-            {
-                try
-                {
-                    var foundItem = Products.Where(a => a.ProductName == name).Single();
-                    return new ProductData() {
-                        Name = foundItem.ProductName,
-                        Unit = foundItem.ProductUnit,
-                        ShopPrices = FindDictionary(name)
-                    };
-                }
-                catch (Exception e)
-                {
-                    Debug.Print(e.StackTrace);
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        public void Insert(ProductData product)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(ProductData product)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(ProductData data)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

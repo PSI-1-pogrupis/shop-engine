@@ -12,10 +12,12 @@ namespace ComparisonShoppingEngineAPI.Data
 
         public ProductData GetProductByName(string name);
 
-        public void Insert(ProductData product);
+        public ProductData Insert(ProductData product);
 
         public void Delete(ProductData product);
 
-        public void Update(ProductData data);
+        public ProductData Update(ProductData product);
+
+        public int SaveChanges();
     }
 }

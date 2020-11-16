@@ -3,6 +3,7 @@ using CSE.BL.ShoppingList;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 
@@ -10,6 +11,8 @@ namespace ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        public HttpClient client;
+
         private BaseViewModel selectedViewModel;
         private BaseViewModel statusPanel;
 
@@ -39,6 +42,8 @@ namespace ViewModels
 
         public MainViewModel()
         {
+            client = new HttpClient();
+
             ChangeViewCommand = new RelayCommand(ChangeViewModel, canExecute => true);
             ChangeStatusPanelCommand = new RelayCommand(ChangeStatusPanel, canExecute => true);
             loadedShoppingLists = new List<ShoppingListManager>();

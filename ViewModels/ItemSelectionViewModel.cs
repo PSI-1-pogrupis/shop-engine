@@ -145,20 +145,26 @@ namespace ViewModels
             SearchList(null);
         }
 
-        private void SearchList(object parameter)
+        private async void SearchList(object parameter)
         {
             IsNotSelected = true;
 
-            //TODO: Product list should be retrieved from the database
-            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
-            {
-                ProductList = repo.GetAll();
-            }
+            ProductService service = new ProductService(mainVM.client);
 
-            string text = SearchText;
+            try
+            {
+                ProductList = await service.GetProductData();
+            }
+            catch
+            {
+                //TODO: handle exceptions
+                ProductList = new List<ShoppingItemData>();
+            }
+            
+            string text = SearchText.ToLower();
 
             var selected = from i in ProductList
-                           where i.Name.Contains(text)
+                           where i.Name.ToLower().Contains(text)
                            select i;
 
             ProductList = selected.ToList();
