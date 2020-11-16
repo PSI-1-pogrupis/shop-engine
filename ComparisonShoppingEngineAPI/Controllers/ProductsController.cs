@@ -21,7 +21,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllProducts()
         {
             using (IProductRepository repo = new MySqlProductRepository())
             {
@@ -30,7 +30,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
         }
 
         [HttpGet("{name}")]
-        public IActionResult GetByName(string name)
+        public IActionResult GetProductByName(string name)
         {
             using (IProductRepository repo = new MySqlProductRepository())
             {
@@ -38,6 +38,44 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
                 if (foundItem == null) return NotFound();
                 else return Ok(foundItem);
+            }
+        }
+
+        [HttpPut("update")]
+        public IActionResult UpdateProduct([FromBody] ProductData data)
+        {
+            if (data == null) return BadRequest();
+
+            using (IProductRepository repo = new MySqlProductRepository())
+            {
+                ProductData updatedItem = repo.Update(data);
+
+                if (updatedItem == null) return NotFound();
+                else
+                {
+                    repo.SaveChanges();
+                    return Ok(updatedItem);
+                }
+                
+            }
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateProduct([FromBody] ProductData data)
+        {
+            if (data == null) return BadRequest();
+
+            using (IProductRepository repo = new MySqlProductRepository())
+            {
+                ProductData insertedItem = repo.Insert(data);
+
+                if (insertedItem == null) return NotFound();
+                else
+                {
+                    repo.SaveChanges();
+                    return Ok(insertedItem);
+                }
+
             }
         }
     }
