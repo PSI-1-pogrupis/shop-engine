@@ -11,7 +11,6 @@ namespace ViewModels
 {
     public class ShoppingHistoryViewModel : BaseViewModel
     {
-        private ScannedListManager scannedListManager;
         public string Total { get; set; }
         private DateTime selectedDate;
 
@@ -24,23 +23,21 @@ namespace ViewModels
             set
             {
                 selectedDate = value;
-                scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);
-                ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
-                Total = "Total: " + scannedListManager.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
-                OnPropertyChanged(nameof(ScannedList));
+                ScannedLists = new ObservableCollection<ScannedListManager>(ScannedListLibrary.GetLists(SelectedDate));
+                Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
+                OnPropertyChanged(nameof(ScannedLists));
                 OnPropertyChanged(nameof(Total));
             }
         }
 
-        public ObservableCollection<ScannedItem> ScannedList{ get; set; }
+        public ObservableCollection<ScannedListManager> ScannedLists { get; set; }
 
         public ShoppingHistoryViewModel()
         {
             new TempData();
             SelectedDate = DateTime.Now;
-            scannedListManager = ScannedListLibrary.GetList(SelectedDate.Date);            
-            ScannedList = new ObservableCollection<ScannedItem>(scannedListManager.ScannedItems);
-            Total = "Total: " + scannedListManager.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
+            ScannedLists = new ObservableCollection<ScannedListManager>(ScannedListLibrary.GetLists(SelectedDate));
+            Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
         }
     }
 }
