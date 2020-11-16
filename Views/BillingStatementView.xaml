@@ -51,7 +51,7 @@
                                     </lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Total money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
+                                    <lvc:Axis Title="Total money spent, €" Foreground="Black" FontSize="14" MinValue="0" LabelFormatter="{Binding Formatter}">                                    </lvc:Axis>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>
                         </Grid>
@@ -67,7 +67,6 @@
                         </Border>
                         <Grid Grid.Row="1" Background="#FFF09D51">
                             <Label Content="{Binding AverageSpendings}" FontSize="32" Foreground="Brown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
                         </Grid>
                     </Grid>
                     <!--Bottom right side-->
@@ -92,7 +91,7 @@
                                     <lvc:Axis Title="Months" Labels="{Binding LatestMonths}" Foreground="Black" FontSize="14"></lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Money spent, €" Foreground="Black" FontSize="14" MinValue="0"></lvc:Axis>
+                                    <lvc:Axis Title="Money spent, €" Foreground="Black" FontSize="14" MinValue="0" LabelFormatter="{Binding Formatter}"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>                           
                         </Grid>
