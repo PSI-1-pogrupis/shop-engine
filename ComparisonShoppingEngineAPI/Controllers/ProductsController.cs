@@ -14,31 +14,26 @@ namespace ComparisonShoppingEngineAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ILogger<ProductsController> _logger;
+        private readonly IProductRepository _repository;
 
-        public ProductsController(ILogger<ProductsController> logger)
+        public ProductsController(ILogger<ProductsController> logger, IProductRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult GetAllProducts()
-        {
-            using (IProductRepository repo = new MySqlProductRepository())
-            {
-                return Ok(repo.GetAll());
-            }
-        }
+        public IActionResult GetAllProducts() => Ok(_repository.GetAll());
+
 
         [HttpGet("{name}")]
         public IActionResult GetProductByName(string name)
         {
-            using (IProductRepository repo = new MySqlProductRepository())
-            {
-                ProductData foundItem = repo.GetProductByName(name);
+            ProductData foundItem = _repository.GetProductByName(name);
 
-                if (foundItem == null) return NotFound();
-                else return Ok(foundItem);
-            }
+            if (foundItem == null) return NotFound();
+            else return Ok(foundItem);
+
         }
 
         [HttpPut("update")]
@@ -46,18 +41,15 @@ namespace ComparisonShoppingEngineAPI.Controllers
         {
             if (data == null) return BadRequest();
 
-            using (IProductRepository repo = new MySqlProductRepository())
-            {
-                ProductData updatedItem = repo.Update(data);
+            ProductData updatedItem = _repository.Update(data);
 
-                if (updatedItem == null) return NotFound();
-                else
-                {
-                    repo.SaveChanges();
-                    return Ok(updatedItem);
-                }
-                
+            if (updatedItem == null) return NotFound();
+            else
+            {
+                _repository.SaveChanges();
+                return Ok(updatedItem);
             }
+ 
         }
 
         [HttpPost("create")]
@@ -65,18 +57,15 @@ namespace ComparisonShoppingEngineAPI.Controllers
         {
             if (data == null) return BadRequest();
 
-            using (IProductRepository repo = new MySqlProductRepository())
+            ProductData insertedItem = _repository.Insert(data);
+
+            if (insertedItem == null) return NotFound();
+            else
             {
-                ProductData insertedItem = repo.Insert(data);
-
-                if (insertedItem == null) return NotFound();
-                else
-                {
-                    repo.SaveChanges();
-                    return Ok(insertedItem);
-                }
-
+                _repository.SaveChanges();
+                return Ok(insertedItem);
             }
+
         }
     }
 }
