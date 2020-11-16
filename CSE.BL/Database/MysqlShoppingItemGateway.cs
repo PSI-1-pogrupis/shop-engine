@@ -68,29 +68,23 @@ namespace CSE.BL.Database.Models
                 try
                 {
                     // Update all shop item shops prices if specific product exist in shop
-                    var product = ShopProducts.Include(x=>x.Shop).Include(x=>x.Product).Where(x => x.Product.ProductName == shopItem.Name).Single();
+                    var product = ShopProducts.Include(x => x.Product).Include(x => x.Shop).Where(x => x.Product.ProductName == shopItem.Name && x.Shop.ShopName == newShopPrice.Key.ToString()).Single();
                     product.Price = newShopPrice.Value;
                     product.Date = DateTime.Now;
                     ShopProducts.Update(product);
-                }
-                catch (ArgumentException e)
-                {
-                    Debug.Print(e.StackTrace);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Debug.Print(e.StackTrace);
                 }
                 catch (Exception e)
                 {
                     Debug.Print(e.StackTrace);
                     // Shop item prices do not exist therefore create new
                     int productId = Products.Where(a => a.ProductName == shopItem.Name).Single().ProductId;
-                    int shopId = Shops.Where(a => a.ShopName == newShopPrice.Key.ToString().ToUpper()).Single().ShopId;
-                    ShopProducts.Add(new ShopProductModel {
-                                        ProductId = productId,
-                                        ShopId = shopId,
-                                        Price = newShopPrice.Value });
+                    int shopId = Shops.Where(a => a.ShopName == newShopPrice.Key.ToString()).Single().ShopId;
+                    ShopProducts.Add(new ShopProductModel
+                    {
+                        ProductId = productId,
+                        ShopId = shopId,
+                        Price = newShopPrice.Value
+                    });
                 }
             }
         }
@@ -134,7 +128,7 @@ namespace CSE.BL.Database.Models
             {
                 try
                 {
-                    var product = Products.SingleOrDefault(x => x.ProductName == shopItem.Name);
+                    var product = Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).ToList().SingleOrDefault(x => x.ProductName == shopItem.Name);
 
                     if (product == null)
                     {
