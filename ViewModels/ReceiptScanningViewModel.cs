@@ -10,6 +10,7 @@ using CSE.BL.BillingData;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using CSE.BL.Database.Models;
+using System.Diagnostics;
 
 namespace ViewModels
 {
@@ -113,6 +114,7 @@ namespace ViewModels
 
         private void Confirm_Click(object obj)
         {
+            _itemsScanner.SeedShops(_scannedListManager, SelectedShop);
             _mainVM.ProductsListToCompare = _scannedListManager;
             _mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
@@ -138,7 +140,6 @@ namespace ViewModels
                 ImageSrc = new BitmapImage(new Uri(dlg.FileName));
 
                 ListLabelContent = "Reading...";
-
                 Thread scanThread = new Thread(() => ScanThread(dlg));
                 scanThread.Start();
             }
@@ -183,11 +184,11 @@ namespace ViewModels
             else return true;
         }
 
+
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
         {
             Thread.CurrentThread.IsBackground = true;
             ReadText = _imgReader.ReadImage(dlg.FileName);
-            _itemsScanner.Shop = SelectedShop;
             _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
             
