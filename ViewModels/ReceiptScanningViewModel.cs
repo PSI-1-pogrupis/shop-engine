@@ -10,6 +10,7 @@ using CSE.BL.BillingData;
 using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using CSE.BL.Database.Models;
+using System.Diagnostics;
 
 namespace ViewModels
 {
@@ -81,11 +82,12 @@ namespace ViewModels
         }
 
         private ShopTypes _selectedShop;
-        public ShopTypes SelectedShop {
-            get { return _selectedShop;}
+        public ShopTypes SelectedShop
+        {
+            get { return _selectedShop; }
             set
             {
-                if(_selectedShop != value)
+                if (_selectedShop != value)
                 {
                     _selectedShop = value;
                     OnPropertyChanged(nameof(SelectedShop));
@@ -107,12 +109,13 @@ namespace ViewModels
             _itemsScanner = new ItemsScanner();
             _scannedListManager = new ScannedListManager();
             _mainVM = mainVM;
-            
+
 
         }
 
         private void Confirm_Click(object obj)
         {
+            _itemsScanner.SeedShops(_scannedListManager, SelectedShop);
             _mainVM.ProductsListToCompare = _scannedListManager;
             _mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
@@ -124,7 +127,7 @@ namespace ViewModels
             ShopText = "";
             ImageSrc = null;
             ScannedList = new ObservableCollection<ScannedItem>();
-         
+
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Filter = "Image Files|*.jpg;*.jpeg;*.png;"
@@ -138,7 +141,6 @@ namespace ViewModels
                 ImageSrc = new BitmapImage(new Uri(dlg.FileName));
 
                 ListLabelContent = "Reading...";
-
                 Thread scanThread = new Thread(() => ScanThread(dlg));
                 scanThread.Start();
             }
@@ -147,15 +149,15 @@ namespace ViewModels
         private void Confirm_List(object obj)
         {
             ScannedListLibrary.AddList(_scannedListManager);
-            MonthSpendingLibrary.AddToLibrary(DateTime.Now.Month, _scannedListManager.TotalSum);
+            MonthSpendingLibrary.AddToLibrary(DateTime.Now, _scannedListManager.TotalSum);
 
-            using(IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
+            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 ItemDataSelector selector = new ItemDataSelector();
 
                 List<ShoppingItemData> items = repo.GetAll();
 
-                foreach(ScannedItem item in ScannedList)
+                foreach (ScannedItem item in ScannedList)
                 {
                     ShoppingItemData data = selector.FindClosestItem(item.Name, items);
 
@@ -183,14 +185,14 @@ namespace ViewModels
             else return true;
         }
 
+
         private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
         {
             Thread.CurrentThread.IsBackground = true;
             ReadText = _imgReader.ReadImage(dlg.FileName);
-            _itemsScanner.Shop = SelectedShop;
             _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
-            
+
 
             //ShopTypes shop = itemsScanner.GetShop(ReadedText);
             //switch (shop)
@@ -218,5 +220,5 @@ namespace ViewModels
         }
     }
 
-    
+
 }

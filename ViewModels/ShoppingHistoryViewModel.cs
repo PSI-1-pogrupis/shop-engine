@@ -13,6 +13,7 @@ namespace ViewModels
     {
         public string Total { get; set; }
         private DateTime selectedDate;
+        private CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("fr-FR");
 
         public DateTime SelectedDate
         {

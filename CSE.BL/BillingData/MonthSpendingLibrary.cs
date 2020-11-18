@@ -7,20 +7,8 @@ namespace CSE.BL.BillingData
     public static class MonthSpendingLibrary
     {
         private static int numberOfShoppings;
-        private static MonthSpending[] yearSpending = InitializeArray(13);
-
-        public static MonthSpending[] YearSpending
-        {
-            get
-            {
-                return yearSpending;
-            }
-        }
-
-        public static List<decimal> GetMonthSpending(int index)
-        {
-            return yearSpending[index].ShoppingLog;
-        }
+        private static decimal totalSpent;
+        private static Dictionary<(int, int), MonthSpending> monthList = new Dictionary<(int, int), MonthSpending>();
 
         public static int NumberOfShoppings
         {
@@ -30,39 +18,47 @@ namespace CSE.BL.BillingData
             }
             set
             {
-                if(value > -1)
+                if (value > -1)
                     numberOfShoppings = value;
             }
         }
 
-        public static void AddToLibrary(int monthNumber, decimal value)
-        {
-            if (monthNumber > 0 && monthNumber < 13)
+        public static decimal TotalSpent 
+        { 
+            get
             {
-                yearSpending[monthNumber].AddToShoppingLog(value);
-                numberOfShoppings++;
+                return totalSpent;
+            }
+            set
+            {
+                if (value > -1)
+                    totalSpent = value;
             }
         }
 
-        public static void RemoveFromLibrary(int monthNumber)
+        public static List<decimal> GetMonthSpending(DateTime date)
         {
-            var length = yearSpending[monthNumber].ShoppingLog.Count;
-            if (length > 0)
-            {                
-                yearSpending[monthNumber].RemoveFromShoppingLog(length-1);
-                numberOfShoppings--;
-            }
+            if (!monthList.ContainsKey((date.Year, date.Month)))
+                monthList[(date.Year, date.Month)] = new MonthSpending();
+
+            return monthList[(date.Year, date.Month)].ShoppingLog;
         }
 
-        private static MonthSpending[] InitializeArray(int length)
+        public static void AddToLibrary(DateTime date, decimal value)
         {
-            MonthSpending[] array = new MonthSpending[length];
-            for (int i = 0; i < length; i++)
+            if(!monthList.ContainsKey((date.Year, date.Month)))
             {
-                array[i] = new MonthSpending();
-            }
+                monthList.Add((date.Year, date.Month), new MonthSpending());
 
-            return array;
+                if (monthList.ContainsKey(((date.Year - 1), date.Month)))
+                {
+                    monthList.Remove(((date.Year - 1), date.Month));
+                }
+            }            
+
+            monthList[(date.Year, date.Month)].AddToShoppingLog(value);
+            TotalSpent += value;
+            numberOfShoppings++;      
         }
     }
 }
