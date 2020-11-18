@@ -11,7 +11,7 @@ namespace CSE.BL.BillingData
         public static decimal OverallAverageSpending()
         {
             if (MonthSpendingLibrary.NumberOfShoppings > 0)
-                return Math.Round(YearSpending().Sum() / MonthSpendingLibrary.NumberOfShoppings, 2, MidpointRounding.AwayFromZero);
+                return Math.Round(MonthSpendingLibrary.TotalSpent / MonthSpendingLibrary.NumberOfShoppings, 2, MidpointRounding.AwayFromZero);
             else
                 return 0;
         }
@@ -28,10 +28,9 @@ namespace CSE.BL.BillingData
         //calculates and gives data to the bar chart in BillingStatement class
         public static List<decimal> MonthSpending()
         {
-            var monthIndex = DateTime.Now.AddMonths(-1).Month;
             List<decimal> list = new List<decimal>();
-            list.Add(AverageSpending(MonthSpendingLibrary.GetMonthSpending(monthIndex)));
-            list.Add(AverageSpending(MonthSpendingLibrary.GetMonthSpending(monthIndex+1)));
+            list.Add(AverageSpending(MonthSpendingLibrary.GetMonthSpending(DateTime.Now.AddMonths(-1))));
+            list.Add(AverageSpending(MonthSpendingLibrary.GetMonthSpending(DateTime.Now)));
 
             return list;
         }
@@ -40,22 +39,17 @@ namespace CSE.BL.BillingData
         public static List<decimal> YearSpending()
         {
             List<decimal> list = new List<decimal>();
-            var monthIndex = DateTime.Now.AddMonths(1).Month;            
+            
 
-            while(monthIndex < 13)
-            {
-                list.Add((MonthSpendingLibrary.GetMonthSpending(monthIndex)).Sum());
-                monthIndex++;
-            }
-            monthIndex = 1;
+            DateTime dateIndex = DateTime.Now.AddMonths(-11);
 
-            while(list.Count < 12)
+            while (list.Count < 12)
             {
-                list.Add((MonthSpendingLibrary.GetMonthSpending(monthIndex)).Sum());
-                monthIndex++;
+                list.Add(MonthSpendingLibrary.GetMonthSpending(dateIndex).Sum());
+                dateIndex = dateIndex.AddMonths(1);
             }
 
-            return list;
+            return list;            
         }
 
         //calculates the difference between the average spending of current and previous month
