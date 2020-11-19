@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Models
 {
-    public class ProductData
+    public class ProductDto
     {
         public string Name { get; set; }
 

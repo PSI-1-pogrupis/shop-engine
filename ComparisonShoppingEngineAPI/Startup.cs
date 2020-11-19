@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ComparisonShoppingEngineAPI.Data;
+using ComparisonShoppingEngineAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +28,9 @@ namespace ComparisonShoppingEngineAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IProductRepository, MySqlProductRepository>();
+            ConfigureDatabase(services);
+
+            services.AddScoped<IProductService, ProductService>();
             services.AddControllers();
         }
 
@@ -48,6 +52,25 @@ namespace ComparisonShoppingEngineAPI
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void ConfigureDatabase(IServiceCollection services)
+        {
+            var connectionString = Configuration.GetSection("DatabaseConnectionString").Value;
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentNullException(nameof(connectionString), "Connection string not found");
+            }
+
+            services.AddDbContext<DatabaseContext, DatabaseContext>(options =>
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+                options.UseMySql(connectionString);
+            }, ServiceLifetime.Transient);
         }
     }
 }
