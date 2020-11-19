@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Data.Models
 {
-    public class ShopModel
+    public class Shop
     {
-        public ShopModel()
+        public Shop()
         {
-            ShopProduct = new HashSet<ShopProductModel>();
+            ShopProduct = new HashSet<ShopProduct>();
         }
-
+        [Key]
         public int ShopId { get; set; }
         public string ShopName { get; set; }
-        public virtual ICollection<ShopProductModel> ShopProduct { get; set; }
+        public virtual ICollection<ShopProduct> ShopProduct { get; set; }
     }
 }

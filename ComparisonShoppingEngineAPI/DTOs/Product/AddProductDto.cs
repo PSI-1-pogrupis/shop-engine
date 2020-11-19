@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ComparisonShoppingEngineAPI.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComparisonShoppingEngineAPI.Models
+namespace ComparisonShoppingEngineAPI.Dtos.Product
 {
-    public class ProductData
+    public class AddProductDto
     {
         public string Name { get; set; }
 
