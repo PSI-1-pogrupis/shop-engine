@@ -1,5 +1,6 @@
 ﻿using ComparisonShoppingEngineAPI.Data;
 using ComparisonShoppingEngineAPI.Models;
+using ComparisonShoppingEngineAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,58 +15,50 @@ namespace ComparisonShoppingEngineAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ILogger<ProductsController> _logger;
-        private readonly IProductRepository _repository;
+        private readonly IProductService _productService;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductRepository repository)
+        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
         {
             _logger = logger;
-            _repository = repository;
+            _productService = productService;
         }
 
         [HttpGet]
-        public IActionResult GetAllProducts() => Ok(_repository.GetAll());
+        public IActionResult GetAllProducts() => Ok(_productService.GetAll());
 
-
+        
         [HttpGet("{name}")]
         public IActionResult GetProductByName(string name)
         {
-            ProductData foundItem = _repository.GetProductByName(name);
+            ProductDto foundItem = _productService.GetProductByName(name);
 
             if (foundItem == null) return NotFound();
             else return Ok(foundItem);
 
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateProduct([FromBody] ProductData data)
+        [HttpPut]
+        public IActionResult UpdateProduct([FromBody] ProductDto data)
         {
             if (data == null) return BadRequest();
 
-            ProductData updatedItem = _repository.Update(data);
+            ProductDto updatedItem = _productService.Update(data);
 
             if (updatedItem == null) return NotFound();
-            else
-            {
-                _repository.SaveChanges();
-                return Ok(updatedItem);
-            }
- 
+            else return Ok(updatedItem);
         }
 
-        [HttpPost("create")]
-        public IActionResult CreateProduct([FromBody] ProductData data)
+        [HttpPost]
+        public IActionResult CreateProduct([FromBody] ProductDto data)
         {
             if (data == null) return BadRequest();
 
-            ProductData insertedItem = _repository.Insert(data);
+            ProductDto insertedItem = _productService.Insert(data);
 
             if (insertedItem == null) return NotFound();
-            else
-            {
-                _repository.SaveChanges();
-                return Ok(insertedItem);
-            }
+            else return Ok(insertedItem);
 
         }
+        
     }
 }
