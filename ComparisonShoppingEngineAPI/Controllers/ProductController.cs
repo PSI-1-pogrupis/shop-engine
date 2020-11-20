@@ -21,6 +21,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             _productService = productService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllProducts() => Ok(await _productService.GetAll());
 
 
