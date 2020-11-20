@@ -5,12 +5,14 @@ using System.Text;
 namespace CSE.BL.ScannedData
 {
     //temporary class to provide data for shopping history 
-    public class TempData
+    public static class TempData
     {
-        ScannedListManager scannedListManager1 = new ScannedListManager();
-        ScannedListManager scannedListManager2 = new ScannedListManager();
+        public static ScannedListManager scannedListManager1 = new ScannedListManager();
+        public static ScannedListManager scannedListManager2 = new ScannedListManager();
 
-        public TempData()
+        public static bool Loaded { get; set; }
+
+        public static void LoadData()
         {
             scannedListManager1.AddItem(new ScannedItem("Miltai", 2m, ShopTypes.IKI));
             scannedListManager1.AddItem(new ScannedItem("Sviestas", 1.8m, ShopTypes.IKI));
@@ -21,7 +23,7 @@ namespace CSE.BL.ScannedData
             scannedItem.Discount = -0.5m;
             scannedListManager2.AddItem(scannedItem);
             scannedListManager2.AddItem(new ScannedItem("Obuoliai", 0.34m, ShopTypes.IKI));
-            ScannedListLibrary.AddList(scannedListManager2, DateTime.Now.AddDays(-2));
+            ScannedListLibrary.AddList(scannedListManager2, DateTime.Now.AddDays(-1));
         }
     }
 }

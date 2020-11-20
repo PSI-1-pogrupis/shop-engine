@@ -25,7 +25,7 @@ namespace ViewModels
             {
                 selectedDate = value;
                 ScannedLists = new ObservableCollection<ScannedListManager>(ScannedListLibrary.GetLists(SelectedDate));
-                Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
+                Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", cultureInfo);
                 OnPropertyChanged(nameof(ScannedLists));
                 OnPropertyChanged(nameof(Total));
             }
@@ -35,10 +35,14 @@ namespace ViewModels
 
         public ShoppingHistoryViewModel()
         {
-            new TempData();
+            if (!TempData.Loaded)
+            {
+                TempData.LoadData();
+                TempData.Loaded = true;
+            }
             SelectedDate = DateTime.Now;
             ScannedLists = new ObservableCollection<ScannedListManager>(ScannedListLibrary.GetLists(SelectedDate));
-            Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", CultureInfo.CreateSpecificCulture("fr-FR"));
+            Total = "Total: " + ScannedListLibrary.TotalSum.ToString("C", cultureInfo);
         }
     }
 }
