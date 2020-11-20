@@ -66,10 +66,7 @@ namespace CSE.BL.ScannedData
 
             if (list.GetCount() != 0 && list != null)
             {
-                if (allLists.ContainsKey(date.Date))//temporararily, there can only be one list per day
-                    allLists.Remove(date.Date);
-
-                allLists.Add(date.Date, list);
+                allLists.Add(date, list);
                 ok = true;
             }
 
