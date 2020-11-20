@@ -66,7 +66,7 @@ namespace ComparisonShoppingEngineAPI.Data
                 });
             }
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 
@@ -78,7 +78,7 @@ namespace ComparisonShoppingEngineAPI.Data
 
             _context.Products.Remove(foundProduct);
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 
