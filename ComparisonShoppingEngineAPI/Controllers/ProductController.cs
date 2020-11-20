@@ -63,7 +63,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
         }
 
-        [HttpDelete("{name}")]
+        /*[HttpDelete("{name}")]
         public async Task<IActionResult> Delete(string name)
         {
             ServiceResponse<List<ProductDto>> serviceResponse = await _productService.Delete(name);
@@ -71,6 +71,6 @@ namespace ComparisonShoppingEngineAPI.Controllers
             if (!serviceResponse.Success) return NotFound(serviceResponse);
             else return Ok(serviceResponse);
 
-        }
+        }*/
     }
 }

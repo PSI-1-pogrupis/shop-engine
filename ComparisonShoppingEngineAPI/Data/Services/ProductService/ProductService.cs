@@ -66,11 +66,11 @@ namespace ComparisonShoppingEngineAPI.Data
                 });
             }
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.ProductName).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProductDto>>> Delete(string name)
+        /*public async Task<ServiceResponse<List<ProductDto>>> Delete(string name)
         {
             ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>();
             var foundProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductName == name);
@@ -78,9 +78,9 @@ namespace ComparisonShoppingEngineAPI.Data
 
             _context.Products.Remove(foundProduct);
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == name).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
-        }
+        }*/
 
         // Updates the information of a product
         public async Task<ServiceResponse<List<ProductDto>>> Update(ProductDto product)
@@ -109,7 +109,7 @@ namespace ComparisonShoppingEngineAPI.Data
                 });
             }
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.ProductName).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 
