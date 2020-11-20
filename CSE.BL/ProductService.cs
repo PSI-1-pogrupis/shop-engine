@@ -8,6 +8,15 @@ using System.Threading.Tasks;
 
 namespace CSE.BL
 {
+    public class ServiceResponse<T>
+    {
+        public T Data { get; set; }
+
+        public bool Success { get; set; }
+
+        public string Message { get; set; }
+    }
+
     public class ProductService
     {
         HttpClient _client;
@@ -19,13 +28,12 @@ namespace CSE.BL
 
         public async Task<List<ShoppingItemData>> GetProductData()
         {
-            HttpResponseMessage response = await _client.GetAsync("https://localhost:44303/products");
+            HttpResponseMessage response = await _client.GetAsync("https://localhost:44317/products");
 
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
-
-                return JsonConvert.DeserializeObject<List<ShoppingItemData>>(data);
+                return JsonConvert.DeserializeObject<ServiceResponse<List<ShoppingItemData>>>(data).Data;
             }
             else return null;
         }

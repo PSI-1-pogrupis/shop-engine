@@ -155,7 +155,7 @@ namespace ViewModels
             {
                 ProductList = await service.GetProductData();
             }
-            catch
+            catch(Exception e)
             {
                 //TODO: handle exceptions
                 ProductList = new List<ShoppingItemData>();
