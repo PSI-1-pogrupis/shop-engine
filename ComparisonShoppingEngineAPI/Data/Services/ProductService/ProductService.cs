@@ -41,12 +41,12 @@ namespace ComparisonShoppingEngineAPI.Data
         public async Task<ServiceResponse<List<ProductDto>>> Insert(ProductDto product)
         {
             ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>();
-            if (await _context.Products.AnyAsync(a => a.ProductName == product.ProductName)) return await Update(product);
+            if (await _context.Products.AnyAsync(a => a.ProductName == product.Name)) return await Update(product);
 
             Product newProduct = new Product()
             {
-                ProductName = product.ProductName,
-                ProductUnit = product.ProductUnit,
+                ProductName = product.Name,
+                ProductUnit = product.Unit,
             };
 
             await _context.Products.AddAsync(newProduct);
@@ -66,7 +66,7 @@ namespace ComparisonShoppingEngineAPI.Data
                 });
             }
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.ProductName).Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.Name).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 
@@ -87,11 +87,11 @@ namespace ComparisonShoppingEngineAPI.Data
         {
             ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>();
             serviceResponse.Data = null;
-            Product foundProduct = await _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.ProductName).FirstOrDefaultAsync();
+            Product foundProduct = await _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.Name).FirstOrDefaultAsync();
 
             if (foundProduct == null) return serviceResponse;
 
-            foundProduct.ProductUnit = product.ProductUnit;
+            foundProduct.ProductUnit = product.Unit;
 
             foreach (ShopProduct shopProduct in foundProduct.ShopProduct) _context.ShopProducts.Remove(shopProduct);
 
@@ -109,7 +109,7 @@ namespace ComparisonShoppingEngineAPI.Data
                 });
             }
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.ProductName).Select(p => _mapper.Map<ProductDto>(p)).ToList();
+            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.Name).Select(p => _mapper.Map<ProductDto>(p)).ToList();
             return serviceResponse;
         }
 

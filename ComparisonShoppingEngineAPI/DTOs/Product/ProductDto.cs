@@ -4,9 +4,9 @@ namespace ComparisonShoppingEngineAPI.DTOs.Product
 {
     public class ProductDto
     {
-        public string ProductName { get; set; }
+        public string Name { get; set; }
 
-        public string ProductUnit { get; set; }
+        public string Unit { get; set; }
 
         public Dictionary<string, decimal> ShopPrices { get; set; }
     }

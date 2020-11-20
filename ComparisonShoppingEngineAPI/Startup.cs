@@ -25,6 +25,8 @@ namespace ComparisonShoppingEngineAPI
             services.AddScoped<IProductService, ProductService>(); // One object for every request
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
+
+            //
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

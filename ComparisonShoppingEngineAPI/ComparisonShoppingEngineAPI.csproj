@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>ComparisonShoppingEngineAPI.Program</StartupObject>
+    <UserSecretsId>d8af8d83-54a0-49ff-97bc-a0054e64ff45</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

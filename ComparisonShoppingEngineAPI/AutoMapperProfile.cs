@@ -11,8 +11,8 @@ namespace ComparisonShoppingEngineAPI
         {
             CreateMap<Product, ProductDto>().ConstructUsing(x => new ProductDto()
             {
-                ProductName = x.ProductName,
-                ProductUnit = x.ProductUnit,
+                Name = x.ProductName,
+                Unit = x.ProductUnit,
                 ShopPrices = x.ShopProduct.ToDictionary(a => a.Shop.ShopName, a => a.Price)
             });
             CreateMap<ProductDto, Product>();
