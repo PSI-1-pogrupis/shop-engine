@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModels", "ViewModels\Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Views", "Views\Views.csproj", "{B4B0A023-560A-46ED-AA35-4EDC78740292}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComparisonShoppingEngineAPI_OLD", "ComparisonShoppingEngineAPI\ComparisonShoppingEngineAPI_OLD.csproj", "{D6154AF7-6A8C-4F6C-826F-A63337D5ADBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComparisonShoppingEngineAPI", "ComparisonShoppingEngineAPI\ComparisonShoppingEngineAPI.csproj", "{D6154AF7-6A8C-4F6C-826F-A63337D5ADBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
