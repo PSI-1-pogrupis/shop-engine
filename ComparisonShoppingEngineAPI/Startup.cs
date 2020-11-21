@@ -1,5 +1,6 @@
 using AutoMapper;
 using ComparisonShoppingEngineAPI.Data;
+using ComparisonShoppingEngineAPI.Data.Services.OCRService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace ComparisonShoppingEngineAPI
         {
             services.AddDbContext<DataContext>(dbContextOptions => dbContextOptions.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductService, ProductService>(); // One object for every request
+            services.AddScoped<IOCRService, OCRService>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
 

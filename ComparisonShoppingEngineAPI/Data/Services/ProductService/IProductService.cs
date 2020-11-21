@@ -11,6 +11,8 @@ namespace ComparisonShoppingEngineAPI.Data
 
         public Task<ServiceResponse<ProductDto>> GetProductByName(string name);
 
+        public ServiceResponse<ProductDto> GetProductBySimilarName(string name);
+
         public Task<ServiceResponse<List<ProductDto>>> Insert(ProductDto product);
 
         //public Task<ServiceResponse<List<ProductDto>>> Delete(string name);

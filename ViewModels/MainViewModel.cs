@@ -11,8 +11,6 @@ namespace ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public HttpClient client;
-
         private BaseViewModel selectedViewModel;
         private BaseViewModel statusPanel;
 
@@ -42,8 +40,6 @@ namespace ViewModels
 
         public MainViewModel()
         {
-            client = new HttpClient();
-
             ChangeViewCommand = new RelayCommand(ChangeViewModel, canExecute => true);
             ChangeStatusPanelCommand = new RelayCommand(ChangeStatusPanel, canExecute => true);
             loadedShoppingLists = new List<ShoppingListManager>();
