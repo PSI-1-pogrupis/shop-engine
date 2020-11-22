@@ -2,6 +2,7 @@
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Services.OCRService;
 using ComparisonShoppingEngineAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("ocr")]
     public class OCRController : ControllerBase
@@ -26,7 +28,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             _ocrService = ocrService;
             _productService = productService;
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> UploadImage()
         {

@@ -19,7 +19,7 @@ namespace ComparisonShoppingEngineAPI.Data.Models
         public string UserName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public DateTime? CreateTime { get; set; }
+        public DateTime CreateTime;
 
         public virtual ICollection<Receipt> Receipts { get; set; }
     }
