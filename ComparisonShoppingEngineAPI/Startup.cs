@@ -25,6 +25,7 @@ namespace ComparisonShoppingEngineAPI
             services.AddDbContext<DataContext>(dbContextOptions => dbContextOptions.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductService, ProductService>(); // One object for every request
             services.AddScoped<IOCRService, OCRService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
 

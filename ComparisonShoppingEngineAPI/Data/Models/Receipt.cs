@@ -16,7 +16,7 @@ namespace ComparisonShoppingEngineAPI.Data.Models
         [Key]
         public int ReceiptId { get; set; }
         public int UserId { get; set; }
-        public int ShopId { get; set; }
+        public int? ShopId { get; set; }
         public decimal Total { get; set; }
         public DateTime? Date { get; set; }
 

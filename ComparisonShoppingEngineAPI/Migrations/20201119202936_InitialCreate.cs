@@ -14,8 +14,8 @@ namespace ComparisonShoppingEngineAPI.Migrations
                 {
                     ProductId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProductName = table.Column<string>(nullable: true),
-                    ProductUnit = table.Column<string>(nullable: true)
+                    ProductName = table.Column<string>(nullable: false),
+                    ProductUnit = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +28,7 @@ namespace ComparisonShoppingEngineAPI.Migrations
                 {
                     ShopId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ShopName = table.Column<string>(nullable: true)
+                    ShopName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +44,7 @@ namespace ComparisonShoppingEngineAPI.Migrations
                     ProductId = table.Column<int>(nullable: false),
                     ShopId = table.Column<int>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: true)
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
