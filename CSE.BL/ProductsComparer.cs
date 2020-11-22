@@ -5,21 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CSE.BL
 {
     public class ProductsComparer
     {
-        ShoppingItemRepository _repository;
 
-        public ProductsComparer()
-        {
-            _repository = new ShoppingItemRepository(new MysqlShoppingItemGateway());
-        }
+        public ProductsComparer() { }
 
-        public void ChangeIncorrectNames(List<ScannedItem> scannedList)
+        public async Task ChangeIncorrectNames(List<ScannedItem> scannedList)
         {
-            List<ShoppingItemData> dataList = _repository.GetAll();
+            ProductService productService = new ProductService();
+
+            List<ShoppingItemData> dataList = await productService.GetProductData();
             const float distanceToleration = 0.6f;   // min distance between strings toleration percentage
                                                      // meaning: if 0.6 of strings names matches, they're considered the same
             int minDistance;
@@ -51,7 +50,7 @@ namespace CSE.BL
             return (name1.Length - minDistance >= name1.DistanceTo(name2));
         }
 
-        public void SearchForProductsWithBetterPrices(List<ScannedItem> products)
+        public async Task SearchForProductsWithBetterPrices(List<ScannedItem> products)
         {
 
             // 1. find the product in the database
@@ -60,7 +59,9 @@ namespace CSE.BL
 
             // 3. if there is a better priced product, set it in the property BetterPricedItem(only PriceString and Shop properties will be needed)
 
-            var dataList = _repository.GetAll();
+            ProductService productService = new ProductService();
+
+            var dataList = await productService.GetProductData();
 
             foreach (var scannedProduct in products)
             {

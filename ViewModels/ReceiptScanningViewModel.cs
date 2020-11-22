@@ -11,6 +11,7 @@ using CSE.BL.Interfaces;
 using CSE.BL.Database;
 using CSE.BL.Database.Models;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ViewModels
 {
@@ -120,7 +121,7 @@ namespace ViewModels
             _mainVM.ChangeViewCommand.Execute("ProductsComparison");
         }
 
-        private void Browse_Click(object obj)
+        private async void Browse_Click(object obj)
         {
             ReadText = "";
             BrowseText = "";
@@ -141,8 +142,8 @@ namespace ViewModels
                 ImageSrc = new BitmapImage(new Uri(dlg.FileName));
 
                 ListLabelContent = "Reading...";
-                Thread scanThread = new Thread(() => ScanThread(dlg));
-                scanThread.Start();
+
+                await ScanImage(dlg);
             }
         }
 
@@ -186,13 +187,11 @@ namespace ViewModels
         }
 
 
-        private void ScanThread(Microsoft.Win32.OpenFileDialog dlg)
+        private async Task ScanImage(Microsoft.Win32.OpenFileDialog dlg)
         {
-            Thread.CurrentThread.IsBackground = true;
-            ReadText = _imgReader.ReadImage(dlg.FileName);
-            _itemsScanner.ScanProducts(_scannedListManager, ReadText);
+            ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
+            await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
-
 
             //ShopTypes shop = itemsScanner.GetShop(ReadedText);
             //switch (shop)

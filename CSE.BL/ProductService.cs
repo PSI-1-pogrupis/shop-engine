@@ -19,16 +19,14 @@ namespace CSE.BL
 
     public class ProductService
     {
-        HttpClient _client;
 
-        public ProductService(HttpClient client)
-        {
-            _client = client;
-        }
+        public ProductService() { }
+
+        public object MainViewModel { get; private set; }
 
         public async Task<List<ShoppingItemData>> GetProductData()
         {
-            HttpResponseMessage response = await _client.GetAsync("https://localhost:44317/products");
+            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync("https://localhost:44317/products");
 
             if (response.IsSuccessStatusCode)
             {

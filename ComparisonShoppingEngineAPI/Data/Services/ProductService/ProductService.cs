@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
+using ComparisonShoppingEngineAPI.Data.Utilities;
 using ComparisonShoppingEngineAPI.DTOs.Product;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,6 +36,38 @@ namespace ComparisonShoppingEngineAPI.Data
             ServiceResponse<ProductDto> serviceResponse = new ServiceResponse<ProductDto>();
             Product dbProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductName == name);
             serviceResponse.Data = _mapper.Map<ProductDto>(dbProduct);
+            return serviceResponse;
+        }
+
+        public ServiceResponse<ProductDto> GetProductBySimilarName(string name)
+        {
+            ServiceResponse<ProductDto> serviceResponse = new ServiceResponse<ProductDto>();
+
+            int minDistance = int.MaxValue;
+            List<Tuple<Product, int>> distances = new List<Tuple<Product, int>>();
+
+            foreach(Product product in _context.Products)
+            {
+                var distance = product.ProductName.ToUpper().DistanceTo(name.ToUpper());
+
+                distances.Add(new Tuple<Product, int>(product, distance));
+
+                if (distance < minDistance && distance <= name.Length * 0.4) minDistance = distance;
+            }
+
+            var closest = distances.Where(x => x.Item2 == minDistance);
+
+            if(closest.Count() > 1)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Multiple items with the same distance.";
+                return serviceResponse;
+            }
+
+            if (closest.FirstOrDefault() == null) return serviceResponse;
+
+            serviceResponse.Data = _mapper.Map<ProductDto>(closest.First().Item1);
+
             return serviceResponse;
         }
 
@@ -129,5 +162,6 @@ namespace ComparisonShoppingEngineAPI.Data
 
             return dictionary;
         }
+
     }
 }

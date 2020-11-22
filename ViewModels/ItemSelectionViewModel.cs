@@ -149,7 +149,7 @@ namespace ViewModels
         {
             IsNotSelected = true;
 
-            ProductService service = new ProductService(mainVM.client);
+            ProductService service = new ProductService();
 
             try
             {

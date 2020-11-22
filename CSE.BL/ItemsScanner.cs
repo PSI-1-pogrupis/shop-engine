@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CSE.BL
 {
@@ -34,8 +35,8 @@ namespace CSE.BL
         private const int minLineLength = 5;
 
         public ShopTypes Shop { get; set; }
-
-        public void ScanProducts(ScannedListManager scannedList, string text)
+       
+        public async Task ScanProducts(ScannedListManager scannedList, string text)
         {
             string[] tLines = text.Split('\n');
             string productName;
@@ -110,7 +111,7 @@ namespace CSE.BL
 
             // change the names of products according to database:
             ProductsComparer productsComparer = new ProductsComparer();
-            productsComparer.ChangeIncorrectNames(scannedList.ScannedItems);
+            await productsComparer.ChangeIncorrectNames(scannedList.ScannedItems);
         }
 
         private decimal QuantitiesAndPricesLine(string newline, out decimal pricePerQuantity)
