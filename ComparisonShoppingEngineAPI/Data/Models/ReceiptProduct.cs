@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ComparisonShoppingEngineAPI.Data.Models
 {
@@ -13,6 +9,7 @@ namespace ComparisonShoppingEngineAPI.Data.Models
         public int ReceiptId { get; set; }
         public int ProductId { get; set; }
         public decimal ProductPrice { get; set; }
+        public double Amount { get; set; }
         public virtual Product Product { get; set; }
     }
 }

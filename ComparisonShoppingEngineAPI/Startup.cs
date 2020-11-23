@@ -1,6 +1,8 @@
 using AutoMapper;
 using ComparisonShoppingEngineAPI.Data;
+using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Services.OCRService;
+using ComparisonShoppingEngineAPI.Data.Services.ReceiptService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +28,8 @@ namespace ComparisonShoppingEngineAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(dbContextOptions => dbContextOptions.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IProductService, ProductService>(); // One object for every request
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IOCRService, OCRService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

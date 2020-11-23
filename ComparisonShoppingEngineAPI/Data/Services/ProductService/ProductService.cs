@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Utilities;
-using ComparisonShoppingEngineAPI.DTOs.Product;
+using ComparisonShoppingEngineAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +33,7 @@ namespace ComparisonShoppingEngineAPI.Data
         public async Task<ServiceResponse<ProductDto>> GetProductByName(string name)
         {
             ServiceResponse<ProductDto> serviceResponse = new ServiceResponse<ProductDto>();
-            Product dbProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductName == name);
+            Product dbProduct = await _context.Products.Include(a => a.ShopProduct).ThenInclude(a => a.Shop).FirstOrDefaultAsync(x => x.ProductName == name);
             serviceResponse.Data = _mapper.Map<ProductDto>(dbProduct);
             return serviceResponse;
         }
@@ -95,7 +94,8 @@ namespace ComparisonShoppingEngineAPI.Data
                 {
                     ProductId = newProduct.ProductId,
                     ShopId = shop.ShopId,
-                    Price = price.Value
+                    Price = price.Value,
+                    Date = DateTime.UtcNow
                 });
             }
             await _context.SaveChangesAsync();
@@ -103,23 +103,13 @@ namespace ComparisonShoppingEngineAPI.Data
             return serviceResponse;
         }
 
-        /*public async Task<ServiceResponse<List<ProductDto>>> Delete(string name)
-        {
-            ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>();
-            var foundProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductName == name);
-            if (foundProduct == null) return null;
-
-            _context.Products.Remove(foundProduct);
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == name).Select(p => _mapper.Map<ProductDto>(p)).ToList();
-            return serviceResponse;
-        }*/
-
         // Updates the information of a product
         public async Task<ServiceResponse<List<ProductDto>>> Update(ProductDto product)
         {
-            ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>();
-            serviceResponse.Data = null;
+            ServiceResponse<List<ProductDto>> serviceResponse = new ServiceResponse<List<ProductDto>>
+            {
+                Data = null
+            };
             Product foundProduct = await _context.Products.Include(x => x.ShopProduct).ThenInclude(x => x.Shop).Where(x => x.ProductName == product.Name).FirstOrDefaultAsync();
 
             if (foundProduct == null) return serviceResponse;
@@ -147,7 +137,7 @@ namespace ComparisonShoppingEngineAPI.Data
         }
 
         // finds all prices for a particular item.
-        private Dictionary<string, decimal> FindDictionary(string name)
+        /*private Dictionary<string, decimal> FindDictionary(string name)
         {
             Dictionary<string, decimal> dictionary = new Dictionary<string, decimal>();
 
@@ -161,7 +151,7 @@ namespace ComparisonShoppingEngineAPI.Data
             }
 
             return dictionary;
-        }
+        }*/
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ComparisonShoppingEngineAPI.DTOs.User
+﻿namespace ComparisonShoppingEngineAPI.DTOs
 {
     public class UserRegisterDto
     {

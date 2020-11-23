@@ -1,6 +1,6 @@
 ﻿using ComparisonShoppingEngineAPI.Data;
 using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs.User;
+using ComparisonShoppingEngineAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

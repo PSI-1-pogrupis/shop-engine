@@ -1,6 +1,6 @@
 ﻿using ComparisonShoppingEngineAPI.Data;
 using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs.Product;
+using ComparisonShoppingEngineAPI.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
