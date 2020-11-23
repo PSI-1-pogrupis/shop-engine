@@ -57,15 +57,6 @@ namespace ComparisonShoppingEngineAPI
                 ShopName = x.ShopName
             });
             CreateMap<ShopDto, Shop>();
-
-            CreateMap<ReceiptProduct, ReceiptProductDto>().ConstructUsing(x => new ReceiptProductDto()
-            {
-                Id = x.ReceiptProductId,
-                Name = x.Product.ProductName,
-                Amount = x.Amount,
-                Price = x.ProductPrice
-            });
-            CreateMap<ReceiptProductDto, ReceiptProduct>();
         }
     }
 }
