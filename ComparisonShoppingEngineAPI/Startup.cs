@@ -1,12 +1,17 @@
 using AutoMapper;
 using ComparisonShoppingEngineAPI.Data;
+using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Services.OCRService;
+using ComparisonShoppingEngineAPI.Data.Services.ReceiptService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ComparisonShoppingEngineAPI
 {
@@ -23,8 +28,21 @@ namespace ComparisonShoppingEngineAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(dbContextOptions => dbContextOptions.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IProductService, ProductService>(); // One object for every request
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IOCRService, OCRService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
 
@@ -42,6 +60,8 @@ namespace ComparisonShoppingEngineAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

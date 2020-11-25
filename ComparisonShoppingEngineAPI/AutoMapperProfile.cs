@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs.Product;
+using ComparisonShoppingEngineAPI.DTOs;
 using System.Linq;
 
 namespace ComparisonShoppingEngineAPI
@@ -16,6 +16,16 @@ namespace ComparisonShoppingEngineAPI
                 ShopPrices = x.ShopProduct.ToDictionary(a => a.Shop.ShopName, a => a.Price)
             });
             CreateMap<ProductDto, Product>();
+
+            CreateMap<Receipt, GetReceiptDto>().ForMember(d => d.Shop, o => o.MapFrom(s => s.Shop.ShopName))
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.ReceiptId));
+
+            CreateMap<ReceiptProduct, GetReceiptProductDto>().ConstructUsing(x => new GetReceiptProductDto() {
+                Name = x.Product.ProductName,
+                Discount = x.Discount,
+                Price = x.Price,
+                PricePerQuantity = x.PricePerQuantity
+            });
         }
     }
 }

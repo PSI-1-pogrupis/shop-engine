@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ComparisonShoppingEngineAPI.DTOs.Product
+namespace ComparisonShoppingEngineAPI.DTOs
 {
     public class ProductDto
     {

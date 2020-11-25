@@ -1,5 +1,5 @@
 ﻿using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs.Product;
+using ComparisonShoppingEngineAPI.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

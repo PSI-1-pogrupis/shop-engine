@@ -1,6 +1,7 @@
 ﻿using ComparisonShoppingEngineAPI.Data;
 using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs.Product;
+using ComparisonShoppingEngineAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("products")]
     public class ProductController : ControllerBase
@@ -20,11 +22,10 @@ namespace ComparisonShoppingEngineAPI.Controllers
             _logger = logger;
             _productService = productService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts() => Ok(await _productService.GetAll());
-
-
+        [AllowAnonymous]
         [HttpGet("{name}")]
         public async Task<IActionResult> GetProductByName(string name)
         {
@@ -34,7 +35,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             else return Ok(serviceResponse);
 
         }
-
+        [AllowAnonymous]
         [HttpPut]
         public async Task<IActionResult> UpdateProduct([FromBody] ProductDto data)
         {
@@ -48,7 +49,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             }
 
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductDto data)
         {

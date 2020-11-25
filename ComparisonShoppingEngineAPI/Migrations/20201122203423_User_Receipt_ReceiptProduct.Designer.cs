@@ -3,14 +3,16 @@ using System;
 using ComparisonShoppingEngineAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComparisonShoppingEngineAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201122203423_User_Receipt_ReceiptProduct")]
+    partial class User_Receipt_ReceiptProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,10 +42,10 @@ namespace ComparisonShoppingEngineAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ShopId")
+                    b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
@@ -67,17 +69,11 @@ namespace ComparisonShoppingEngineAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("PricePerQuantity")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("ReceiptId")
                         .HasColumnType("int");
@@ -111,7 +107,7 @@ namespace ComparisonShoppingEngineAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("Price")
@@ -138,6 +134,9 @@ namespace ComparisonShoppingEngineAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("CreateTime")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("longblob");
 
@@ -159,9 +158,7 @@ namespace ComparisonShoppingEngineAPI.Migrations
                 {
                     b.HasOne("ComparisonShoppingEngineAPI.Data.Models.Shop", "Shop")
                         .WithMany()
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShopId");
 
                     b.HasOne("ComparisonShoppingEngineAPI.Data.Models.User", null)
                         .WithMany("Receipts")

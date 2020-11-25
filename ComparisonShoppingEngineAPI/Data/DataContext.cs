@@ -14,5 +14,8 @@ namespace ComparisonShoppingEngineAPI.Data
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Shop> Shops { get; set; }
         public virtual DbSet<ShopProduct> ShopProducts { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Receipt> Receipts { get; set; }
+        public virtual DbSet<ReceiptProduct> ReceiptProducts { get; set; }
     }
 }
