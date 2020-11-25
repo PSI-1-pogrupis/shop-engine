@@ -2,8 +2,10 @@
 {
     public class AddReceiptProductDto
     {
-        public int ProductId { get; set; }
-        public double Amount { get; set; }
+        public string Name { get; set; }
+        public string Shop { get; set; }
         public decimal Price { get; set; }
+        public decimal Discount { get; set; }
+        public decimal PricePerQuantity { get; set; }
     }
 }

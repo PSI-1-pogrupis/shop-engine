@@ -2,9 +2,9 @@
 {
     public class GetReceiptProductDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public double Amount { get; set; }
         public decimal Price { get; set; }
+        public decimal Discount { get; set; }
+        public decimal PricePerQuantity { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ComparisonShoppingEngineAPI.Data.Models;
-using ComparisonShoppingEngineAPI.DTOs;
+﻿using ComparisonShoppingEngineAPI.DTOs;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +9,7 @@ namespace ComparisonShoppingEngineAPI
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public decimal Total { get; set; }
-        public ShopDto Shop { get; set; }
-        public ICollection<ReceiptProduct> Products { get; set; }
+        public string Shop { get; set; }
+        public ICollection<GetReceiptProductDto> Products { get; set; }
     }
 }

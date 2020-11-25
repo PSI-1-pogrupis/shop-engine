@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.DTOs;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ComparisonShoppingEngineAPI
@@ -19,44 +20,19 @@ namespace ComparisonShoppingEngineAPI
 
             CreateMap<Receipt, GetReceiptDto>().ConstructUsing(x => new GetReceiptDto()
             {
-                Id = x.ReceiptId,
-                Shop = new ShopDto { ShopId = x.ShopId, ShopName = x.Shop.ShopName },
                 Date = x.Date,
-                Total = x.Total,
-                Products = x.ReceiptProducts
-            });
-            CreateMap<GetReceiptProductDto, Receipt>();
-
-            CreateMap<Receipt, AddReceiptDto>().ConstructUsing(x => new AddReceiptDto()
-            {
-                ShopId = x.ShopId,
+                Shop = x.Shop.ShopName,
                 Total = x.Total
-            }).ForMember(dest => dest.Products, opt => opt.MapFrom(x => x.ReceiptProducts));
-            CreateMap<AddReceiptDto, Receipt>();
+            }).ForMember(x => x.Products, opt => opt.MapFrom(x => x.ReceiptProducts));
 
-            CreateMap<ReceiptProduct, GetReceiptProductDto>().ConstructUsing(x => new GetReceiptProductDto()
-            {
-                Id = x.ReceiptId,
+            CreateMap<ICollection<ReceiptProduct>, ICollection<GetReceiptProductDto>>();
+
+            CreateMap<ReceiptProduct, GetReceiptProductDto>().ConstructUsing(x => new GetReceiptProductDto() {
                 Name = x.Product.ProductName,
-                Amount = x.Amount,
-                Price = x.ProductPrice
+                Discount = x.Discount,
+                Price = x.Price,
+                PricePerQuantity = x.PricePerQuantity
             });
-            CreateMap<GetReceiptProductDto, ReceiptProduct>();
-
-            CreateMap<ReceiptProduct, AddReceiptProductDto>().ConstructUsing(x => new AddReceiptProductDto()
-            {
-                ProductId = x.ProductId,
-                Amount = x.Amount,
-                Price = x.ProductPrice
-            });
-            CreateMap<AddReceiptProductDto, ReceiptProduct>();
-
-            CreateMap<Shop, ShopDto>().ConstructUsing(x => new ShopDto()
-            {
-                ShopId = x.ShopId,
-                ShopName = x.ShopName
-            });
-            CreateMap<ShopDto, Shop>();
         }
     }
 }
