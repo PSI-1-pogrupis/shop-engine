@@ -43,12 +43,19 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
         {
             ServiceResponse<List<GetReceiptDto>> serviceResponse = new ServiceResponse<List<GetReceiptDto>>();
 
+            string shopName = receipt.Products.First().Shop;
+
+            decimal totalPrice = 0m;
+
+            foreach (var i in receipt.Products)
+                totalPrice += i.Price;
+
             Receipt newReceipt = new Receipt()
             {
                 UserId = userId,
-                Shop = _context.Shops.FirstOrDefault(x => x.ShopName == receipt.Shop),
+                Shop = _context.Shops.FirstOrDefault(x => x.ShopName == shopName),
                 Date = DateTime.UtcNow,
-                Total = receipt.Total
+                Total = totalPrice
             };
 
             await _context.Receipts.AddAsync(newReceipt);
