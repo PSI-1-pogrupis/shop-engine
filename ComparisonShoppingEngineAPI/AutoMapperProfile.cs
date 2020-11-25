@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.DTOs;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ComparisonShoppingEngineAPI
@@ -18,14 +17,8 @@ namespace ComparisonShoppingEngineAPI
             });
             CreateMap<ProductDto, Product>();
 
-            CreateMap<Receipt, GetReceiptDto>().ConstructUsing(x => new GetReceiptDto()
-            {
-                Date = x.Date,
-                Shop = x.Shop.ShopName,
-                Total = x.Total
-            }).ForMember(x => x.Products, opt => opt.MapFrom(x => x.ReceiptProducts));
-
-            CreateMap<ICollection<ReceiptProduct>, ICollection<GetReceiptProductDto>>();
+            CreateMap<Receipt, GetReceiptDto>().ForMember(d => d.Shop, o => o.MapFrom(s => s.Shop.ShopName))
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.ReceiptId));
 
             CreateMap<ReceiptProduct, GetReceiptProductDto>().ConstructUsing(x => new GetReceiptProductDto() {
                 Name = x.Product.ProductName,

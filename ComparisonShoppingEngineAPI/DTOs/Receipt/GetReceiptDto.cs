@@ -10,6 +10,6 @@ namespace ComparisonShoppingEngineAPI
         public DateTime Date { get; set; }
         public decimal Total { get; set; }
         public string Shop { get; set; }
-        public ICollection<GetReceiptProductDto> Products { get; set; }
+        public ICollection<GetReceiptProductDto> ReceiptProducts { get; set; }
     }
 }

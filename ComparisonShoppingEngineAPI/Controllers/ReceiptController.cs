@@ -42,7 +42,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
         public async Task<IActionResult> InsertReceipt([FromBody] AddReceiptDto receipt)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            ServiceResponse<List<GetReceiptDto>> serviceResponse = await _receiptService.Insert(receipt, userId);
+            ServiceResponse<GetReceiptDto> serviceResponse = await _receiptService.Insert(receipt, userId);
 
             if (!serviceResponse.Success) return NotFound(serviceResponse);
             else

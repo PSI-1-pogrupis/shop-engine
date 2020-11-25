@@ -8,7 +8,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
     public interface IReceiptService
     {
         Task<ServiceResponse<List<GetReceiptDto>>> GetAll(int userId);
-        Task<ServiceResponse<List<GetReceiptDto>>> Insert(AddReceiptDto receipt, int userId);
+        Task<ServiceResponse<GetReceiptDto>> Insert(AddReceiptDto receipt, int userId);
         Task<ServiceResponse<GetReceiptDto>> Remove(int receiptId, int userId);
     }
 }

@@ -25,23 +25,13 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
         {
             ServiceResponse<List<GetReceiptDto>> serviceResponse = new ServiceResponse<List<GetReceiptDto>>();
             List<Receipt> receipts = await _context.Receipts.Include(a => a.ReceiptProducts).ThenInclude(x => x.Product).Include(a => a.Shop).Where(a => a.UserId == userId).ToListAsync();
-            var receiptDto = new List<GetReceiptDto>();
-            foreach (var receiptItem in receipts)
-            {
-                var newReceipt = new GetReceiptDto { Id = receiptItem.ReceiptId, Shop = receiptItem.Shop.ShopName, Date = receiptItem.Date, Total = receiptItem.Total, Products = new List<GetReceiptProductDto>() };
-                foreach (var product in receiptItem.ReceiptProducts)
-                {
-                    newReceipt.Products.Add(new GetReceiptProductDto { Name = product.Product.ProductName, Discount = product.Discount, Price = product.Price, PricePerQuantity = product.PricePerQuantity });
-                }
-                receiptDto.Add(newReceipt);
-            }
-            serviceResponse.Data = receiptDto;
+            serviceResponse.Data = receipts.Select(p => _mapper.Map<GetReceiptDto>(p)).ToList();
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetReceiptDto>>> Insert(AddReceiptDto receipt, int userId)
+        public async Task<ServiceResponse<GetReceiptDto>> Insert(AddReceiptDto receipt, int userId)
         {
-            ServiceResponse<List<GetReceiptDto>> serviceResponse = new ServiceResponse<List<GetReceiptDto>>();
+            ServiceResponse<GetReceiptDto> serviceResponse = new ServiceResponse<GetReceiptDto>();
 
             string shopName = receipt.Products.First().Shop;
 
@@ -75,18 +65,8 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
                 });
             }
             await _context.SaveChangesAsync();
-            var insertedList = _context.Receipts.Include(x => x.ReceiptProducts).Include(x => x.Shop).Where(x => x.ReceiptId == newReceipt.ReceiptId && x.UserId == userId).Select(p => _mapper.Map<Receipt>(p)).ToList();
-            var receiptDto = new List<GetReceiptDto>();
-            foreach (var receiptItem in insertedList)
-            {
-                var currentReceipt = new GetReceiptDto { Id = receiptItem.ReceiptId, Shop = receiptItem.Shop.ShopName, Date = receiptItem.Date, Total = receiptItem.Total, Products = new List<GetReceiptProductDto>() };
-                foreach (var product in receiptItem.ReceiptProducts)
-                {
-                    currentReceipt.Products.Add(new GetReceiptProductDto { Name = product.Product.ProductName, Discount = product.Discount, Price = product.Price, PricePerQuantity = product.PricePerQuantity });
-                }
-                receiptDto.Add(currentReceipt);
-            }
-            serviceResponse.Data = receiptDto;
+
+            serviceResponse.Data = _mapper.Map<GetReceiptDto>(newReceipt);
             return serviceResponse;
         }
 
@@ -105,13 +85,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
             _context.Receipts.Remove(receipt);
             await _context.SaveChangesAsync();
 
-            var deletedReceipt = new GetReceiptDto { Id = receipt.ReceiptId, Shop = receipt.Shop.ShopName, Date = receipt.Date, Total = receipt.Total, Products = new List<GetReceiptProductDto>() };
-            foreach (var product in receipt.ReceiptProducts)
-            {
-                deletedReceipt.Products.Add(new GetReceiptProductDto { Name = product.Product.ProductName, Discount = product.Discount, Price = product.Price, PricePerQuantity = product.PricePerQuantity });
-            }
-
-            serviceResponse.Data = deletedReceipt;
+            serviceResponse.Data = _mapper.Map<GetReceiptDto>(receipt);
             serviceResponse.Message = "Receipt has been deleted!";
             return serviceResponse;
         }
