@@ -11,7 +11,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("products")]
+    [Route("product")]
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;

@@ -26,7 +26,7 @@ namespace CSE.BL
 
         public async Task<List<ShoppingItemData>> GetProductData()
         {
-            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync("https://localhost:44317/products");
+            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync("https://localhost:44317/product");
 
             if (response.IsSuccessStatusCode)
             {
