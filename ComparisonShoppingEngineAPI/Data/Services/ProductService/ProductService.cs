@@ -38,6 +38,28 @@ namespace ComparisonShoppingEngineAPI.Data
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<ProductDto>>> GetProductsByNames(IEnumerable<string> names)
+        {
+            ServiceResponse<List<ProductDto>> response = new ServiceResponse<List<ProductDto>>();
+            List<ProductDto> foundList = new List<ProductDto>();
+
+            foreach(string name in names)
+            {
+                var found = await GetProductByName(name);
+
+                if (found.Success) foundList.Add(found.Data);
+                else
+                {
+                    response.Success = false;
+                    response.Message = found.Message;
+                    return response;
+                }
+            }
+
+            response.Data = foundList;
+            return response;
+        }
+
         public ServiceResponse<ProductDto> GetProductBySimilarName(string name)
         {
             ServiceResponse<ProductDto> serviceResponse = new ServiceResponse<ProductDto>();

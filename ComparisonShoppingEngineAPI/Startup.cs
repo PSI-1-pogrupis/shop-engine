@@ -1,7 +1,9 @@
 using AutoMapper;
 using ComparisonShoppingEngineAPI.Data;
 using ComparisonShoppingEngineAPI.Data.Models;
+using ComparisonShoppingEngineAPI.Data.Services;
 using ComparisonShoppingEngineAPI.Data.Services.OCRService;
+using ComparisonShoppingEngineAPI.Data.Services.OptimizerService;
 using ComparisonShoppingEngineAPI.Data.Services.ReceiptService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,7 @@ namespace ComparisonShoppingEngineAPI
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IOCRService, OCRService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IShoppingListOptimizerService, ShoppingListOptimizerService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

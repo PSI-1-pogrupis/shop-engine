@@ -27,8 +27,8 @@ namespace ComparisonShoppingEngineAPI.Controllers
             _productService = productService;
         }
         [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> UploadImage()
+        [HttpPost("read")]
+        public async Task<IActionResult> ReadImage()
         {
             var file = Request.Form.Files.FirstOrDefault();
 
@@ -43,6 +43,25 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             List<ScannedItemDto> scannedItems = await scanner.ScanProductsAsync(ocrResponse.Data);
             scannedItems = await comparer.ChangeIncorrectNamesAsync(scannedItems);
+
+            return Ok(scannedItems);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("scan")]
+        public async Task<IActionResult> ScanImage()
+        {
+            var file = Request.Form.Files.FirstOrDefault();
+
+            if (file == null || file.Length <= 0) return BadRequest();
+
+            ServiceResponse<string> ocrResponse = await _ocrService.ReadImage(file);
+
+            if (!ocrResponse.Success) return BadRequest(ocrResponse);
+
+            ItemsScanner scanner = new ItemsScanner();
+
+            List<ScannedItemDto> scannedItems = await scanner.ScanProductsAsync(ocrResponse.Data);
 
             return Ok(scannedItems);
         }
