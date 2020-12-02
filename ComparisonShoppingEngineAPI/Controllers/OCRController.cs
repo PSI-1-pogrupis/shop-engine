@@ -65,5 +65,18 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             return Ok(scannedItems);
         }
+
+        [AllowAnonymous]
+        [HttpPost("compare")]
+        public async Task<IActionResult> CompareProducts([FromBody] ScannedItemDto[] products)
+        {
+            if (products.Length == 0) return BadRequest();
+
+            ProductComparer comparer = new ProductComparer(_productService);
+
+            List<ScannedItemDto> betterPricedItems = await comparer.GetItemsWithBetterPricesAsync(products.ToList());
+
+            return Ok(betterPricedItems);
+        }
     }
 }
