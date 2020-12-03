@@ -85,7 +85,8 @@ namespace ComparisonShoppingEngineAPI.Data.Services.OCRService
                             {
                                 Name = scannedProduct.Name,
                                 Shop = lowestShop,
-                                Price = lowest
+                                Price = lowest,
+                                WorsePrice = scannedProduct.Price
                             });
                         }
                     }
