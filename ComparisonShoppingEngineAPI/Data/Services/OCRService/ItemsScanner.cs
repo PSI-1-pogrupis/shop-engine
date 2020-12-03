@@ -240,10 +240,17 @@ namespace ComparisonShoppingEngineAPI.Data.Services.OCRService
                 }
                 else
                 {
-                    if (char.IsDigit(c) && (line[i + 1] == '.' || char.IsDigit(line[i + 1])))
+                    try
                     {
-                        foundNumber = true;
-                        numberString += c;
+                        if (char.IsDigit(c) && (line[i + 1] == '.' || char.IsDigit(line[i + 1])))
+                        {
+                            foundNumber = true;
+                            numberString += c;
+                        }
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        return 0;
                     }
                 }
             }
