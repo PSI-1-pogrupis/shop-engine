@@ -11,7 +11,7 @@ namespace ComparisonShoppingEngineAPI
         private delegate void PerformResize(float f1, float f2);
         public MagickImage ProcessImage(MagickImage img)
         {
-            PerformResize resizeImage = (width, height) =>
+            PerformResize resizeImage = delegate(float width, float height)
             {
                 int newWidth = (int)(1.5f * width);
                 int newHeight = (int)(1.5f * height);
