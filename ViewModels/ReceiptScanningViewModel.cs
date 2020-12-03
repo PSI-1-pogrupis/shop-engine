@@ -110,8 +110,6 @@ namespace ViewModels
             _itemsScanner = new ItemsScanner();
             _scannedListManager = new ScannedListManager();
             _mainVM = mainVM;
-
-
         }
 
         private void Confirm_Click(object obj)
@@ -152,31 +150,6 @@ namespace ViewModels
             ScannedListLibrary.AddList(_scannedListManager);
             MonthSpendingLibrary.AddToLibrary(DateTime.Now, _scannedListManager.TotalSum);
 
-            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
-            {
-                ItemDataSelector selector = new ItemDataSelector();
-
-                List<ShoppingItemData> items = repo.GetAll();
-
-                foreach (ScannedItem item in ScannedList)
-                {
-                    ShoppingItemData data = selector.FindClosestItem(item.Name, items);
-
-                    if (data == null) continue;
-
-                    if (SelectedShop == ShopTypes.UNKNOWN) continue;
-
-                    if (!data.ShopPrices.ContainsKey(SelectedShop))
-                    {
-                        data.ShopPrices.Add(SelectedShop, item.Price);
-                        continue;
-                    }
-
-                    data.ShopPrices[SelectedShop] = item.Price;
-                }
-
-                repo.SaveChanges();
-            }
             Confirm_Click(obj);
         }
 
@@ -194,33 +167,19 @@ namespace ViewModels
 
         private async Task ScanImage(Microsoft.Win32.OpenFileDialog dlg)
         {
+            /*
             _imgReader.ImageProcessed += OnImageProcessed;
             ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
             await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
+            */
+            
+            OCRService ocrService = new OCRService();
 
-            //ShopTypes shop = itemsScanner.GetShop(ReadedText);
-            //switch (shop)
-            //{
-            //    case ShopTypes.IKI:
-            //        ShopText = ShopTypes.IKI.ToString();
-            //        break;
-            //    case ShopTypes.MAXIMA:
-            //        ShopText = ShopTypes.MAXIMA.ToString();
-            //        break;
-            //    case ShopTypes.LIDL:
-            //        ShopText = ShopTypes.LIDL.ToString();
-            //        break;
-            //    case ShopTypes.NORFA:
-            //        ShopText = ShopTypes.NORFA.ToString();
-            //        break;
-            //    case ShopTypes.RIMI:
-            //        ShopText = ShopTypes.RIMI.ToString();
-            //        break;
-            //    case ShopTypes.UNKNOWN:
-            //        ShopText = "";
-            //        break;
-            //}
+            var scannedItems = await ocrService.GetScannedItems(dlg.FileName);
+
+            if(scannedItems != null) ScannedList = new ObservableCollection<ScannedItem>(scannedItems);
+            
             ListLabelContent = "";
         }
     }

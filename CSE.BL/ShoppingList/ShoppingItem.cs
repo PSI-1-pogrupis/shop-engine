@@ -1,4 +1,5 @@
 ﻿using CSE.BL.Database;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +37,7 @@ namespace CSE.BL.ShoppingList
             }
         }
 
+        [JsonIgnore]
         public decimal Price
         {
             get { return PricePerUnit * (decimal)Amount; }

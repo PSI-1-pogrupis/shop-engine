@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Data.Services.OCRService
 {
-    public class ProductComparer
+    public class ProductComparer : IProductComparerService
     {
         private readonly IProductService _productService;
 

@@ -33,6 +33,8 @@ namespace ComparisonShoppingEngineAPI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IOCRService, OCRService>();
+            services.AddScoped<IItemScannerService, ItemsScanner>();
+            services.AddScoped<IProductComparerService, ProductComparer>(); 
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IShoppingListOptimizerService, ShoppingListOptimizerService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

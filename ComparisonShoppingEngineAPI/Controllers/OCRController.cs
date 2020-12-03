@@ -18,13 +18,15 @@ namespace ComparisonShoppingEngineAPI.Controllers
     {
         private readonly ILogger<OCRController> _logger;
         private readonly IOCRService _ocrService;
-        private readonly IProductService _productService;
+        private readonly IProductComparerService _comparerService;
+        private readonly IItemScannerService _scannerService;
 
-        public OCRController(ILogger<OCRController> logger, IOCRService ocrService, IProductService productService)
+        public OCRController(ILogger<OCRController> logger, IOCRService ocrService, IProductComparerService comparerService, IItemScannerService scannerService)
         {
             _logger = logger;
             _ocrService = ocrService;
-            _productService = productService;
+            _comparerService = comparerService;
+            _scannerService = scannerService;
         }
         [AllowAnonymous]
         [HttpPost("read")]
@@ -38,11 +40,8 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             if (!ocrResponse.Success) return BadRequest(ocrResponse);
 
-            ItemsScanner scanner = new ItemsScanner();
-            ProductComparer comparer = new ProductComparer(_productService);
-
-            List<ScannedItemDto> scannedItems = await scanner.ScanProductsAsync(ocrResponse.Data);
-            scannedItems = await comparer.ChangeIncorrectNamesAsync(scannedItems);
+            List<ScannedItemDto> scannedItems = await _scannerService.ScanProductsAsync(ocrResponse.Data);
+            scannedItems = await _comparerService.ChangeIncorrectNamesAsync(scannedItems);
 
             return Ok(scannedItems);
         }
@@ -59,9 +58,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             if (!ocrResponse.Success) return BadRequest(ocrResponse);
 
-            ItemsScanner scanner = new ItemsScanner();
-
-            List<ScannedItemDto> scannedItems = await scanner.ScanProductsAsync(ocrResponse.Data);
+            List<ScannedItemDto> scannedItems = await _scannerService.ScanProductsAsync(ocrResponse.Data);
 
             return Ok(scannedItems);
         }
@@ -72,9 +69,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
         {
             if (products.Length == 0) return BadRequest();
 
-            ProductComparer comparer = new ProductComparer(_productService);
-
-            List<ScannedItemDto> betterPricedItems = await comparer.GetItemsWithBetterPricesAsync(products.ToList());
+            List<ScannedItemDto> betterPricedItems = await _comparerService.GetItemsWithBetterPricesAsync(products.ToList());
 
             return Ok(betterPricedItems);
         }
