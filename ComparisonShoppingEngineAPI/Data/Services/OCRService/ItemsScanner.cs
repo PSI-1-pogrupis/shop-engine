@@ -92,7 +92,6 @@ namespace ComparisonShoppingEngineAPI.Data.Services.OCRService
                         tempScannedItem.Price = productPrice;
                         tempScannedItem.PricePerQuantity = pricePerQuantity;
                         tempScannedItem.Shop = Shop;
-                        Debug.WriteLine(Shop);
                         scannedList.Add(tempScannedItem);
                         tempScannedItem = null;
                         continue;

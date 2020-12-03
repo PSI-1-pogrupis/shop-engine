@@ -8,9 +8,16 @@ namespace ComparisonShoppingEngineAPI
 {
     internal class ImageProcessor
     {
+        private delegate void PerformResize(float f1, float f2);
         public MagickImage ProcessImage(MagickImage img)
         {
-            img.Resize((int)(1.5f * img.Width), (int)(1.5f * img.Height));
+            PerformResize resizeImage = delegate(float width, float height)
+            {
+                int newWidth = (int)(1.5f * width);
+                int newHeight = (int)(1.5f * height);
+                img.Resize(newWidth, newHeight);
+            };
+            resizeImage(img.Width, img.Height);
             //img.Density = new Density(300f);
             TextCleanerScript cleaner = new TextCleanerScript();
             img.Deskew(new Percentage(80));
