@@ -14,12 +14,21 @@ namespace CSE.BL
             return await Task.Run(() => ReadImage(imgPath));
         }
 
+        public delegate void ImageProcessedEventHandler(object source, EventArgs args);
+
+        public event ImageProcessedEventHandler ImageProcessed;
+
+        protected virtual void OnImageProcessed()
+        {
+            ImageProcessed?.Invoke(this, EventArgs.Empty);
+        }
 
         public string ReadImage(string imgPath)
         {
             var img = new MagickImage(imgPath);
             ImageProcessor imageProcessor = new ImageProcessor();
             img = imageProcessor.ProcessImage(img);
+            OnImageProcessed();
             img.Write("temp1.png");
 
             Pix pixImg;
