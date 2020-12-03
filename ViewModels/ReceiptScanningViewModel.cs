@@ -167,18 +167,19 @@ namespace ViewModels
 
         private async Task ScanImage(Microsoft.Win32.OpenFileDialog dlg)
         {
+            /*
             _imgReader.ImageProcessed += OnImageProcessed;
             ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
             await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
+            */
             
-            /*
             OCRService ocrService = new OCRService();
 
             var scannedItems = await ocrService.GetScannedItems(dlg.FileName);
 
             if(scannedItems != null) ScannedList = new ObservableCollection<ScannedItem>(scannedItems);
-            */
+            
             ListLabelContent = "";
         }
     }

@@ -40,6 +40,8 @@ namespace ViewModels
             get { return optimizedList; }
             set
             {
+                if (value == null) return;
+
                 optimizedList = value;
 
                 GetMinMaxPrices(optimizedList.ShoppingList, dataList, out decimal minPrice, out decimal maxPrice);

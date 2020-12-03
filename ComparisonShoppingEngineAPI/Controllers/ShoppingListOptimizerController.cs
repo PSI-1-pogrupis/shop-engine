@@ -41,7 +41,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             if (!optimizerResponse.Success) return BadRequest(optimizerResponse);
 
-            return Ok(optimizerResponse);
+            return Ok(optimizerResponse.Data);
         }
     }
 }
