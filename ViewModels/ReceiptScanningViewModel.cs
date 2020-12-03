@@ -150,33 +150,6 @@ namespace ViewModels
             ScannedListLibrary.AddList(_scannedListManager);
             MonthSpendingLibrary.AddToLibrary(DateTime.Now, _scannedListManager.TotalSum);
 
-            /*
-            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
-            {
-                ItemDataSelector selector = new ItemDataSelector();
-
-                List<ShoppingItemData> items = repo.GetAll();
-
-                foreach (ScannedItem item in ScannedList)
-                {
-                    ShoppingItemData data = selector.FindClosestItem(item.Name, items);
-
-                    if (data == null) continue;
-
-                    if (SelectedShop == ShopTypes.UNKNOWN) continue;
-
-                    if (!data.ShopPrices.ContainsKey(SelectedShop))
-                    {
-                        data.ShopPrices.Add(SelectedShop, item.Price);
-                        continue;
-                    }
-
-                    data.ShopPrices[SelectedShop] = item.Price;
-                }
-
-                repo.SaveChanges();
-            }
-            */
             Confirm_Click(obj);
         }
 
@@ -198,16 +171,14 @@ namespace ViewModels
             ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
             await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
-            //ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
-            //await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
-            //ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
-
+            
+            /*
             OCRService ocrService = new OCRService();
 
             var scannedItems = await ocrService.GetScannedItems(dlg.FileName);
 
             if(scannedItems != null) ScannedList = new ObservableCollection<ScannedItem>(scannedItems);
-
+            */
             ListLabelContent = "";
         }
     }
