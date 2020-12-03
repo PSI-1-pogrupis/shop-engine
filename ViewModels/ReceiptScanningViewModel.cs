@@ -110,8 +110,6 @@ namespace ViewModels
             _itemsScanner = new ItemsScanner();
             _scannedListManager = new ScannedListManager();
             _mainVM = mainVM;
-
-
         }
 
         private void Confirm_Click(object obj)
@@ -152,6 +150,7 @@ namespace ViewModels
             ScannedListLibrary.AddList(_scannedListManager);
             MonthSpendingLibrary.AddToLibrary(DateTime.Now, _scannedListManager.TotalSum);
 
+            /*
             using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
             {
                 ItemDataSelector selector = new ItemDataSelector();
@@ -177,6 +176,7 @@ namespace ViewModels
 
                 repo.SaveChanges();
             }
+            */
             Confirm_Click(obj);
         }
 
@@ -189,32 +189,16 @@ namespace ViewModels
 
         private async Task ScanImage(Microsoft.Win32.OpenFileDialog dlg)
         {
-            ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
-            await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
-            ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
+            //ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
+            //await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
+            //ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
 
-            //ShopTypes shop = itemsScanner.GetShop(ReadedText);
-            //switch (shop)
-            //{
-            //    case ShopTypes.IKI:
-            //        ShopText = ShopTypes.IKI.ToString();
-            //        break;
-            //    case ShopTypes.MAXIMA:
-            //        ShopText = ShopTypes.MAXIMA.ToString();
-            //        break;
-            //    case ShopTypes.LIDL:
-            //        ShopText = ShopTypes.LIDL.ToString();
-            //        break;
-            //    case ShopTypes.NORFA:
-            //        ShopText = ShopTypes.NORFA.ToString();
-            //        break;
-            //    case ShopTypes.RIMI:
-            //        ShopText = ShopTypes.RIMI.ToString();
-            //        break;
-            //    case ShopTypes.UNKNOWN:
-            //        ShopText = "";
-            //        break;
-            //}
+            OCRService ocrService = new OCRService();
+
+            var scannedItems = await ocrService.GetScannedItems(dlg.FileName);
+
+            if(scannedItems != null) ScannedList = new ObservableCollection<ScannedItem>(scannedItems);
+
             ListLabelContent = "";
         }
     }

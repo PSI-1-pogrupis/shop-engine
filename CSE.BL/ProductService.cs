@@ -8,30 +8,32 @@ using System.Threading.Tasks;
 
 namespace CSE.BL
 {
-    public class ServiceResponse<T>
-    {
-        public T Data { get; set; }
-
-        public bool Success { get; set; }
-
-        public string Message { get; set; }
-    }
-
     public class ProductService
     {
+        private readonly string productRoute = "https://localhost:44317/product";
 
         public ProductService() { }
 
-        public object MainViewModel { get; private set; }
-
         public async Task<List<ShoppingItemData>> GetProductData()
         {
-            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync("https://localhost:44317/product");
+            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync(productRoute);
 
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ServiceResponse<List<ShoppingItemData>>>(data).Data;
+            }
+            else return null;
+        }
+
+        public async Task<ShoppingItemData> GetProductDataByName(string name)
+        {
+            HttpResponseMessage response = await ServiceClient.httpClient.GetAsync(productRoute + '/' + name);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ServiceResponse<ShoppingItemData>>(data).Data;
             }
             else return null;
         }

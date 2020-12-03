@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ComparisonShoppingEngineAPI.Data.Services.OCRService
 {
-    public class ItemsScanner
+    public class ItemsScanner : IItemScannerService
     {
         //public ShopTypes GetShop(string text)
         //{

@@ -6,13 +6,23 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ViewModels
 {
     public class ProductsComparisonViewModel : BaseViewModel
     {
         private readonly ProductsComparer _productsComparer;
-        public ObservableCollection<ScannedItem> ProductsComparisonList { get; set; }
+        private ObservableCollection<ScannedItem> productsComparisonList;
+        public ObservableCollection<ScannedItem> ProductsComparisonList
+        {
+            get { return productsComparisonList; }
+            set
+            {
+                productsComparisonList = value;
+                OnPropertyChanged(nameof(ProductsComparisonList));
+            }
+        }
 
 
         public ProductsComparisonViewModel(ScannedListManager productsToCompare)
@@ -30,11 +40,15 @@ namespace ViewModels
                         product.Price = product.PricePerQuantity;
                     }
                 }
-                _productsComparer.SearchForProductsWithBetterPrices(list);
-                ProductsComparisonList = new ObservableCollection<ScannedItem>(list);
+
+                GetComparisonList(list);
             }
         }
 
-        
+        private async Task GetComparisonList(List<ScannedItem> list)
+        {
+            await _productsComparer.SearchForProductsWithBetterPrices(list);
+            ProductsComparisonList = new ObservableCollection<ScannedItem>(list);
+        }
     }
 }

@@ -12,6 +12,7 @@ using CSE.BL.Database;
 using System.Data;
 using System.Net.NetworkInformation;
 using CSE.BL.Database.Models;
+using System.Threading.Tasks;
 
 namespace ViewModels
 {
@@ -186,7 +187,12 @@ namespace ViewModels
             selectedShops = new List<ShopTypes>();
             ObservableShoppingList = new ObservableCollection<ShoppingItem>(manager.ShoppingList);
 
-            LoadDataList();
+            UpdateInformation();
+        }
+
+        private async Task UpdateInformation()
+        {
+            await LoadDataList();
             manager.UpdateInformation();
             UpdateOverview();
             GetAvailableShops();
@@ -265,11 +271,12 @@ namespace ViewModels
             AvailableShops = shops;
         }
 
-        private void OptimizeShoppingList(object parameter)
+        private async void OptimizeShoppingList(object parameter)
         {
-            ListOptimizer optimizer = new ListOptimizer();
+            ListOptimizerService optimizer = new ListOptimizerService();
 
-            OptimizedList = optimizer.GetLowestPriceList(manager, dataList, selectedShops, OnlyReplaceUnspecifiedShops);
+            //OptimizedList = optimizer.GetLowestPriceList(manager, dataList, selectedShops, OnlyReplaceUnspecifiedShops);
+            OptimizedList = await optimizer.OptimizeList(manager, selectedShops, OnlyReplaceUnspecifiedShops);
 
             GetMinMaxPrices(manager.ShoppingList, dataList, out decimal minPrice1, out decimal maxPrice1);
             GetMinMaxPrices(OptimizedList.ShoppingList, dataList, out decimal minPrice2, out decimal maxPrice2);
@@ -333,33 +340,22 @@ namespace ViewModels
             OnlyReplaceUnspecifiedShops = false;
         }
 
-        private void LoadDataList()
+        private async Task LoadDataList()
         {
             dataList = new List<ShoppingItemData>();
 
-            using (IShoppingItemRepository repo = new ShoppingItemRepository(new MysqlShoppingItemGateway()))
+            ProductService productService = new ProductService();
+
+            List<Task<ShoppingItemData>> tasks = new List<Task<ShoppingItemData>>();
+
+            foreach (ShoppingItem item in manager.ShoppingList)
             {
-                foreach (ShoppingItem item in manager.ShoppingList)
-                {
-                    ShoppingItemData data = repo.Find(item.Name);
+                var dataTask = productService.GetProductDataByName(item.Name);
 
-                    if (data == null)
-                    {
-                        data = new ShoppingItemData(item.Name, item.Unit, new Dictionary<ShopTypes, decimal>());
-                    }
-
-                    decimal loadedPrice;
-
-                    if (data.ShopPrices.TryGetValue(item.Shop, out loadedPrice))
-                    {
-                        item.PricePerUnit = loadedPrice;
-                    }
-                    else item.PricePerUnit = 0;
-
-                    dataList.Add(data);
-                }
+                tasks.Add(dataTask);
             }
 
+            dataList = (await Task.WhenAll(tasks)).ToList();
         }
 
         private void GetMinMaxPrices(List<ShoppingItem> list, List<ShoppingItemData> data, out decimal minPrice, out decimal maxPrice)

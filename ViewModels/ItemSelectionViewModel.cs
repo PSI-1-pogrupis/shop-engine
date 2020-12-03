@@ -151,16 +151,8 @@ namespace ViewModels
 
             ProductService service = new ProductService();
 
-            try
-            {
-                ProductList = await service.GetProductData();
-            }
-            catch(Exception e)
-            {
-                //TODO: handle exceptions
-                ProductList = new List<ShoppingItemData>();
-            }
-            
+            ProductList = await service.GetProductData();
+ 
             string text = SearchText.ToLower();
 
             var selected = from i in ProductList
