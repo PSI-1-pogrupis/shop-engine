@@ -139,7 +139,7 @@ namespace ViewModels
                 BrowseText = dlg.FileName;
                 ImageSrc = new BitmapImage(new Uri(dlg.FileName));
 
-                ListLabelContent = "Reading...";
+                ListLabelContent = "Processing...";
 
                 await ScanImage(dlg);
             }
@@ -186,9 +186,18 @@ namespace ViewModels
             else return true;
         }
 
+        public void OnImageProcessed(object source, EventArgs args)
+        {
+            ListLabelContent = "Reading...";
+        }
+
 
         private async Task ScanImage(Microsoft.Win32.OpenFileDialog dlg)
         {
+            _imgReader.ImageProcessed += OnImageProcessed;
+            ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
+            await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
+            ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);
             //ReadText = await _imgReader.ReadImageAsync(dlg.FileName);
             //await _itemsScanner.ScanProducts(_scannedListManager, ReadText);
             //ScannedList = new ObservableCollection<ScannedItem>(_scannedListManager.ScannedItems);

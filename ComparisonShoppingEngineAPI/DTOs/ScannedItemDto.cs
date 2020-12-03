@@ -16,5 +16,8 @@ namespace ComparisonShoppingEngineAPI.DTOs
         public decimal Discount { get; set; }
 
         public decimal PricePerQuantity { get; set; }
+
+        // used for comparing prices to know the price user paid
+        public decimal WorsePrice { get; set; }
     }
 }
