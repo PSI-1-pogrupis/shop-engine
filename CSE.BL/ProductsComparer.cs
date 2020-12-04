@@ -16,30 +16,40 @@ namespace CSE.BL
 
         public async Task ChangeIncorrectNames(List<ScannedItem> scannedList)
         {
-            ProductService productService = new ProductService();
-
-            List<ShoppingItemData> dataList = await productService.GetProductData();
-            const float distanceToleration = 0.6f;   // min distance between strings toleration percentage
-                                                     // meaning: if 0.6 of strings names matches, they're considered the same
-            int minDistance;
-
-            /*
-            var temp = new Dictionary<ShopTypes, decimal>();
-            temp.Add(ShopTypes.NORFA, 0.89m);
-            _repository.Insert(new ShoppingItemData("BANANAI", ShoppingList.UnitTypes.piece, temp));
-            _repository.SaveChanges();
-            */
-
-            foreach (var scannedProduct in scannedList)
+            try
             {
-                minDistance = (int)(scannedProduct.Name.Length * distanceToleration);
-                foreach (var dataProduct in dataList)
+                ProductService productService = new ProductService();
+
+                List<ShoppingItemData> dataList = await productService.GetProductData();
+
+
+                const float distanceToleration = 0.6f;   // min distance between strings toleration percentage
+                                                         // meaning: if 0.6 of strings names matches, they're considered the same
+                int minDistance;
+
+                /*
+                var temp = new Dictionary<ShopTypes, decimal>();
+                temp.Add(ShopTypes.NORFA, 0.89m);
+                _repository.Insert(new ShoppingItemData("BANANAI", ShoppingList.UnitTypes.piece, temp));
+                _repository.SaveChanges();
+                */
+
+                foreach (var scannedProduct in scannedList)
                 {
-                    if (NamesMatch(minDistance, scannedProduct.Name, dataProduct.Name))
+                    minDistance = (int)(scannedProduct.Name.Length * distanceToleration);
+                    foreach (var dataProduct in dataList)
                     {
-                        scannedProduct.Name = dataProduct.Name;
+                        if (NamesMatch(minDistance, scannedProduct.Name, dataProduct.Name))
+                        {
+                            scannedProduct.Name = dataProduct.Name;
+                        }
                     }
                 }
+
+            }
+            catch
+            {
+                return;
             }
         }
 
