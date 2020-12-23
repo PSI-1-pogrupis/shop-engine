@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.DTOs;
+using ComparisonShoppingEngineAPI.DTOs.Report;
 using System.Linq;
 
 namespace ComparisonShoppingEngineAPI
@@ -26,6 +27,8 @@ namespace ComparisonShoppingEngineAPI
                 Price = x.Price,
                 PricePerQuantity = x.PricePerQuantity
             });
+
+            CreateMap<Report, GetReportDto>();
         }
     }
 }

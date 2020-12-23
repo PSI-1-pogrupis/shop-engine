@@ -32,10 +32,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             ServiceResponse<List<GetReceiptDto>> serviceResponse = await _receiptService.GetAll(userId);
 
             if (!serviceResponse.Success) return NotFound(serviceResponse);
-            else
-            {
-                return Ok(serviceResponse);
-            }
+            return Ok(serviceResponse);
         }
 
         [HttpPost]
@@ -45,10 +42,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             ServiceResponse<GetReceiptDto> serviceResponse = await _receiptService.Insert(receipt, userId);
 
             if (!serviceResponse.Success) return NotFound(serviceResponse);
-            else
-            {
-                return Ok(serviceResponse);
-            }
+            return Ok(serviceResponse);
         }
 
         [HttpDelete("{id}")]
@@ -58,10 +52,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
             ServiceResponse<GetReceiptDto> serviceResponse = await _receiptService.Remove(id, userId);
 
             if (!serviceResponse.Success) return NotFound(serviceResponse);
-            else
-            {
-                return Ok(serviceResponse);
-            }
+            return Ok(serviceResponse);
         }
     }
 }
