@@ -1,13 +1,15 @@
 using AutoMapper;
 using ComparisonShoppingEngineAPI.Data;
-using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Services;
 using ComparisonShoppingEngineAPI.Data.Services.OCRService;
 using ComparisonShoppingEngineAPI.Data.Services.OptimizerService;
 using ComparisonShoppingEngineAPI.Data.Services.ReceiptService;
+using ComparisonShoppingEngineAPI.Data.Services.ReportService;
+using ComparisonShoppingEngineAPI.Data.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,11 +34,14 @@ namespace ComparisonShoppingEngineAPI
             services.AddDbContext<DataContext>(dbContextOptions => dbContextOptions.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IOCRService, OCRService>();
             services.AddScoped<IItemScannerService, ItemsScanner>();
             services.AddScoped<IProductComparerService, ProductComparer>(); 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IShoppingListOptimizerService, ShoppingListOptimizerService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

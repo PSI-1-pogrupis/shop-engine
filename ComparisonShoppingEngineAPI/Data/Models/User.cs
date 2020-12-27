@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComparisonShoppingEngineAPI.Data.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace ComparisonShoppingEngineAPI.Data.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public DateTime CreateTime { get; }
+        public GenderTypes? Gender { get; set; } = GenderTypes.Default;
+        #nullable enable
+        public Image? ProfileImage { get; set; }
 
         public virtual ICollection<Receipt> Receipts { get; set; }
     }

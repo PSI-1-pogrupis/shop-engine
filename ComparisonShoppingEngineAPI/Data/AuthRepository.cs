@@ -76,7 +76,7 @@ namespace ComparisonShoppingEngineAPI.Data
             using(var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
 
@@ -84,7 +84,7 @@ namespace ComparisonShoppingEngineAPI.Data
         {
             using(var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 for(int i = 0; i < computedHash.Length; i++)
                 {
                     if(computedHash[i] != passwordHash[i])
@@ -114,7 +114,7 @@ namespace ComparisonShoppingEngineAPI.Data
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddYears(2),
                 SigningCredentials = creds
             };
 
