@@ -48,10 +48,9 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
                 {
                     service.Message = "Could not find profile image in database!";
                 }
-            } catch (Exception e)
+            } catch (Exception)
             {
-                Console.WriteLine(e);
-                service.Message = "Unexpected server error...";
+                service.Message = "Unexpected server response.";
             }
 
             return service;
@@ -97,7 +96,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 service.Data = null;
                 service.Message = $"We are sorry... Unable to proceed {userUpdate.UserUpdateType.ToUpper()} type action!";
@@ -123,7 +122,6 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
                 return false;
             } catch (Exception e)
             {
-                Console.WriteLine("K: "+e);
                 return false;
             }
         }
@@ -181,8 +179,6 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
             {
                 image.ImagePath = null;
             }
-
-            //return image
             return image.ImagePath;
         }
 
@@ -229,22 +225,6 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != passwordHash[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
             }
         }
     }

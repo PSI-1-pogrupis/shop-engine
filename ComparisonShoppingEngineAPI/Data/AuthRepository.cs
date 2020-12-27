@@ -114,7 +114,7 @@ namespace ComparisonShoppingEngineAPI.Data
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                //Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddYears(2),
                 SigningCredentials = creds
             };
 

@@ -37,14 +37,13 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReportService
 
                 _context.Reports.Add(_report);
                 await _context.SaveChangesAsync();
-                var s = "asd";
                 service.Data = new GetReportDto { Id = _report.Id, Date = _report.Date };
                 service.Message = ($"Report #{ _report.Id } has been submitted. Thank you!");
+                service.Success = true;
             } catch (Exception)
             {
                 service.Data = null;
                 service.Message = "Could not submit report!";
-                service.Success = false;
             }
 
             return service;
