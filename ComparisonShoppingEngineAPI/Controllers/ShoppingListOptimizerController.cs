@@ -2,6 +2,7 @@
 using ComparisonShoppingEngineAPI.Data.Models;
 using ComparisonShoppingEngineAPI.Data.Services.OptimizerService;
 using ComparisonShoppingEngineAPI.DTOs;
+using ComparisonShoppingEngineAPI.DTOs.Optimization;
 using ComparisonShoppingEngineAPI.DTOs.ShoppingList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,34 @@ namespace ComparisonShoppingEngineAPI.Controllers
 
             if (!productResponse.Success) return BadRequest(productResponse);
 
-            optimizerResponse = await _listOptimizer.OptimizeList(dto, productResponse.Data);
+            var data = productResponse.Data;
+
+            if (data == null) return BadRequest(productResponse);
+
+            optimizerResponse = await _listOptimizer.OptimizeList(dto, data);
+
+            if (!optimizerResponse.Success) return BadRequest(optimizerResponse);
+
+            return Ok(optimizerResponse.Data);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("orderedLists")]
+        public async Task<IActionResult> GetOrderedLists([FromBody] GetOptimizingShoppingListDto dto)
+        {
+            ServiceResponse<List<ProductDto>> productResponse;
+            ServiceResponse<List<OptimizedShopListDto>> optimizerResponse;
+
+            IEnumerable<string> itemNames = dto.ShoppingList.Select(x => x.Name);
+            productResponse = await _productService.GetProductsByNames(itemNames);
+
+            if (!productResponse.Success) return BadRequest(productResponse);
+
+            var data = productResponse.Data;
+
+            if (data == null) return BadRequest(productResponse);
+
+            optimizerResponse = await _listOptimizer.GetOrderedShopLists(dto, data);
 
             if (!optimizerResponse.Success) return BadRequest(optimizerResponse);
 
