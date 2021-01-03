@@ -11,7 +11,7 @@ namespace ComparisonShoppingEngineAPI.DTOs.Optimization
         public string Shop { get; set; }
         public List<ShoppingItem> ItemList { get;  set; }
         public decimal ListPrice { get; set; } = 0;
-        public bool HasAllProducts { get; set; } = true;
+        public int MissingItemCount { get; set; } = 0;
 
     }
 }

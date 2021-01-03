@@ -50,7 +50,7 @@ namespace ComparisonShoppingEngineAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("orderedLists")]
+        [HttpPost("compareShops")]
         public async Task<IActionResult> GetOrderedLists([FromBody] GetOptimizingShoppingListDto dto)
         {
             ServiceResponse<List<ProductDto>> productResponse;

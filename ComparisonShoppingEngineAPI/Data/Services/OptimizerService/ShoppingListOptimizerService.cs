@@ -73,7 +73,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services
             }
 
             List<OptimizedShopListDto> optimizedList = await GetShopLists(dto.ShoppingList, dataList, dto.AllowedShops, dto.OnlyReplaceUnspecifiedShops);
-            optimizedList = optimizedList.OrderBy(a => !a.HasAllProducts).ThenBy(a => a.ListPrice).ToList();
+            optimizedList = optimizedList.OrderBy(a => a.MissingItemCount).ThenBy(a => a.ListPrice).ToList();
             response.Data = optimizedList;
 
             return response;
@@ -146,7 +146,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services
                     {
                         price += item.PricePerUnit * (decimal)item.Amount;
 
-                        if (item.Shop == "UNKNOWN") shopList.HasAllProducts = false;
+                        if (item.Shop == "UNKNOWN") shopList.MissingItemCount++;
                     }
 
                     shopList.ListPrice = price;
