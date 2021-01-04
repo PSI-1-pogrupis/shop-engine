@@ -39,5 +39,14 @@ namespace ComparisonShoppingEngineAPI.Controllers
             if (!serviceResponse.Success) return NotFound(serviceResponse);
             return Ok(serviceResponse);
         }
+
+        /*[HttpGet]
+        public async Task<IActionResult> GetGender()
+        {
+            ServiceResponse<string> serviceResponse = await _userService.GetGender();
+
+            if (!serviceResponse.Success) return NotFound(serviceResponse);
+            return Ok(serviceResponse);
+        }*/
     }
 }

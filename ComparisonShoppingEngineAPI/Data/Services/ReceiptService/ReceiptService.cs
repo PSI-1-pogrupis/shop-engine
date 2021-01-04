@@ -43,7 +43,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services.ReceiptService
             {
                 UserId = userId,
                 Shop = _context.Shops.FirstOrDefault(x => x.ShopName == shopName),
-                Date = DateTime.UtcNow,
+                Date = DateTime.UtcNow.AddHours(2),
                 Total = totalPrice
             };
 

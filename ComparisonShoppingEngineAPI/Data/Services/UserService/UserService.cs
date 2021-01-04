@@ -106,6 +106,25 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
             return service;
         }
 
+        public async Task<ServiceResponse<string>> GetGender()
+        {
+            ServiceResponse<string> service = new ServiceResponse<string>();
+
+            try
+            {
+                User foundUser = await _context.Users.Where(x => x.UserId == GetUserId).FirstOrDefaultAsync();
+                if (foundUser != null)
+                {
+                    service.Data = foundUser.Gender.ToString();
+                    service.Success = true;
+                }
+            } catch (Exception)
+            {
+                service.Message = "Unexpected error from server! Try again later.";
+            }
+            return service;
+        }
+
         private async Task<bool> ChangeGender(int userId, GenderTypes newGender)
         {
             try

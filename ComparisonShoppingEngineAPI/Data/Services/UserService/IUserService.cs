@@ -9,5 +9,6 @@ namespace ComparisonShoppingEngineAPI.Data.Services.UserService
     {
         Task<ServiceResponse<GetUserUpdate>> Update(UserUpdateDto userUpdate);
         Task<ServiceResponse<GetImageDto>> GetProfileImage();
+        Task<ServiceResponse<string>> GetGender();
     }
 }
