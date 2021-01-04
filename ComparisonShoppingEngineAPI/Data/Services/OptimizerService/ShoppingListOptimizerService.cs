@@ -23,7 +23,7 @@ namespace ComparisonShoppingEngineAPI.Data.Services
                 return response;
             }
             */
-            for (int i = 0; i < dto.ShoppingList.Count; i++)
+            for(int i = 0; i < dto.ShoppingList.Count; i++)
             {
                 GetShoppingItemDto item = dto.ShoppingList[i];
 
